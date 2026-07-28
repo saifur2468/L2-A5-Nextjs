@@ -29,7 +29,7 @@ interface Property {
   category?: Category;
 }
 
-export default function propertiesPage() {
+export default function PropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -94,12 +94,12 @@ export default function propertiesPage() {
     }
   };
 
-  // API call
+  
   useEffect(() => {
     fetchProperties();
   }, [location, maxPrice]);
 
-  // Client side search by title/location/category
+  
   const filteredProperties = properties.filter((property) => {
     const searchText = search.toLowerCase();
 
@@ -202,7 +202,16 @@ export default function propertiesPage() {
                 className="w-full accent-black cursor-pointer"
               />
             </div>
-
+{/* Property Type Dropdown Example */}
+<div>
+  <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Property Type</label>
+  <select className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+    <option value="">All Types</option>
+    <option value="Apartment">Apartment</option>
+    <option value="Studio">Studio</option>
+    <option value="House">House</option>
+  </select>
+</div>
             {/* Reset */}
             <button
               onClick={() => {
