@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Home } from 'lucide-react';
 import { toast } from 'react-toastify'; 
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // URL parameters থেকে redirect URL রিড করা (যদি থাকে)
+  const redirectTo = searchParams.get('redirect') || '/properties';
 
   const [formData, setFormData] = useState({
     email: '',
@@ -46,29 +50,30 @@ export default function LoginPage() {
         throw new Error(data.message || 'Login failed! Check your credentials.');
       }
 
+      // Backend response থেকে token এবং user role বের করা
       const token = data.data.token;
       const userRole = data.data.user?.role || data.data.role;
 
-      // Save token and role in localStorage
+      // LocalStorage-এ টোকেন এবং রোল সেভ
       localStorage.setItem('token', token);
       if (userRole) {
         localStorage.setItem('role', userRole);
       }
 
-      // Save cookies
+      // Cookies-এ টোকেন এবং রোল সেভ (Server Components / Middleware এর সুবিধার্থে)
       document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`;
       if (userRole) {
         document.cookie = `role=${userRole}; path=/; max-age=86400; SameSite=Lax`;
       }
 
-      // Notify Navbar to update state instantly
+      // Navbar-কে ইনস্ট্যান্ট স্টেট আপডেট করার নোটিফিকেশন পাঠানো
       window.dispatchEvent(new Event('auth-change'));
 
-      // Show Toast Alert
+      // Toast মেসেজ
       toast.success('Welcome back! Logged in successfully.');
 
-      // Redirect
-      router.push('/');
+      // ইউজার আগে যেই পেজে যেতে চেয়েছিল সেখানে পাঠাবে (ডিফল্ট: /properties)
+      router.push(redirectTo);
     } catch (err: any) {
       toast.error(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -132,7 +137,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>

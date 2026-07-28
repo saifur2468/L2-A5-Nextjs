@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Home, Building2, UserCheck } from 'lucide-react';
-import { toast } from 'react-toastify'; // 👈 Import Toast
+import { toast } from 'react-toastify'; 
 
 export default function RegisterPage() {
   const router = useRouter();
