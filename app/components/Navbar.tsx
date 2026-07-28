@@ -29,13 +29,13 @@ export default function Navbar() {
 
   useEffect(() => {
     checkAuth();
-  }, [pathname]); // রাউট পরিবর্তন হলেই স্টেট রি-চেক করবে
+  }, [pathname]); 
 
   const handleLogout = () => {
-    // LocalStorage সাফ করা
+   
     localStorage.clear();
     
-    // Cookie মুছে ফেলা
+    
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'role=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     

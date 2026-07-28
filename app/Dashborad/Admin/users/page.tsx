@@ -26,7 +26,7 @@ export default function AdminUsersPage() {
     });
 
     if (res.ok) {
-      fetchUsers(); // Refresh status
+      fetchUsers(); 
     }
   };
 
