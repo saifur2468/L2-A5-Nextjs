@@ -47,13 +47,11 @@ interface Property {
 
 interface RentalRequest {
   id: string;
-  propertyId?: string; // এইখানে একটি ? দিন
+  propertyId?: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
-// ========================================
-// Component
-// ========================================
+
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -61,9 +59,7 @@ export default function PropertyDetailsPage() {
 
   const id = params?.id as string;
 
-  // ========================================
-  // States
-  // ========================================
+
 
   const [property, setProperty] =
     useState<Property | null>(null);
@@ -243,7 +239,7 @@ export default function PropertyDetailsPage() {
     fetchDetails();
   }, [id, API_URL]);
 
-  
+
   const handleRentalRequest = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -265,7 +261,7 @@ export default function PropertyDetailsPage() {
         setSubmitting(false);
         return;
       }
-const res = await fetch(`${API_URL}/rentals`, {
+      const res = await fetch(`${API_URL}/rentals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -282,7 +278,7 @@ const res = await fetch(`${API_URL}/rentals`, {
 
       if (res.ok && data.success) {
         setSuccessMsg(data.message || 'Rental request submitted successfully!');
-        
+
         setExistingRental({
           id: data.data.id,
           status: 'PENDING',
@@ -545,8 +541,8 @@ const res = await fetch(`${API_URL}/rentals`, {
                   !property.isAvailable
                 }
                 className={`w-full py-4 rounded-xl font-bold text-white transition flex items-center justify-center gap-2 ${property.isAvailable
-                    ? 'bg-black hover:bg-gray-800 cursor-pointer shadow-lg'
-                    : 'bg-gray-400 cursor-not-allowed'
+                  ? 'bg-black hover:bg-gray-800 cursor-pointer shadow-lg'
+                  : 'bg-gray-400 cursor-not-allowed'
                   }`}
               >
                 {property.isAvailable
