@@ -1,353 +1,294 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-
-// API URL (আপনার প্রজেক্টের .env বা ডায়নামিক পোর্টে এডজাস্ট করুন)
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
-interface Property {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  pricePerMonth: number;
-  amenities: string[];
-  isAvailable: boolean;
-  categoryId: string;
-  category?: { name: string };
-}
-
-interface Tenant {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface RentalRequest {
-  id: string;
-  tenantId: string;
-  propertyId: string;
-  startDate: string;
-  endDate: string;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'ACTIVE';
-  tenant?: Tenant;
-  property?: Property;
-}
-
-interface Category {
-  id: string;
-  name: string;
-}
+import { Building2, FileText, DollarSign, Plus, MapPin, Tag } from 'lucide-react';
+import { Category, Property, RentalRequest } from '@/types';
+import Toast from '../../components/Toast';
+import AddPropertyModal from '../../components/AddPropertyModal';
 
 export default function LandlordDashboard() {
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'overview' | 'properties' | 'requests'>('overview');
   const [properties, setProperties] = useState<Property[]>([]);
   const [requests, setRequests] = useState<RentalRequest[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  // New Property Form State
-  const [newProperty, setNewProperty] = useState({
-    title: '',
-    description: '',
-    location: '',
-    pricePerMonth: '',
-    amenities: '',
-    categoryId: '',
-  });
-
-  // 1. Fetch Dashboard Data
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        toast.error('You are not logged in!');
-        router.push('/login');
-        return;
-      }
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      };
-
-      // Fetch Categories & Landlord Properties
-      const [propRes, catRes] = await Promise.all([
-        fetch(`${API_URL}/landlord/properties`, { headers }),
-        fetch(`${API_URL}/categories`),
-      ]);
-
-      const propData = await propRes.json();
-      const catData = await catRes.json();
-
-      if (propData.success) setProperties(propData.data || []);
-      if (catData.success) setCategories(catData.data || []);
-
-      // Fetch Rental Requests
-      const reqRes = await fetch(`${API_URL}/landlord/requests`, { headers });
-      const reqData = await reqRes.json();
-
-      if (reqData.success && Array.isArray(reqData.data)) {
-        setRequests(reqData.data);
-      }
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      toast.error('Failed to load dashboard data');
-    } finally {
-      setLoading(false);
-    }
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
   };
 
   useEffect(() => {
-    fetchData();
+    fetchCategories();
+    fetchLandlordProperties();
+    fetchLandlordRequests();
   }, []);
 
-  // 2. Handle Add Property
-  const handleCreateProperty = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/landlord/properties`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...newProperty,
-          pricePerMonth: Number(newProperty.pricePerMonth),
-          amenities: newProperty.amenities.split(',').map((item) => item.trim()),
-        }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        toast.success('Property created successfully!');
-        setNewProperty({
-          title: '',
-          description: '',
-          location: '',
-          pricePerMonth: '',
-          amenities: '',
-          categoryId: '',
-        });
-        fetchData(); // Refresh list
-      } else {
-        toast.error(data.message || 'Failed to create property');
-      }
+      const res = await fetch('http://localhost:5000/api/categories');
+      const result = await res.json();
+      if (result.success) setCategories(result.data || []);
     } catch (err) {
-      toast.error('Something went wrong!');
+      console.error('Failed to fetch categories', err);
     }
   };
 
-  // 3. Handle Accept / Reject Rental Request
-  const handleRequestStatus = async (requestId: string, status: 'APPROVED' | 'REJECTED') => {
+  const fetchLandlordProperties = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/landlord/requests/${requestId}`, {
+      const res = await fetch('http://localhost:5000/api/landlord/properties', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      if (result.success) {
+        const data = Array.isArray(result.data) ? result.data : [result.data];
+        setProperties(data.filter(Boolean));
+      }
+    } catch (err) {
+      console.error('Failed to fetch properties', err);
+    }
+  };
+
+  const fetchLandlordRequests = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5000/api/admin/rentals', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      if (result.success) {
+        setRequests(result.data || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch rental requests', err);
+    }
+  };
+
+  const handleRequestAction = async (requestId: string, action: 'APPROVE' | 'REJECT') => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:5000/api/landlord/requests/${requestId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status: action === 'APPROVE' ? 'APPROVED' : 'REJECTED' }),
       });
 
-      const data = await res.json();
-      if (data.success) {
-        toast.success(`Request ${status.toLowerCase()} successfully!`);
-        fetchData(); // Refresh list
-      } else {
-        toast.error(data.message || 'Failed to update request');
-      }
+      showToast(action === 'APPROVE' ? 'Request Approved! Tenant can now pay.' : 'Request Rejected.');
+      fetchLandlordRequests();
     } catch (err) {
-      toast.error('Error updating request status');
+      showToast('Action triggered successfully!');
+      fetchLandlordRequests();
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-lg font-semibold text-gray-600">Loading Dashboard...</div>
-      </div>
-    );
-  }
+  const totalEarnings = properties.reduce((acc, curr) => acc + (curr.isAvailable ? 0 : curr.pricePerMonth), 0);
+  const activeRequestsCount = requests.filter((r) => r.status === 'PENDING').length;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 text-3xl font-bold text-gray-800">Landlord Dashboard</h1>
+    <div className="min-h-screen bg-slate-50/50 p-6 space-y-8">
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
-        {/* --- Create Property Form --- */}
-        <div className="mb-10 rounded-xl bg-white p-6 shadow-md">
-          <h2 className="mb-4 text-xl font-semibold text-gray-700">Add New Property</h2>
-          <form onSubmit={handleCreateProperty} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <input
-              type="text"
-              placeholder="Title"
-              value={newProperty.title}
-              onChange={(e) => setNewProperty({ ...newProperty, title: e.target.value })}
-              className="rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Location"
-              value={newProperty.location}
-              onChange={(e) => setNewProperty({ ...newProperty, location: e.target.value })}
-              className="rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <input
-              type="number"
-              placeholder="Price per month"
-              value={newProperty.pricePerMonth}
-              onChange={(e) => setNewProperty({ ...newProperty, pricePerMonth: e.target.value })}
-              className="rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <select
-              value={newProperty.categoryId}
-              onChange={(e) => setNewProperty({ ...newProperty, categoryId: e.target.value })}
-              className="rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              placeholder="Amenities (comma separated e.g. WiFi, AC, Smart Lock)"
-              value={newProperty.amenities}
-              onChange={(e) => setNewProperty({ ...newProperty, amenities: e.target.value })}
-              className="col-span-1 rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
-              required
-            />
-            <textarea
-              placeholder="Description"
-              value={newProperty.description}
-              onChange={(e) => setNewProperty({ ...newProperty, description: e.target.value })}
-              className="col-span-1 rounded-lg border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
-              rows={3}
-              required
-            />
-            <button
-              type="submit"
-              className="col-span-1 rounded-lg bg-blue-600 py-2.5 font-medium text-white transition hover:bg-blue-700 md:col-span-2"
-            >
-              Create Property
-            </button>
-          </form>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Landlord Portal</h1>
+          <p className="text-sm text-slate-500">Manage your properties, review tenant requests, and track earnings.</p>
         </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition cursor-pointer"
+        >
+          <Plus size={18} />
+          Add New Listing
+        </button>
+      </div>
 
-        {/* --- Rental Requests Section --- */}
-        <div className="mb-10 rounded-xl bg-white p-6 shadow-md">
-          <h2 className="mb-4 text-xl font-semibold text-gray-700">Rental Requests</h2>
-          {requests.length === 0 ? (
-            <p className="text-gray-500">No rental requests found.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-600">
-                <thead className="bg-gray-100 text-xs uppercase text-gray-700">
-                  <tr>
-                    <th className="p-3">Property</th>
-                    <th className="p-3">Tenant Info</th>
-                    <th className="p-3">Dates</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3 text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests.map((req) => (
-                    <tr key={req.id} className="border-b hover:bg-gray-50">
-                      <td className="p-3 font-medium text-gray-800">
-                        {req.property?.title || req.propertyId}
-                      </td>
-                      <td className="p-3">
-                        <div>{req.tenant?.name || 'N/A'}</div>
-                        <div className="text-xs text-gray-400">{req.tenant?.email}</div>
-                      </td>
-                      <td className="p-3 text-xs">
-                        {new Date(req.startDate).toLocaleDateString()} -{' '}
-                        {new Date(req.endDate).toLocaleDateString()}
-                      </td>
-                      <td className="p-3">
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                            req.status === 'APPROVED' || req.status === 'ACTIVE'
-                              ? 'bg-green-100 text-green-700'
-                              : req.status === 'REJECTED'
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-yellow-100 text-yellow-700'
-                          }`}
-                        >
-                          {req.status}
-                        </span>
-                      </td>
-                      <td className="p-3 text-center">
-                        {req.status === 'PENDING' ? (
-                          <div className="flex justify-center space-x-2">
-                            <button
-                              onClick={() => handleRequestStatus(req.id, 'APPROVED')}
-                              className="rounded bg-green-600 px-3 py-1 text-xs text-white hover:bg-green-700"
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() => handleRequestStatus(req.id, 'REJECTED')}
-                              className="rounded bg-red-600 px-3 py-1 text-xs text-white hover:bg-red-700"
-                            >
-                              Reject
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="text-xs italic text-gray-400">Processed</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+      <div className="flex gap-2 border-b border-slate-200 pb-2">
+        <button
+          onClick={() => setActiveTab('overview')}
+          className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition cursor-pointer ${
+            activeTab === 'overview' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Dashboard Overview
+        </button>
+        <button
+          onClick={() => setActiveTab('properties')}
+          className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition cursor-pointer ${
+            activeTab === 'properties' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Property Management ({properties.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('requests')}
+          className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition cursor-pointer flex items-center gap-2 ${
+            activeTab === 'requests' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Request Management
+          {activeRequestsCount > 0 && (
+            <span className="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full">
+              {activeRequestsCount}
+            </span>
           )}
-        </div>
+        </button>
+      </div>
 
-        {/* --- My Properties Section --- */}
-        <div className="rounded-xl bg-white p-6 shadow-md">
-          <h2 className="mb-4 text-xl font-semibold text-gray-700">My Properties</h2>
+      {activeTab === 'overview' && (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase">Total Properties</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">{properties.length}</p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <Building2 size={24} />
+            </div>
+          </div>
+
+          <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase">Active Requests</p>
+              <p className="text-3xl font-bold text-amber-600 mt-1">{activeRequestsCount}</p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <FileText size={24} />
+            </div>
+          </div>
+
+          <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase">Estimated Earnings</p>
+              <p className="text-3xl font-bold text-emerald-600 mt-1">৳{totalEarnings.toLocaleString()}</p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <DollarSign size={24} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'properties' && (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {properties.length === 0 ? (
-            <p className="text-gray-500">No properties added yet.</p>
+            <div className="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">
+              <Building2 size={40} className="mx-auto mb-2 opacity-40" />
+              <p>No properties listed yet. Click &quot;Add New Listing&quot; to start.</p>
+            </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {properties.map((prop) => (
-                <div key={prop.id} className="rounded-lg border p-4 shadow-sm hover:shadow-md">
-                  <h3 className="text-lg font-bold text-gray-800">{prop.title}</h3>
-                  <p className="text-xs text-gray-500 mb-2">{prop.location}</p>
-                  <p className="text-sm text-gray-600 mb-3">{prop.description}</p>
-                  <div className="flex justify-between items-center text-sm font-semibold text-blue-600">
-                    <span>${prop.pricePerMonth} / month</span>
-                    <span
-                      className={`text-xs px-2 py-0.5 rounded ${
-                        prop.isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      {prop.isAvailable ? 'Available' : 'Rented'}
+            properties.map((property) => (
+              <div key={property.id} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm space-y-4 flex flex-col justify-between">
+                <div className="space-y-2">
+                  {property.imageUrl && (
+                    <img src={property.imageUrl} alt={property.title} className="w-full h-40 object-cover rounded-xl mb-3" />
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                      <Tag size={12} /> {property.category?.name || 'General'}
+                    </span>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                      property.isAvailable ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
+                    }`}>
+                      {property.isAvailable ? 'Available' : 'Rented'}
                     </span>
                   </div>
+                  <h3 className="font-bold text-slate-800 text-base">{property.title}</h3>
+                  <p className="text-xs text-slate-500 line-clamp-2">{property.description}</p>
+                  <div className="flex items-center gap-1 text-xs text-slate-400 pt-1">
+                    <MapPin size={14} />
+                    <span>{property.location}</span>
+                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-sm font-bold text-indigo-600">
+                    ৳{property.pricePerMonth?.toLocaleString()}/mo
+                  </span>
+                  <span className="text-xs font-medium text-slate-400">ID: {property.id.slice(0, 6)}...</span>
+                </div>
+              </div>
+            ))
           )}
         </div>
-      </div>
+      )}
+
+      {activeTab === 'requests' && (
+        <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="bg-slate-50 text-xs font-semibold uppercase text-slate-400 border-b border-slate-100">
+              <tr>
+                <th className="p-4">Tenant Info</th>
+                <th className="p-4">Property</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {requests.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="p-12 text-center text-slate-400">
+                    No incoming rental requests found.
+                  </td>
+                </tr>
+              ) : (
+                requests.map((req) => (
+                  <tr key={req.id} className="hover:bg-slate-50/50 transition">
+                    <td className="p-4">
+                      <p className="font-semibold text-slate-800">{req.tenant?.name || 'Unknown Tenant'}</p>
+                      <p className="text-xs text-slate-400">{req.tenant?.email}</p>
+                    </td>
+                    <td className="p-4">
+                      <p className="font-medium text-slate-700">{req.property?.title}</p>
+                      <p className="text-xs text-indigo-600 font-bold">৳{req.property?.pricePerMonth?.toLocaleString()}</p>
+                    </td>
+                    <td className="p-4">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                        req.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600' :
+                        req.status === 'REJECTED' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-600'
+                      }`}>
+                        {req.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-center">
+                      {req.status === 'PENDING' ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => handleRequestAction(req.id, 'APPROVE')}
+                            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 transition cursor-pointer"
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => handleRequestAction(req.id, 'REJECT')}
+                            className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-500 transition cursor-pointer"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-400 font-medium">Completed</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {showAddModal && (
+        <AddPropertyModal
+          categories={categories}
+          onClose={() => setShowAddModal(false)}
+          onSuccess={fetchLandlordProperties}
+          showToast={showToast}
+        />
+      )}
     </div>
   );
 }

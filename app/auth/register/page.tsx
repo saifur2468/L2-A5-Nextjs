@@ -24,22 +24,100 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // Backend API call এখানে হবে
+    try {
+      // ========================================
+      // 1. Register the user
+      // ========================================
+      const registerRes = await fetch(`${API_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          password: password,
+          role: role,
+        }),
+      });
 
-    const userData = {
-      name: fullName,
-      email: email,
-      role: role,
-    };
+      const registerData = await registerRes.json();
 
-    localStorage.setItem('token', 'sample-jwt-token');
-    localStorage.setItem('user', JSON.stringify(userData));
+      if (!registerRes.ok || !registerData.success) {
+        throw new Error(registerData.message || 'Registration failed');
+      }
 
-    // Registration শেষে properties page-এ যাবে
-    router.push('/properties');
+      // ========================================
+      // 2. Register endpoint doesn't return a token,
+      // so immediately log the user in to get a real JWT
+      // ========================================
+      const loginRes = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const loginData = await loginRes.json();
+
+      if (!loginRes.ok || !loginData.success) {
+        // Registration succeeded but auto-login failed —
+        // send them to login page instead of blocking them
+        router.push('/auth/login');
+        return;
+      }
+
+      const token = loginData.data.token;
+
+      if (!token) {
+        throw new Error('Login succeeded but no token was returned');
+      }
+
+      // ========================================
+      // 3. Save real token + decode role from JWT payload
+      // ========================================
+      localStorage.setItem('token', token);
+
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            id: payload.id,
+            role: payload.role,
+            name: fullName,
+            email: email,
+          })
+        );
+      } catch {
+        // Fallback if token can't be decoded — still store basic info
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ name: fullName, email, role })
+        );
+      }
+
+      // ========================================
+      // 4. Redirect after successful registration
+      // ========================================
+      router.push('/properties');
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,6 +146,13 @@ export default function RegisterPage() {
             Join RentNest and start your rental journey.
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 rounded-xl bg-red-50 p-3 text-center text-sm font-medium text-red-600 border border-red-200">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleRegister} className="space-y-5">
@@ -228,9 +313,10 @@ export default function RegisterPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition duration-300 hover:bg-blue-600 hover:shadow-blue-600/20 active:scale-[0.98] cursor-pointer"
+            disabled={loading}
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition duration-300 hover:bg-blue-600 hover:shadow-blue-600/20 active:scale-[0.98] cursor-pointer disabled:opacity-50"
           >
-            Create Account
+            {loading ? 'Creating account...' : 'Create Account'}
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
