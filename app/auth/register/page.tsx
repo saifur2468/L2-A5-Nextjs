@@ -1,212 +1,265 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Home, Building2, UserCheck } from 'lucide-react';
-import { toast } from 'react-toastify'; 
+import {
+  User,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Home,
+  UserRound,
+  Building2,
+} from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    role: 'TENANT',
-  });
+  // Only Tenant and Landlord can register publicly
+  const [role, setRole] = useState<'TENANT' | 'LANDLORD'>('TENANT');
 
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleRoleSelect = (role: 'TENANT' | 'LANDLORD') => {
-    setFormData((prev) => ({ ...prev, role }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/register`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+    // Backend API call এখানে হবে
 
-      const data = await res.json();
+    const userData = {
+      name: fullName,
+      email: email,
+      role: role,
+    };
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Registration failed!');
-      }
+    localStorage.setItem('token', 'sample-jwt-token');
+    localStorage.setItem('user', JSON.stringify(userData));
 
-      toast.success('Account created successfully! Please sign in.');
-      router.push('/auth/login');
-    } catch (err: any) {
-      toast.error(err.message || 'Something went wrong during registration.');
-    } finally {
-      setLoading(false);
-    }
+    // Registration শেষে properties page-এ যাবে
+    router.push('/properties');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-black transition mb-4"
-        >
-          <Home className="w-4 h-4" />
-          <span>Back to Home</span>
-        </Link>
-        <h2 className="text-3xl font-extrabold text-gray-900">Create an account</h2>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-4 py-10 flex items-center justify-center">
+      <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-8 sm:p-10 shadow-2xl">
+        
+        {/* Mobile / Center Logo */}
+        <div className="mb-8 flex items-center justify-center gap-2">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-white shadow-md">
+            <Home size={22} />
+          </div>
+          <span className="text-2xl font-bold tracking-tight text-slate-950">
+            RentNest
+          </span>
+        </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-white py-8 px-6 shadow-xl shadow-gray-200/50 rounded-3xl border border-gray-100 sm:px-10">
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            {/* Account Type Selector */}
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                I want to join as
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleRoleSelect('TENANT')}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-sm font-semibold transition ${
-                    formData.role === 'TENANT'
-                      ? 'border-black bg-black text-white shadow-md'
-                      : 'border-gray-200 bg-gray-50/50 text-gray-600 hover:bg-gray-100'
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <p className="mb-2 text-sm font-semibold text-blue-600">
+            Get started today
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            Create your account
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-slate-500">
+            Join RentNest and start your rental journey.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleRegister} className="space-y-5">
+          
+          {/* ================= ROLE SELECTION ================= */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-700">
+              I want to join as
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+              {/* Tenant */}
+              <button
+                type="button"
+                onClick={() => setRole('TENANT')}
+                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${
+                  role === 'TENANT'
+                    ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                    : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
+                }`}
+              >
+                <UserRound size={22} />
+                <span>Tenant</span>
+                <span
+                  className={`text-xs font-normal ${
+                    role === 'TENANT' ? 'text-blue-100' : 'text-slate-400'
                   }`}
                 >
-                  <UserCheck className="w-5 h-5 mb-1" />
-                  Tenant
-                </button>
+                  Find a home
+                </span>
+              </button>
 
-                <button
-                  type="button"
-                  onClick={() => handleRoleSelect('LANDLORD')}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border text-sm font-semibold transition ${
-                    formData.role === 'LANDLORD'
-                      ? 'border-black bg-black text-white shadow-md'
-                      : 'border-gray-200 bg-gray-50/50 text-gray-600 hover:bg-gray-100'
+              {/* Landlord */}
+              <button
+                type="button"
+                onClick={() => setRole('LANDLORD')}
+                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${
+                  role === 'LANDLORD'
+                    ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                    : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
+                }`}
+              >
+                <Building2 size={22} />
+                <span>Landlord</span>
+                <span
+                  className={`text-xs font-normal ${
+                    role === 'LANDLORD' ? 'text-blue-100' : 'text-slate-400'
                   }`}
                 >
-                  <Building2 className="w-5 h-5 mb-1" />
-                  Landlord
-                </button>
-              </div>
+                  List a property
+                </span>
+              </button>
             </div>
+          </div>
 
-            {/* Name */}
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                  <User className="h-5 w-5" />
-                </div>
-                <input
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="John Doe"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-black transition bg-gray-50/50"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="name@example.com"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-black transition bg-gray-50/50"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                  <Lock className="h-5 w-5" />
-                </div>
-                <input
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  minLength={6}
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Minimum 6 characters"
-                  className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-black transition bg-gray-50/50"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center gap-2 py-3.5 px-4 border border-transparent rounded-2xl shadow-lg text-sm font-semibold text-white bg-black hover:bg-gray-800 disabled:opacity-50 transition cursor-pointer"
+          {/* ================= FULL NAME ================= */}
+          <div>
+            <label
+              htmlFor="fullName"
+              className="mb-2 block text-sm font-semibold text-slate-700"
             >
-              {loading ? (
-                <span>Creating account...</span>
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
+              Full Name
+            </label>
+            <div className="relative">
+              <User
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                id="fullName"
+                type="text"
+                required
+                placeholder="John Doe"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+            </div>
+          </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-            <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-500">
-                Sign in
-              </Link>
+          {/* ================= EMAIL ================= */}
+          <div>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-semibold text-slate-700"
+            >
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                id="email"
+                type="email"
+                required
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+            </div>
+          </div>
+
+          {/* ================= PASSWORD ================= */}
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-semibold text-slate-700"
+            >
+              Password
+            </label>
+            <div className="relative">
+              <Lock
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={6}
+                placeholder="Minimum 6 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700 cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-slate-400">
+              Password must be at least 6 characters.
             </p>
           </div>
+
+          {/* Terms */}
+          <div className="flex items-start gap-2">
+            <input
+              id="terms"
+              type="checkbox"
+              required
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-blue-600"
+            />
+            <label
+              htmlFor="terms"
+              className="text-xs leading-5 text-slate-500"
+            >
+              I agree to the Terms of Service and Privacy Policy.
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 transition duration-300 hover:bg-blue-600 hover:shadow-blue-600/20 active:scale-[0.98] cursor-pointer"
+          >
+            Create Account
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="my-7 flex items-center gap-4">
+          <div className="h-px flex-1 bg-slate-200" />
+          <span className="text-xs font-medium text-slate-400">OR</span>
+          <div className="h-px flex-1 bg-slate-200" />
         </div>
+
+        {/* Login Link */}
+        <p className="text-center text-sm text-slate-500">
+          Already have an account?{' '}
+          <button
+            type="button"
+            onClick={() => router.push('/auth/login')}
+            className="font-semibold text-blue-600 transition hover:text-blue-700 cursor-pointer"
+          >
+            Sign in
+          </button>
+        </p>
+
+        {/* Footer */}
+        <p className="mt-8 text-center text-xs text-slate-400">
+          © 2026 RentNest. All rights reserved.
+        </p>
       </div>
     </div>
   );
