@@ -10,21 +10,48 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // API থেকে আসা আসল user data
-    const userData = {
-      name: email.split('@')[0] || 'User', // সেভ করার সময় নাম না থাকলে ইমেইল থেকে ধরে নিবে
-      email: email,
-      role: 'TENANT', // TENANT / LANDLORD / ADMIN
-    };
+    try {
+      // আপনার ব্যাকএন্ডের সঠিক লগইন এন্ডপয়েন্ট এখানে দিন (যেমন: http://localhost:5000/api/auth/login)
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    localStorage.setItem('token', 'sample-jwt-token');
-    localStorage.setItem('user', JSON.stringify(userData));
+      const data = await response.json();
 
-    router.push('/properties');
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // ব্যাকএন্ড থেকে আসা আসল টোকেন এবং ইউজার ডাটা (রোলসহ) সেভ করা হচ্ছে
+      localStorage.setItem('token', data.token || data.data?.token);
+      localStorage.setItem('user', JSON.stringify(data.user || data.data?.user));
+
+      const userRole = data.user?.role || data.data?.user?.role;
+
+      // রোল অনুযায়ী রিডাইরেক্ট করুন
+      if (userRole === 'ADMIN') {
+        router.push('/dashborad/admin'); 
+      } else {
+        router.push('/properties');
+      }
+
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,6 +80,13 @@ export default function LoginPage() {
             Enter your credentials to access your RentNest account.
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 rounded-xl bg-red-50 p-3 text-center text-sm font-medium text-red-600 border border-red-200">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
@@ -137,9 +171,10 @@ export default function LoginPage() {
           {/* Login Button */}
           <button
             type="submit"
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3.5 text-sm font-semibold text-white shadow-lg transition duration-300 hover:bg-blue-600 active:scale-[0.98] cursor-pointer"
+            disabled={loading}
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 py-3.5 text-sm font-semibold text-white shadow-lg transition duration-300 hover:bg-blue-600 active:scale-[0.98] cursor-pointer disabled:opacity-50"
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign in'}
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
@@ -158,7 +193,7 @@ export default function LoginPage() {
           Don't have an account?{' '}
           <button
             type="button"
-           onClick={() => router.push('/auth/register')}
+            onClick={() => router.push('/auth/register')}
             className="font-semibold text-blue-600 hover:text-blue-700 cursor-pointer"
           >
             Create an account

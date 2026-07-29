@@ -1,62 +1,48 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import {
-  LayoutDashboard,
+  Search,
+  Bell,
+  Plus,
   Home,
-  FileText,
   Users,
-  CreditCard,
+  LayoutDashboard,
+  Building2,
+  MapPin,
+  History,
   Settings,
   LogOut,
-  Building,
-  PlusCircle,
+  Smartphone,
+  ChevronDown,
   Clock,
+  CreditCard,
+  Star,
+  FileText,
 } from 'lucide-react';
 
-type UserRole = 'ADMIN' | 'LANDLORD' | 'TENANT';
-
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-}
-
-interface NavItem {
-  title: string;
-  href: string;
-  icon: any;
-}
-
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
+  const router = useRouter();
 
-  const [user, setUser] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<{ name?: string; email?: string; role?: string } | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-
-    if (!token || !storedUser) {
-      router.push('/auth/login');
-      return;
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error('Failed to parse user data');
+      }
     }
-
-    try {
-      const parsedUser: UserData = JSON.parse(storedUser);
-      setUser(parsedUser);
-    } catch (err) {
-      console.error('Failed to parse user data', err);
-      router.push('/auth/login');
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -64,128 +50,148 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     router.push('/auth/login');
   };
 
-  const roleNavigations: Record<UserRole, NavItem[]> = {
-    ADMIN: [
-      { title: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
-      { title: 'Manage Users', href: '/dashboard/admin/users', icon: Users },
-      { title: 'All Properties', href: '/dashboard/admin/properties', icon: Home },
-      { title: 'All Rentals', href: '/dashboard/admin/rentals', icon: FileText },
-      { title: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
-    ],
-    LANDLORD: [
-      { title: 'Dashboard', href: '/dashboard/landlord', icon: LayoutDashboard },
-      { title: 'My Properties', href: '/dashboard/landlord/properties', icon: Building },
-      { title: 'Rental Requests', href: '/dashboard/landlord/requests', icon: Clock },
-      { title: 'Add Property', href: '/dashboard/landlord/add-property', icon: PlusCircle },
-      { title: 'Settings', href: '/dashboard/landlord/settings', icon: Settings },
-    ],
-    TENANT: [
-      { title: 'Dashboard', href: '/dashboard/tenant', icon: LayoutDashboard },
-      { title: 'My Rentals', href: '/dashboard/tenant/rentals', icon: FileText },
-      { title: 'Payment History', href: '/dashboard/tenant/payments', icon: CreditCard },
-      { title: 'Browse Properties', href: '/properties', icon: Home },
-      { title: 'Profile Settings', href: '/dashboard/tenant/settings', icon: Settings },
-    ],
-  };
+  // ================= ROLE BASED NAVIGATION =================
+  const tenantNav = [
+    { name: 'My Requests', href: '/dashborad/requests', icon: Clock },
+    { name: 'Payment History', href: '/dashborad/payments', icon: CreditCard },
+    { name: 'My Reviews', href: '/ddashborad/reviews', icon: Star },
+  ];
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-      </div>
-    );
-  }
+  const landlordNav = [
+    { name: 'My Properties', href: '/dashborad/properties', icon: Home },
+    { name: 'Rental Requests', href: '/dashborad/requests', icon: FileText },
+  ];
 
-  if (!user) return null;
+  const adminNav = [
+    { name: 'Overview', href: '/dashborad/admin/overview', icon: LayoutDashboard },
+    { name: 'User Management', href: '/dashborad/admin/users', icon: Users },
+    { name: 'All Listings', href: '/dashborad/admin/listings', icon: Building2 },
+  ];
 
-  const currentNavItems = roleNavigations[user.role] || [];
+  // Role অনুযায়ী navItems সিলেক্ট করা (Default Tenant)
+  const navItems =
+    user?.role === 'ADMIN'
+      ? adminNav
+      : user?.role === 'LANDLORD'
+      ? landlordNav
+      : tenantNav;
+
+  const userName = user?.name || user?.email?.split('@')[0] || 'Emma Kwan';
+  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
-    <div className="flex h-screen bg-gray-100 text-gray-800">
-      {/* Sidebar */}
-      <aside className="flex w-64 flex-col bg-slate-900 text-white shadow-xl">
-        <div className="flex h-16 items-center justify-center border-b border-slate-800 px-6">
-          <span className="text-xl font-bold tracking-wider text-blue-400">
-            RENTAL<span className="text-white">HUB</span>
-          </span>
+    <div className="flex h-screen bg-[#F4F6FA] text-slate-700 antialiased font-sans">
+      
+      {/* ================= SIDEBAR ================= */}
+      <aside className="w-64 bg-white border-r border-slate-100 flex flex-col justify-between p-6 shrink-0 hidden md:flex">
+        <div>
+          {/* Logo */}
+          <div className="flex items-center gap-2.5 mb-8">
+            <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+              R
+            </div>
+            <span className="text-xl font-bold tracking-tight text-slate-900">
+              Rent<span className="text-indigo-600">Nest</span>
+            </span>
+          </div>
+
+          {/* Action Button (Only for Landlords) */}
+          {user?.role === 'LANDLORD' && (
+            <Link
+              href="/dashboard/properties/create"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-between shadow-lg shadow-indigo-200 transition duration-200 mb-8 cursor-pointer"
+            >
+              <span className="text-sm">Add Property</span>
+              <div className="h-6 w-6 rounded-full bg-white/20 flex items-center justify-center">
+                <Plus size={16} />
+              </div>
+            </Link>
+          )}
+
+          {/* Navigation Links */}
+          <nav className="space-y-1.5">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium transition duration-200 ${
+                    isActive
+                      ? 'bg-indigo-50/80 text-indigo-600 font-semibold'
+                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                  }`}
+                >
+                  <Icon size={19} className={isActive ? 'text-indigo-600' : 'text-slate-400'} />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
-        <nav className="flex-1 space-y-1.5 overflow-y-auto p-4">
-          <div className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            {user.role} Menu
+        {/* Bottom Banner & Logout */}
+        <div className="space-y-4">
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-2xl border border-indigo-100/50 flex flex-col items-center text-center">
+            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-sm mb-2">
+              <Smartphone size={20} />
+            </div>
+            <p className="text-xs font-bold text-slate-800">Get mobile app</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">Manage rentals on the go</p>
           </div>
-          {currentNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                }`}
-              >
-                <Icon className="h-5 w-5" />
-                {item.title}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="border-t border-slate-800 p-4">
-         {/* 140-145 নম্বর লাইনের আগের কোডটির পরিবর্তে এটি বসান */}
-
-<div className="flex items-center gap-3">
-  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 font-bold text-white">
-    {/* Safe check: name না থাকলে 'U' (User) দেখাবে */}
-    {(user?.name || 'User').charAt(0).toUpperCase()}
-  </div>
-  <div className="flex-1 overflow-hidden">
-    <p className="truncate text-sm font-semibold text-white">
-      {user?.name || 'User'}
-    </p>
-    <p className="truncate text-xs text-slate-400">{user?.email}</p>
-  </div>
-</div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition cursor-pointer"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-16 items-center justify-between border-b bg-white px-8 shadow-sm">
-          <div>
-            <h1 className="text-lg font-semibold capitalize text-gray-800">
-              {user.role.toLowerCase()} Panel
-            </h1>
+      {/* ================= MAIN WRAPPER ================= */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        {/* ================= TOP HEADER ================= */}
+        <header className="h-20 bg-[#F4F6FA] px-8 flex items-center justify-between shrink-0">
+          
+          {/* Search Bar */}
+          <div className="relative w-80">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full bg-white text-sm py-2.5 pl-11 pr-4 rounded-2xl border-none shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 placeholder:text-slate-400 text-slate-700"
+            />
           </div>
 
-          <div className="flex items-center gap-4">
-            <span
-              className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${
-                user.role === 'ADMIN'
-                  ? 'bg-purple-100 text-purple-700'
-                  : user.role === 'LANDLORD'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-green-100 text-green-700'
-              }`}
-            >
-              {user.role}
-            </span>
-
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
+          {/* Right Header Controls */}
+          <div className="flex items-center gap-5">
+            <button className="relative p-2.5 bg-white rounded-xl shadow-sm text-slate-500 hover:text-slate-700 transition cursor-pointer">
+              <Bell size={19} />
+              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-indigo-600"></span>
             </button>
+
+            <div className="flex items-center gap-3 cursor-pointer pl-2">
+              <div className="h-10 w-10 rounded-full bg-indigo-600 text-white font-semibold flex items-center justify-center text-sm shadow-md shadow-indigo-100">
+                {userInitial}
+              </div>
+              <div className="hidden sm:block text-left">
+                <p className="text-sm font-bold text-slate-800 leading-none">{userName}</p>
+                <p className="text-[11px] text-slate-400 mt-1 capitalize">{user?.role?.toLowerCase() || 'Tenant'}</p>
+              </div>
+              <ChevronDown size={15} className="text-slate-400 hidden sm:block" />
+            </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-gray-50 p-8">{children}</main>
+        {/* ================= PAGE CONTENT ================= */}
+        <main className="flex-1 overflow-y-auto px-8 pb-8">
+          {children}
+        </main>
+
       </div>
     </div>
   );
