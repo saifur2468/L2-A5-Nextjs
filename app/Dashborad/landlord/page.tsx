@@ -54,7 +54,7 @@ export default function LandlordDashboard() {
   const fetchLandlordRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/admin/rentals', {
+      const res = await fetch('http://localhost:5000/api/landlord/requests', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
