@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // আপনার ব্যাকএন্ডের সঠিক লগইন এন্ডপয়েন্ট এখানে দিন (যেমন: http://localhost:5000/api/auth/login)
+      
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: {
@@ -34,13 +34,12 @@ export default function LoginPage() {
         throw new Error(data.message || 'Login failed');
       }
 
-      // ব্যাকএন্ড থেকে আসা আসল টোকেন এবং ইউজার ডাটা (রোলসহ) সেভ করা হচ্ছে
+      
       localStorage.setItem('token', data.token || data.data?.token);
       localStorage.setItem('user', JSON.stringify(data.user || data.data?.user));
 
       const userRole = data.user?.role || data.data?.user?.role;
 
-      // রোল অনুযায়ী রিডাইরেক্ট করুন
       if (userRole === 'ADMIN') {
         router.push('/dashborad/admin'); 
       } else {

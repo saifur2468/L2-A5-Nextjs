@@ -68,7 +68,7 @@ export default function DashboardLayout({
     { name: 'All Listings', href: '/dashborad/admin/listings', icon: Building2 },
   ];
 
-  // Role অনুযায়ী navItems সিলেক্ট করা (Default Tenant)
+  
   const navItems =
     user?.role === 'ADMIN'
       ? adminNav
