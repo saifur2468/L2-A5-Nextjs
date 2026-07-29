@@ -40,59 +40,63 @@ export default function PropertiesPage() {
   const [location, setLocation] = useState('');
   const [maxPrice, setMaxPrice] = useState(100000);
 
-  const fetchProperties = async () => {
-    try {
-      setLoading(true);
-      setError('');
-
-      const params = new URLSearchParams();
-
-      if (location.trim()) {
-        params.append('location', location.trim());
-      }
-
-      if (maxPrice) {
-        params.append('maxPrice', maxPrice.toString());
-      }
-
-      const API_URL =
-        process.env.NEXT_PUBLIC_API_URL ||
-        'http://localhost:5000/api';
-
-      const response = await fetch(
-        `${API_URL}/properties?${params.toString()}`,
-        {
-          method: 'GET',
-          cache: 'no-store',
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch properties');
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        setProperties(result.data || []);
-      } else {
-        setProperties([]);
-        setError(
-          result.message || 'Failed to load properties'
-        );
-      }
-    } catch (error) {
-      console.error('Property fetch error:', error);
-      setError(
-        'Something went wrong while loading properties.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProperties();
+    let ignore = false;
+
+    // Direct Async Function inside Effect
+    (async () => {
+      try {
+        const params = new URLSearchParams();
+
+        if (location.trim()) {
+          params.append('location', location.trim());
+        }
+
+        if (maxPrice) {
+          params.append('maxPrice', maxPrice.toString());
+        }
+
+        const API_URL =
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+        const response = await fetch(
+          `${API_URL}/properties?${params.toString()}`,
+          {
+            method: 'GET',
+            cache: 'no-store',
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch properties');
+        }
+
+        const result = await response.json();
+
+        if (!ignore) {
+          if (result.success) {
+            setProperties(result.data || []);
+            setError('');
+          } else {
+            setProperties([]);
+            setError(result.message || 'Failed to load properties');
+          }
+        }
+      } catch (err) {
+        if (!ignore) {
+          console.error('Property fetch error:', err);
+          setError('Something went wrong while loading properties.');
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
   }, [location, maxPrice]);
 
   const filteredProperties = properties.filter((property) => {
@@ -101,16 +105,13 @@ export default function PropertiesPage() {
     return (
       property.title.toLowerCase().includes(searchText) ||
       property.location.toLowerCase().includes(searchText) ||
-      property.category?.name
-        ?.toLowerCase()
-        .includes(searchText)
+      property.category?.name?.toLowerCase().includes(searchText)
     );
   });
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="max-w-7xl mx-auto">
-
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -122,15 +123,11 @@ export default function PropertiesPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-
           {/* Sidebar Filter */}
           <aside className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-fit space-y-6">
-
             <div className="flex items-center gap-2 border-b pb-4">
               <Filter className="w-5 h-5 text-gray-700" />
-              <h2 className="font-bold text-gray-900">
-                Filters
-              </h2>
+              <h2 className="font-bold text-gray-900">Filters</h2>
             </div>
 
             {/* Search */}
@@ -196,12 +193,10 @@ export default function PropertiesPage() {
             >
               Reset Filters
             </button>
-
           </aside>
 
           {/* Main List */}
           <main className="lg:col-span-3">
-
             {/* Loading */}
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -219,7 +214,7 @@ export default function PropertiesPage() {
               <div className="text-center py-16 bg-white rounded-3xl border">
                 <p className="text-red-500 font-medium">{error}</p>
                 <button
-                  onClick={fetchProperties}
+                  onClick={() => setLoading(true)}
                   className="mt-4 px-5 py-2 bg-black text-white rounded-xl text-sm"
                 >
                   Try Again
@@ -309,9 +304,7 @@ export default function PropertiesPage() {
                 ))}
               </div>
             )}
-
           </main>
-
         </div>
       </div>
     </div>
