@@ -1,4 +1,7 @@
 'use client';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function ReviewsPage() {
   return (
@@ -6,7 +9,7 @@ export default function ReviewsPage() {
       <h1 className="text-2xl font-bold text-slate-800">Property Reviews</h1>
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4 max-w-xl">
         <h2 className="font-bold text-slate-800 text-base">Leave a New Property Review</h2>
-        <form onSubmit={(e) => { e.preventDefault(); alert('Review submitted!'); }} className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); toast.success('Review submitted!'); }} className="space-y-4">
           <div>
             <label className="text-xs font-semibold text-slate-600">Rating</label>
             <select className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm bg-white">
