@@ -308,7 +308,7 @@ export default function PropertyDetailsPage() {
     }
 
     router.push(
-      `/checkout?rentalId=${existingRental.id}`
+      `/payment/checkout?rentalId=${existingRental.id}`
     );
   };
 
