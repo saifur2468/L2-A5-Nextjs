@@ -39,9 +39,7 @@ interface Property {
   amenities: string[];
   isAvailable: boolean;
   landlordId: string;
-
   landlord?: Landlord | string;
-
   category?: Category | string;
 }
 
@@ -171,7 +169,7 @@ export default function PropertyDetailsPage() {
           try {
             const rentalsRes =
               await fetch(
-                `${API_URL}/rentals/my`,
+                `${API_URL}/rentals`,
                 {
                   method: 'GET',
                   headers: {
@@ -744,3 +742,32 @@ export default function PropertyDetailsPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
