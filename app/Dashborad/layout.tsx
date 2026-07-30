@@ -52,14 +52,17 @@ export default function DashboardLayout({
 
   // ================= ROLE BASED NAVIGATION =================
   const tenantNav = [
-    { name: 'My Requests', href: '/dashborad/requests', icon: Clock },
-    { name: 'Payment History', href: '/dashborad/payments', icon: CreditCard },
-    { name: 'My Reviews', href: '/ddashborad/reviews', icon: Star },
+    { name: 'My Requests', href: '/dashboard/requests', icon: Clock },
+    { name: 'Payment History', href: '/dashboard/payments', icon: CreditCard },
+    { name: 'My Reviews', href: '/dashboard/reviews', icon: Star },
   ];
 
+ 
   const landlordNav = [
-    { name: 'My Properties', href: '/dashborad/properties', icon: Home },
-    { name: 'Rental Requests', href: '/dashborad/requests', icon: FileText },
+    { name: 'Overview', href: '/dashborad/landlord', icon: LayoutDashboard },
+    { name: 'My Properties', href: '/dashborad/landlord/myproperties', icon: Home },
+    { name: 'Rental Requests', href: '/dashborad/landlord/rentalRequest', icon: FileText },
+    // { name: 'addProperties', href: '/dashborad/landlord/addProperties', icon: FileText },
   ];
 
   const adminNav = [
@@ -68,7 +71,6 @@ export default function DashboardLayout({
     { name: 'All Listings', href: '/dashborad/admin/listings', icon: Building2 },
   ];
 
-  
   const navItems =
     user?.role === 'ADMIN'
       ? adminNav
@@ -82,7 +84,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen bg-[#F4F6FA] text-slate-700 antialiased font-sans">
       
-      {/* ================= SIDEBAR ================= */}
+    
       <aside className="w-64 bg-white border-r border-slate-100 flex flex-col justify-between p-6 shrink-0 hidden md:flex">
         <div>
           {/* Logo */}
@@ -96,9 +98,11 @@ export default function DashboardLayout({
           </div>
 
           {/* Action Button (Only for Landlords) */}
-          {user?.role === 'LANDLORD' && (
+        {/* Action Button (Only for Landlords) */}
+          {/* {user?.role === 'LANDLORD' && (
+            
             <Link
-              href="/dashboard/properties/create"
+            href="/dashboard/landlord/addProperties"
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-between shadow-lg shadow-indigo-200 transition duration-200 mb-8 cursor-pointer"
             >
               <span className="text-sm">Add Property</span>
@@ -106,7 +110,10 @@ export default function DashboardLayout({
                 <Plus size={16} />
               </div>
             </Link>
-          )}
+          )} */}
+          
+          {/* Action Button (Only for Landlords) */}
+        
 
           {/* Navigation Links */}
           <nav className="space-y-1.5">
@@ -151,10 +158,10 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      {/* ================= MAIN WRAPPER ================= */}
+     
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         
-        {/* ================= TOP HEADER ================= */}
+       
         <header className="h-20 bg-[#F4F6FA] px-8 flex items-center justify-between shrink-0">
           
           {/* Search Bar */}

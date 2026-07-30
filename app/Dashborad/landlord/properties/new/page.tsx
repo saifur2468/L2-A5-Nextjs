@@ -143,7 +143,7 @@ export default function AddPropertyPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // ক্যাটাগরি ফেচ করা যাতে ড্রপডাউন থেকে সিলেক্ট করা যায়
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -176,7 +176,7 @@ export default function AddPropertyPage() {
         return;
       }
 
-      // অ্যামেনিটিজগুলোকে কমা দিয়ে ভেঙে অ্যারে বানানো
+    
       const amenities = amenitiesInput.split(',').map((item) => item.trim()).filter(Boolean);
 
       const res = await fetch(`${API_URL}/landlord/properties`, {
