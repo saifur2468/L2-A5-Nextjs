@@ -52,9 +52,9 @@ export default function DashboardLayout({
 
   // ================= ROLE BASED NAVIGATION =================
   const tenantNav = [
-    { name: 'My Requests', href: '/dashboard/requests', icon: Clock },
-    { name: 'Payment History', href: '/dashboard/payments', icon: CreditCard },
-    { name: 'My Reviews', href: '/dashboard/reviews', icon: Star },
+    { name: 'My Requests', href: '/dashborad/tenant/myRequest', icon: Clock },
+    { name: 'Payment History', href: '/dashborad/tenant/paymenthistory', icon: CreditCard },
+    { name: 'My Reviews', href: '/dashborad/tenant/reviews', icon: Star },
   ];
 
  

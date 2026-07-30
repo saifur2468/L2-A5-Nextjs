@@ -6,7 +6,7 @@ export default function HomePage() {
      
       <HeroSection />
 
-      {/* এখানে আপনার বাকি ফিচারগুলো (যেমন: Featured Properties, Categories ইত্যাদি) থাকবে */}
+      
     </main>
   );
 }
