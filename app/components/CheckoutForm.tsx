@@ -1,67 +1,196 @@
 "use client";
-import React, { useState } from 'react';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
 
-export default function CheckoutForm({ rentalRequestId, transactionId }: { rentalRequestId: string, transactionId: string }) {
+import React, { useState } from "react";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+interface CheckoutFormProps {
+  rentalRequestId: string;
+  transactionId: string;
+}
+
+export default function CheckoutForm({
+  rentalRequestId,
+  transactionId,
+}: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
+
+    if (!stripe || !elements) {
+      toast.error("Stripe is not ready. Please wait.");
+      return;
+    }
 
     setLoading(true);
-    setErrorMsg('');
 
     try {
-      // ১. স্ট্রাইপে পেমেন্ট কনফার্ম করা এবং রিডাইরেক্ট হ্যান্ডেল করা
-      const result = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/tenant/dashboard?payment_success=true&txId=${transactionId}`,
-        },
-        redirect: "if_required", // যদি রিডাইরেক্ট ছাড়াই পেমেন্ট শেষ করতে চায়
-      });
+    
 
-      if (result.error) {
-        setErrorMsg(result.error.message || "Payment failed");
-      } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-        
-        // ২. পেমেন্ট সফল হলে ব্যাকএন্ডের confirmPayment কল করা
-        await axios.post('/api/payments/confirm-payment', { transactionId }, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      const { error: submitError } = await elements.submit();
+
+      if (submitError) {
+        toast.error(
+          submitError.message ||
+            "Please check your payment details."
+        );
+        return;
+      }
+
+
+      const { error, paymentIntent } =
+        await stripe.confirmPayment({
+          elements,
+          redirect: "if_required",
         });
 
-        alert("Payment Successful & Rental is now Active!");
-        router.push('/tenant/dashboard');
+      // Stripe error
+      if (error) {
+        console.error("Stripe Error:", error);
+
+        toast.error(
+          error.message ||
+            "Payment failed. Please check your card details."
+        );
+
+        return;
       }
-    } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Something went wrong");
+
+      // No PaymentIntent
+      if (!paymentIntent) {
+        toast.error("Payment could not be processed.");
+        return;
+      }
+
+      console.log("Payment Intent:", paymentIntent);
+
+      
+
+      if (paymentIntent.status !== "succeeded") {
+        toast.error(
+          `Payment was not completed. Status: ${paymentIntent.status}`
+        );
+        return;
+      }
+
+     
+      const token = localStorage.getItem("token");
+
+      console.log("JWT Token:", token);
+
+      if (!token) {
+        toast.error(
+          "Login session expired. Please login again."
+        );
+
+        router.push("/login");
+        return;
+      }
+
+    
+
+      const response = await axios.post(
+        `http://localhost:5000/api/payments/confirm/${transactionId}`,
+        {
+          transactionId: paymentIntent.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log(
+        "Backend confirmation:",
+        response.data
+      );
+
+    
+      toast.success("Payment successful!");
+
+      setTimeout(() => {
+        router.push(
+          `/payment/success?transactionId=${paymentIntent.id}&rentalRequestId=${rentalRequestId}`
+        );
+      }, 1500);
+    } catch (error: unknown) {
+      console.error(
+        "Payment processing error:",
+        error
+      );
+
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Status:",
+          error.response?.status
+        );
+
+        console.error(
+          "Backend error:",
+          error.response?.data
+        );
+
+        const message =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Payment confirmation failed.";
+
+        toast.error(message);
+      } else {
+        toast.error(
+          "A processing error occurred. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-xl shadow-md max-w-md mx-auto w-full">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">Complete Payment</h3>
-      
-      {/* মডার্ন পেমেন্ট এলিমেন্ট (কার্ড নাম্বার, এক্সপায়ারি, সিভিসি একসাথে সুন্দরভাবে দেখাবে) */}
-      <PaymentElement />
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
+      {/* Stripe Payment Element */}
 
-      {errorMsg && <p className="text-red-500 text-sm mt-2">{errorMsg}</p>}
-      
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <PaymentElement />
+      </div>
+
+      {/* Pay Button */}
+
       <button
         type="submit"
-        disabled={!stripe || loading}
-        className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition mt-4"
+        disabled={
+          !stripe ||
+          !elements ||
+          loading
+        }
+        className={`w-full rounded-xl py-4 text-lg font-semibold text-white transition ${
+          loading ||
+          !stripe ||
+          !elements
+            ? "cursor-not-allowed bg-gray-400"
+            : "bg-black hover:bg-gray-800"
+        }`}
       >
-        {loading ? "Processing..." : "Pay Now"}
+        {loading
+          ? "Processing Payment..."
+          : "Pay Now"}
       </button>
     </form>
   );

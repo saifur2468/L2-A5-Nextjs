@@ -6,11 +6,13 @@ import { Elements } from "@stripe/react-stripe-js";
 import axios from "axios";
 import CheckoutForm from "../../components/CheckoutForm";
 
-// Stripe Publishable Key
-const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
+const stripeKey =
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
 if (!stripeKey) {
-  throw new Error("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing");
+  throw new Error(
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing"
+  );
 }
 
 const stripePromise = loadStripe(stripeKey);
@@ -26,72 +28,207 @@ export default function CheckoutPage({
   const params = use(searchParams);
 
   const rentalRequestId =
-    params?.rentalRequestId || params?.rentalId || "";
+    params?.rentalRequestId ||
+    params?.rentalId ||
+    "";
 
-  const [clientSecret, setClientSecret] = useState("");
-  const [transactionId, setTransactionId] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [clientSecret, setClientSecret] =
+    useState("");
+
+  const [transactionId, setTransactionId] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
     if (!rentalRequestId) {
-      console.error("Rental Request ID is missing");
+      console.error(
+        "Rental Request ID is missing"
+      );
+
+      setError(
+        "Rental Request ID is missing."
+      );
+
       setLoading(false);
+
       return;
     }
 
-    const createPaymentIntent = async () => {
-      try {
-        const token = localStorage.getItem("token");
+    const createPaymentIntent =
+      async () => {
+        try {
+          const token =
+            localStorage.getItem("token");
 
-        const res = await axios.post(
-          "http://localhost:5000/api/payments/create",
-          {
-            rentalRequestId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+          if (!token) {
+            setError(
+              "Please login before making payment."
+            );
+
+            setLoading(false);
+
+            return;
           }
-        );
 
-        setClientSecret(res.data.data.clientSecret);
-        setTransactionId(res.data.data.transactionId);
-      } catch (error: any) {
-        console.error(
-          "Payment Intent Error:",
-          error.response?.data || error.message
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+          const res = await axios.post(
+            "http://localhost:5000/api/payments/create",
+            {
+              rentalRequestId:
+                rentalRequestId,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          console.log(
+            "Create Payment Response:",
+            res.data
+          );
+
+          const secret =
+            res.data?.data?.clientSecret;
+
+          const transaction =
+            res.data?.data?.transactionId;
+
+          if (!secret) {
+            throw new Error(
+              "Client secret was not returned from server."
+            );
+          }
+
+          if (!transaction) {
+            throw new Error(
+              "Transaction ID was not returned from server."
+            );
+          }
+
+          setClientSecret(secret);
+
+          setTransactionId(transaction);
+        } catch (error: unknown) {
+          console.error(
+            "Payment Intent Error:",
+            error
+          );
+
+          if (
+            axios.isAxiosError(error)
+          ) {
+            console.error(
+              "Status:",
+              error.response?.status
+            );
+
+            console.error(
+              "Response:",
+              error.response?.data
+            );
+
+            setError(
+              error.response?.data
+                ?.message ||
+                "Failed to create payment."
+            );
+          } else if (
+            error instanceof Error
+          ) {
+            setError(error.message);
+          } else {
+            setError(
+              "Failed to initialize payment."
+            );
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
 
     createPaymentIntent();
   }, [rentalRequestId]);
 
+  
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Loading Payment Gateway...
+      <div className="flex min-h-[400px] items-center justify-center">
+        <p className="text-lg font-medium">
+          Loading Payment Gateway...
+        </p>
       </div>
     );
   }
 
-  if (!clientSecret) {
+ 
+
+  if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
-        Failed to initialize payment.
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+          <h2 className="text-xl font-semibold text-red-600">
+            Payment Error
+          </h2>
+
+          <p className="mt-2 text-red-500">
+            {error}
+          </p>
+        </div>
       </div>
     );
   }
+
+  
+
+  if (
+    !clientSecret ||
+    !transactionId
+  ) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <p className="text-red-500">
+          Failed to initialize payment.
+        </p>
+      </div>
+    );
+  }
+
+  // ==============================
+  // Stripe Checkout
+  // ==============================
 
   return (
-    <div className="max-w-lg mx-auto py-10">
-      <Elements stripe={stripePromise} options={{ clientSecret }}>
+    <div className="mx-auto w-full max-w-2xl px-4 py-10">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">
+          Complete Payment
+        </h1>
+
+        <p className="mt-2 text-gray-500">
+          Enter your payment details below.
+        </p>
+      </div>
+
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret,
+        }}
+      >
         <CheckoutForm
-          clientSecret={clientSecret}
-          transactionId={transactionId}
+          rentalRequestId={
+            rentalRequestId
+          }
+          transactionId={
+            transactionId
+          }
         />
       </Elements>
     </div>

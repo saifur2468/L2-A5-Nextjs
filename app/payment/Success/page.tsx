@@ -15,7 +15,7 @@ export default function PaymentSuccessPage() {
           Your payment was processed smoothly. Your rental status is now active.
         </p>
         <Link
-          href="/dashboard/tenant"
+          href="/dashborad/tenant"
           className="inline-flex items-center justify-center gap-2 w-full py-3 bg-black text-white text-sm font-semibold rounded-2xl hover:bg-gray-800 transition"
         >
           <span>Go to Dashboard</span>
