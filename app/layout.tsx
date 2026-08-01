@@ -4,9 +4,10 @@ import Footer from '@/app/components/Footer';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { ToastContainer } from 'react-toastify';
 export const metadata = {
-  title: 'RentNest - Find & List Rental Properties',
+  title: 'RentNest',
   description: 'Rental property marketplace',
 };
+
 
 export default function RootLayout({
   children,

@@ -80,7 +80,7 @@ export default function HeroSection() {
                 alt="3D Modern House"
                 fill
                 priority
-                className="object-contain drop-shadow-2xl"
+                className="object-contain drop-shadow-2xl "
               />
             </div>
           </div>
