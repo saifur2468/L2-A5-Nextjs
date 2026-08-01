@@ -13,7 +13,7 @@ export default function ReviewsPage() {
 
 
   useEffect(() => {
-    fetch('https://prisma-project-tau-dun.vercel.app/api/properties')
+    fetch('https://prisma-project-tau-dun.vercel.app/properties')
       .then((res) => res.json())
       .then((data) => {
 
@@ -40,7 +40,7 @@ export default function ReviewsPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/reviews', {
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

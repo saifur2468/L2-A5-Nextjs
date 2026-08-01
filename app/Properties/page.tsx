@@ -57,7 +57,7 @@ export default function PropertiesPage() {
         }
 
         const API_URL =
-          process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
+          process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
 
         const response = await fetch(
           `${API_URL}/properties?${params.toString()}`,
@@ -255,8 +255,8 @@ export default function PropertiesPage() {
                       <div className="absolute top-4 left-4">
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${property.isAvailable
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-red-100 text-red-700'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
                             }`}
                         >
                           {property.isAvailable ? 'Available' : 'Not Available'}

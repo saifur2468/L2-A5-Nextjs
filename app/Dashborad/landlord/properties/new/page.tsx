@@ -147,7 +147,7 @@ export default function AddPropertyPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
         const res = await fetch(`${API_URL}/categories`);
         const data = await res.json();
         if (data.success && Array.isArray(data.data)) {
@@ -167,7 +167,7 @@ export default function AddPropertyPage() {
     setSuccess('');
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
       const token = localStorage.getItem('token');
 
       if (!token) {

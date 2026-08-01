@@ -8,7 +8,7 @@ export default function MyRequestPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://prisma-project-tau-dun.vercel.app/api/rentals', {
+    fetch('https://prisma-project-tau-dun.vercel.app/rentals', {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then(res => res.json())

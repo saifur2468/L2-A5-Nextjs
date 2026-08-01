@@ -103,7 +103,7 @@ export default function CheckoutForm({
 
 
       const response = await axios.post(
-        `https://prisma-project-tau-dun.vercel.app/api/payments/confirm/${transactionId}`,
+        `https://prisma-project-tau-dun.vercel.app/payments/confirm/${transactionId}`,
         {
           transactionId: paymentIntent.id,
         },
@@ -181,10 +181,10 @@ export default function CheckoutForm({
           loading
         }
         className={`w-full rounded-xl py-4 text-lg font-semibold text-white transition ${loading ||
-            !stripe ||
-            !elements
-            ? "cursor-not-allowed bg-gray-400"
-            : "bg-black hover:bg-gray-800"
+          !stripe ||
+          !elements
+          ? "cursor-not-allowed bg-gray-400"
+          : "bg-black hover:bg-gray-800"
           }`}
       >
         {loading

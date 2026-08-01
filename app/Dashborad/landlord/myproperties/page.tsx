@@ -15,7 +15,7 @@
 //   const fetchProperties = async () => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
+//       const res = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/properties', {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       const result = await res.json();
@@ -106,7 +106,7 @@ export default function MyPropertiesPage() {
   const fetchProperties = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/properties', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -132,7 +132,7 @@ export default function MyPropertiesPage() {
 
   //   try {
   //     const token = localStorage.getItem('token');
-  //     const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
+  //     const response = await fetch(`https://prisma-project-tau-dun.vercel.app/landlord/properties/${id}`, {
   //       method: 'DELETE',
   //       headers: {
   //         'Authorization': `Bearer ${token}`
@@ -168,7 +168,7 @@ export default function MyPropertiesPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
+      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/landlord/properties/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -209,7 +209,7 @@ export default function MyPropertiesPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
+      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/landlord/properties/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

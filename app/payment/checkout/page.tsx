@@ -76,7 +76,7 @@ export default function CheckoutPage({
           }
 
           const res = await axios.post(
-            "https://prisma-project-tau-dun.vercel.app/api/payments/create",
+            "https://prisma-project-tau-dun.vercel.app/payments/create",
             {
               rentalRequestId:
                 rentalRequestId,

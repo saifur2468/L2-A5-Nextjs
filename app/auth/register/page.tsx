@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
+    process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,8 +169,8 @@ export default function RegisterPage() {
                 type="button"
                 onClick={() => setRole('TENANT')}
                 className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${role === 'TENANT'
-                    ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                    : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
+                  ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                  : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
                   }`}
               >
                 <UserRound size={22} />
@@ -188,8 +188,8 @@ export default function RegisterPage() {
                 type="button"
                 onClick={() => setRole('LANDLORD')}
                 className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${role === 'LANDLORD'
-                    ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                    : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
+                  ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                  : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
                   }`}
               >
                 <Building2 size={22} />

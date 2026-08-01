@@ -25,7 +25,7 @@ export default function UserManagementPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/admin/users', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/admin/users', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function UserManagementPage() {
     try {
       setUpdatingId(userId);
       const token = localStorage.getItem('token');
-      const res = await fetch(`https://prisma-project-tau-dun.vercel.app/api/admin/users/${userId}`, {
+      const res = await fetch(`https://prisma-project-tau-dun.vercel.app/admin/users/${userId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,10 +158,10 @@ export default function UserManagementPage() {
                   <td className="p-4">
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-medium ${u.role === 'ADMIN'
-                          ? 'bg-purple-50 text-purple-600'
-                          : u.role === 'LANDLORD'
-                            ? 'bg-indigo-50 text-indigo-600'
-                            : 'bg-slate-100 text-slate-600'
+                        ? 'bg-purple-50 text-purple-600'
+                        : u.role === 'LANDLORD'
+                          ? 'bg-indigo-50 text-indigo-600'
+                          : 'bg-slate-100 text-slate-600'
                         }`}
                     >
                       {u.role}
@@ -186,8 +186,8 @@ export default function UserManagementPage() {
                       disabled={updatingId === u.id || u.role === 'ADMIN'}
                       onClick={() => handleToggleBan(u.id)}
                       className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition cursor-pointer disabled:opacity-50 ${u.isBanned
-                          ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                          : 'bg-red-50 text-red-600 hover:bg-red-100'
+                        ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                        : 'bg-red-50 text-red-600 hover:bg-red-100'
                         }`}
                     >
                       {updatingId === u.id ? (

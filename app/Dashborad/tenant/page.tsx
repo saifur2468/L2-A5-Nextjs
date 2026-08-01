@@ -288,17 +288,17 @@ export default function TenantOverviewPage() {
         const token = localStorage.getItem('token') as string;
         const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-        const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/rentals', { headers });
+        const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/rentals', { headers });
         const reqData = await reqRes.json();
         if (reqData.success) setRequestCount(reqData.data?.length || 0);
 
-        const payRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/payments/history', { headers }).catch(() => null);
+        const payRes = await fetch('https://prisma-project-tau-dun.vercel.app/payments/history', { headers }).catch(() => null);
         if (payRes) {
           const payData = await payRes.json();
           if (payData.success) setPaymentCount(payData.data?.length || 0);
         }
 
-        const revRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/reviews', { headers }).catch(() => null);
+        const revRes = await fetch('https://prisma-project-tau-dun.vercel.app/reviews', { headers }).catch(() => null);
         if (revRes) {
           const revData = await revRes.json();
           if (revData.success) setReviewCount(revData.data?.length || 0);

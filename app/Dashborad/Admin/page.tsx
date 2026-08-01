@@ -38,7 +38,7 @@ export default function AdminOverviewPage() {
         setLoading(true);
         const token = localStorage.getItem('token');
 
-        const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/v1/admin/stats', {
+        const res = await fetch('https://prisma-project-tau-dun.vercel.app/v1/admin/stats', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
