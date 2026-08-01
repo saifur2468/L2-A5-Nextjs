@@ -103,7 +103,7 @@ export default function CheckoutForm({
 
 
       const response = await axios.post(
-        `https://prisma-project-tau-dun.vercel.app/payments/confirm/${transactionId}`,
+        `https://prisma-project-tau-dun.vercel.app/api/payments/confirm/${transactionId}`,
         {
           transactionId: paymentIntent.id,
         },

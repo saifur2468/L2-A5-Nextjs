@@ -27,7 +27,7 @@ export default function LandlordOverview() {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch Properties
-      const propRes = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/properties', { headers });
+      const propRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', { headers });
       const propResult = await propRes.json();
       if (propResult.success) {
         const data = Array.isArray(propResult.data) ? propResult.data : [propResult.data];
@@ -35,7 +35,7 @@ export default function LandlordOverview() {
       }
 
       // Fetch Requests
-      const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/requests', { headers });
+      const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/requests', { headers });
       const reqResult = await reqRes.json();
       if (reqResult.success) {
         setRequests(reqResult.data || []);

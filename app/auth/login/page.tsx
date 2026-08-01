@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     try {
 
-      const response = await fetch('https://prisma-project-tau-dun.vercel.app/auth/login', {
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

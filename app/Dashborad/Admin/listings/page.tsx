@@ -74,8 +74,8 @@ export default function ContentModerationPage() {
 
         const endpoint =
           activeTab === 'properties'
-            ? 'https://prisma-project-tau-dun.vercel.app/admin/properties'
-            : 'https://prisma-project-tau-dun.vercel.app/admin/rentals';
+            ? 'https://prisma-project-tau-dun.vercel.app/api/admin/properties'
+            : 'https://prisma-project-tau-dun.vercel.app/api/admin/rentals';
 
         const res = await fetch(endpoint, {
           method: 'GET',

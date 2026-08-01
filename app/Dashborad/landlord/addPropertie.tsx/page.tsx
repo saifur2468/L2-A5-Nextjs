@@ -36,7 +36,7 @@ export default function AddPropertyPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/properties', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

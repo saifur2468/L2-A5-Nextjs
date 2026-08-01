@@ -49,7 +49,7 @@
 //   const fetchDashboardData = async () => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app'}/api/tenant/dashboard`, {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api'}/api/tenant/dashboard`, {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       const data = await res.json();
@@ -65,7 +65,7 @@
 //   const handlePayment = async (requestId: string) => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app'}/api/payments/create-checkout`, {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api'}/api/payments/create-checkout`, {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -91,7 +91,7 @@
 //     }
 //     try {
 //       const token = localStorage.getItem('token');
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app'}/api/reviews`, {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api'}/api/reviews`, {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -288,17 +288,17 @@ export default function TenantOverviewPage() {
         const token = localStorage.getItem('token') as string;
         const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-        const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/rentals', { headers });
+        const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/rentals', { headers });
         const reqData = await reqRes.json();
         if (reqData.success) setRequestCount(reqData.data?.length || 0);
 
-        const payRes = await fetch('https://prisma-project-tau-dun.vercel.app/payments/history', { headers }).catch(() => null);
+        const payRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/payments/history', { headers }).catch(() => null);
         if (payRes) {
           const payData = await payRes.json();
           if (payData.success) setPaymentCount(payData.data?.length || 0);
         }
 
-        const revRes = await fetch('https://prisma-project-tau-dun.vercel.app/reviews', { headers }).catch(() => null);
+        const revRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/reviews', { headers }).catch(() => null);
         if (revRes) {
           const revData = await revRes.json();
           if (revData.success) setReviewCount(revData.data?.length || 0);

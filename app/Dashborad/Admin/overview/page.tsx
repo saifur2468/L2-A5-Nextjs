@@ -16,13 +16,13 @@ export default function AdminDashboard() {
         const token = localStorage.getItem('token');
 
         const [usersRes, propertiesRes, rentalsRes] = await Promise.all([
-          fetch('https://prisma-project-tau-dun.vercel.app/admin/users', {
+          fetch('https://prisma-project-tau-dun.vercel.app/api/admin/users', {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('https://prisma-project-tau-dun.vercel.app/admin/properties', {
+          fetch('https://prisma-project-tau-dun.vercel.app/api/admin/properties', {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('https://prisma-project-tau-dun.vercel.app/admin/rentals', {
+          fetch('https://prisma-project-tau-dun.vercel.app/api/admin/rentals', {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
+    process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();

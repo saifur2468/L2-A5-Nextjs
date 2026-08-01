@@ -38,7 +38,7 @@ export default function PropertiesPage() {
   // Filters
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
- const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -56,11 +56,11 @@ export default function PropertiesPage() {
         //   params.append('maxPrice', maxPrice.toString());
         // }
         if (maxPrice !== null) {
-  params.append('maxPrice', maxPrice.toString());
-}
+          params.append('maxPrice', maxPrice.toString());
+        }
 
         const API_URL =
-          process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
+          process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
 
         const response = await fetch(
           `${API_URL}/properties?${params.toString()}`,
@@ -170,32 +170,32 @@ export default function PropertiesPage() {
                 <label className="text-xs font-bold text-gray-600 uppercase">
                   Max Rent
                 </label>
-               <span className="text-xs font-bold text-blue-600">
-  ৳{maxPrice?.toLocaleString() || 0}
-</span>
+                <span className="text-xs font-bold text-blue-600">
+                  ৳{maxPrice?.toLocaleString() || 0}
+                </span>
               </div>
               <input
-  type="range"
-  min="5000"
-  max="150000"
-  step="5000"
-  value={maxPrice !== null ? maxPrice : 0}
-  onChange={(e) => setMaxPrice(Number(e.target.value))}
-  className="w-full accent-black cursor-pointer"
-/>
+                type="range"
+                min="5000"
+                max="150000"
+                step="5000"
+                value={maxPrice !== null ? maxPrice : 0}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                className="w-full accent-black cursor-pointer"
+              />
             </div>
 
             {/* Reset */}
-           <button
-  onClick={() => {
-    setSearch('');
-    setLocation('');
-    setMaxPrice(null); 
-  }}
-  className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
->
-  Reset Filters
-</button>
+            <button
+              onClick={() => {
+                setSearch('');
+                setLocation('');
+                setMaxPrice(null);
+              }}
+              className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
+            >
+              Reset Filters
+            </button>
           </aside>
 
           {/* Main List */}

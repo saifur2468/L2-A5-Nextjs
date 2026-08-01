@@ -30,7 +30,7 @@ export default function RentalRequestModal({ propertyId, isOpen, onClose }: Prop
   const onSubmit = async (data: RentalRequestInput) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app'}/api/rental-requests`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api'}/api/rental-requests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

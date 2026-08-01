@@ -44,7 +44,7 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
         amenities: formData.amenities.split(',').map((item) => item.trim()),
       };
 
-      const res = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/properties', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

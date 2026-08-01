@@ -25,7 +25,7 @@ export default function UserManagementPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const res = await fetch('https://prisma-project-tau-dun.vercel.app/admin/users', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/admin/users', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function UserManagementPage() {
     try {
       setUpdatingId(userId);
       const token = localStorage.getItem('token');
-      const res = await fetch(`https://prisma-project-tau-dun.vercel.app/admin/users/${userId}`, {
+      const res = await fetch(`https://prisma-project-tau-dun.vercel.app/api/admin/users/${userId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,

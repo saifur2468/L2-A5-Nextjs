@@ -14,7 +14,7 @@ export default function RentalRequestPage() {
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('https://prisma-project-tau-dun.vercel.app/landlord/requests', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/requests', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
@@ -31,7 +31,7 @@ export default function RentalRequestPage() {
   const handleRequestAction = async (requestId: string, action: 'APPROVE' | 'REJECT') => {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`https://prisma-project-tau-dun.vercel.app/landlord/requests/${requestId}`, {
+      await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/requests/${requestId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,

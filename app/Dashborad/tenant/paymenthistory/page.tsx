@@ -43,7 +43,7 @@ export default function PaymentHistoryPage() {
         }
 
         const response = await fetch(
-          "https://prisma-project-tau-dun.vercel.app/payments/history",
+          "https://prisma-project-tau-dun.vercel.app/api/payments/history",
           {
             method: "GET",
             headers: {
