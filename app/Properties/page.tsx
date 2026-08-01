@@ -170,9 +170,9 @@ export default function PropertiesPage() {
                 <label className="text-xs font-bold text-gray-600 uppercase">
                   Max Rent
                 </label>
-                <span className="text-xs font-bold text-blue-600">
-                  ৳{maxPrice.toLocaleString()}
-                </span>
+               <span className="text-xs font-bold text-blue-600">
+  ৳{maxPrice?.toLocaleString() || 0}
+</span>
               </div>
               <input
                 type="range"
