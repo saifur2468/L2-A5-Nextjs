@@ -76,7 +76,7 @@ export default function CheckoutPage({
           }
 
           const res = await axios.post(
-            "http://localhost:5000/api/payments/create",
+            "https://prisma-project-tau-dun.vercel.app/api/payments/create",
             {
               rentalRequestId:
                 rentalRequestId,
@@ -136,7 +136,7 @@ export default function CheckoutPage({
             setError(
               error.response?.data
                 ?.message ||
-                "Failed to create payment."
+              "Failed to create payment."
             );
           } else if (
             error instanceof Error
@@ -155,7 +155,7 @@ export default function CheckoutPage({
     createPaymentIntent();
   }, [rentalRequestId]);
 
-  
+
 
   if (loading) {
     return (
@@ -167,7 +167,7 @@ export default function CheckoutPage({
     );
   }
 
- 
+
 
   if (error) {
     return (
@@ -185,7 +185,7 @@ export default function CheckoutPage({
     );
   }
 
-  
+
 
   if (
     !clientSecret ||

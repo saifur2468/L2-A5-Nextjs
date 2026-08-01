@@ -98,7 +98,7 @@ export default function PropertyDetailsPage() {
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
-    'http://localhost:5000/api';
+    'https://prisma-project-tau-dun.vercel.app/api';
 
   // ========================================
   // Fetch Property Details
@@ -251,7 +251,7 @@ export default function PropertyDetailsPage() {
     setSuccessMsg('');
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
       const token = localStorage.getItem('token');
 
       if (!token) {

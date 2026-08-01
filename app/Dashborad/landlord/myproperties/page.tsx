@@ -15,7 +15,7 @@
 //   const fetchProperties = async () => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       const res = await fetch('http://localhost:5000/api/landlord/properties', {
+//       const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       const result = await res.json();
@@ -102,11 +102,11 @@ export default function MyPropertiesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
 
-  
+
   const fetchProperties = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/landlord/properties', {
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -132,7 +132,7 @@ export default function MyPropertiesPage() {
 
   //   try {
   //     const token = localStorage.getItem('token');
-  //     const response = await fetch(`http://localhost:5000/api/landlord/properties/${id}`, {
+  //     const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
   //       method: 'DELETE',
   //       headers: {
   //         'Authorization': `Bearer ${token}`
@@ -140,7 +140,7 @@ export default function MyPropertiesPage() {
   //     });
 
   //     if (response.ok) {
-        
+
   //       setProperties(properties.filter((item) => (item.id || item._id) !== id));
   //       toast.success('Property removed successfully!');
   //     } else {
@@ -153,39 +153,39 @@ export default function MyPropertiesPage() {
   // };
 
   const handleDelete = async (id: string) => {
- 
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#4f46e5',
-    cancelButtonColor: '#ef4444',
-    confirmButtonText: 'Yes, delete it!'
-  });
 
-  if (!result.isConfirmed) return;
-
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/api/landlord/properties/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4f46e5',
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!'
     });
 
-    if (response.ok) {
-      setProperties(properties.filter((item) => (item.id || item._id) !== id));
-      toast.success('Property removed successfully!');
-    } else {
-      toast.error('Failed to delete property');
+    if (!result.isConfirmed) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        setProperties(properties.filter((item) => (item.id || item._id) !== id));
+        toast.success('Property removed successfully!');
+      } else {
+        toast.error('Failed to delete property');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Something went wrong!');
     }
-  } catch (error) {
-    console.error('Delete error:', error);
-    toast.error('Something went wrong!');
-  }
-};
+  };
 
   // Open Update Modal
   const handleOpenUpdateModal = (property: any) => {
@@ -199,17 +199,17 @@ export default function MyPropertiesPage() {
     e.preventDefault();
     const id = selectedProperty.id || selectedProperty._id;
 
-   
-   const updateData = {
-  title: selectedProperty.title,
-  pricePerMonth: Number(selectedProperty.price || selectedProperty.pricePerMonth),
-  location: selectedProperty.location,
-  description: selectedProperty.description || '',
-};
+
+    const updateData = {
+      title: selectedProperty.title,
+      pricePerMonth: Number(selectedProperty.price || selectedProperty.pricePerMonth),
+      location: selectedProperty.location,
+      description: selectedProperty.description || '',
+    };
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/landlord/properties/${id}`, {
+      const response = await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/properties/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -251,9 +251,9 @@ export default function MyPropertiesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => {
             const propId = property.id || property._id;
-            
+
             // ক্যাটাগরি অবজেক্ট বা স্ট্রিং যাই হোক না কেন তা সেফলি হ্যান্ডেল করার জন্য
-            const categoryName = 
+            const categoryName =
               typeof property.category === 'object' && property.category !== null
                 ? property.category.name || property.category.title || 'House'
                 : property.category || 'House';
@@ -272,7 +272,7 @@ export default function MyPropertiesPage() {
 
                   <h2 className="font-bold text-slate-800 text-lg">{property.title}</h2>
                   <p className="text-xs text-slate-500 line-clamp-2">{property.description || property.comment || 'No description'}</p>
-                  
+
                   <p className="text-xs text-slate-400 flex items-center gap-1">
                     <MapPin size={13} /> {property.location}
                   </p>
@@ -280,7 +280,7 @@ export default function MyPropertiesPage() {
 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                   <span className="font-bold text-indigo-600">৳{property.price || property.totalPrice}/mo</span>
-                  
+
                   {/* Action Buttons: Update & Delete */}
                   <div className="flex items-center gap-2">
                     <button

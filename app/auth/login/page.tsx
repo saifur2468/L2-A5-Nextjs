@@ -19,8 +19,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,14 +34,14 @@ export default function LoginPage() {
         throw new Error(data.message || 'Login failed');
       }
 
-      
+
       localStorage.setItem('token', data.token || data.data?.token);
       localStorage.setItem('user', JSON.stringify(data.user || data.data?.user));
 
       const userRole = data.user?.role || data.data?.user?.role;
 
       if (userRole === 'ADMIN') {
-        router.push('/dashborad/admin'); 
+        router.push('/dashborad/admin');
       } else {
         router.push('/properties');
       }
@@ -56,7 +56,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-2xl border border-gray-100">
-        
+
         {/* Mobile / Center Logo */}
         <div className="mb-8 flex items-center justify-center gap-2">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-white shadow-md">

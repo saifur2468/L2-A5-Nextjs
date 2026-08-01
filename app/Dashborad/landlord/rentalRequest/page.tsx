@@ -14,7 +14,7 @@ export default function RentalRequestPage() {
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/landlord/requests', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/requests', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
@@ -31,7 +31,7 @@ export default function RentalRequestPage() {
   const handleRequestAction = async (requestId: string, action: 'APPROVE' | 'REJECT') => {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5000/api/landlord/requests/${requestId}`, {
+      await fetch(`https://prisma-project-tau-dun.vercel.app/api/landlord/requests/${requestId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -83,10 +83,9 @@ export default function RentalRequestPage() {
                     <p className="text-xs text-indigo-600 font-bold">৳{req.property?.pricePerMonth?.toLocaleString()}</p>
                   </td>
                   <td className="p-4">
-                    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-                      req.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600' :
-                      req.status === 'REJECTED' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-600'
-                    }`}>
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${req.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600' :
+                        req.status === 'REJECTED' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-600'
+                      }`}>
                       {req.status}
                     </span>
                   </td>

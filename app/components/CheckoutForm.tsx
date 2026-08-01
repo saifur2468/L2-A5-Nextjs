@@ -38,14 +38,14 @@ export default function CheckoutForm({
     setLoading(true);
 
     try {
-    
+
 
       const { error: submitError } = await elements.submit();
 
       if (submitError) {
         toast.error(
           submitError.message ||
-            "Please check your payment details."
+          "Please check your payment details."
         );
         return;
       }
@@ -63,7 +63,7 @@ export default function CheckoutForm({
 
         toast.error(
           error.message ||
-            "Payment failed. Please check your card details."
+          "Payment failed. Please check your card details."
         );
 
         return;
@@ -77,7 +77,7 @@ export default function CheckoutForm({
 
       console.log("Payment Intent:", paymentIntent);
 
-      
+
 
       if (paymentIntent.status !== "succeeded") {
         toast.error(
@@ -86,7 +86,7 @@ export default function CheckoutForm({
         return;
       }
 
-     
+
       const token = localStorage.getItem("token");
 
       console.log("JWT Token:", token);
@@ -100,10 +100,10 @@ export default function CheckoutForm({
         return;
       }
 
-    
+
 
       const response = await axios.post(
-        `http://localhost:5000/api/payments/confirm/${transactionId}`,
+        `https://prisma-project-tau-dun.vercel.app/api/payments/confirm/${transactionId}`,
         {
           transactionId: paymentIntent.id,
         },
@@ -119,7 +119,7 @@ export default function CheckoutForm({
         response.data
       );
 
-    
+
       toast.success("Payment successful!");
 
       setTimeout(() => {
@@ -180,13 +180,12 @@ export default function CheckoutForm({
           !elements ||
           loading
         }
-        className={`w-full rounded-xl py-4 text-lg font-semibold text-white transition ${
-          loading ||
-          !stripe ||
-          !elements
+        className={`w-full rounded-xl py-4 text-lg font-semibold text-white transition ${loading ||
+            !stripe ||
+            !elements
             ? "cursor-not-allowed bg-gray-400"
             : "bg-black hover:bg-gray-800"
-        }`}
+          }`}
       >
         {loading
           ? "Processing Payment..."

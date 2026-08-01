@@ -43,7 +43,7 @@ export default function PaymentHistoryPage() {
         }
 
         const response = await fetch(
-          "http://localhost:5000/api/payments/history",
+          "https://prisma-project-tau-dun.vercel.app/api/payments/history",
           {
             method: "GET",
             headers: {
@@ -84,7 +84,7 @@ export default function PaymentHistoryPage() {
     fetchPaymentHistory();
   }, []);
 
-  
+
 
   if (loading) {
     return (
@@ -94,7 +94,7 @@ export default function PaymentHistoryPage() {
     );
   }
 
-  
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -215,11 +215,11 @@ export default function PaymentHistoryPage() {
 
                         {payment.paidAt
                           ? new Date(
-                              payment.paidAt
-                            ).toLocaleDateString()
+                            payment.paidAt
+                          ).toLocaleDateString()
                           : new Date(
-                              payment.createdAt
-                            ).toLocaleDateString()}
+                            payment.createdAt
+                          ).toLocaleDateString()}
                       </div>
                     </td>
 
@@ -314,11 +314,11 @@ export default function PaymentHistoryPage() {
                       <p className="text-sm">
                         {payment.paidAt
                           ? new Date(
-                              payment.paidAt
-                            ).toLocaleDateString()
+                            payment.paidAt
+                          ).toLocaleDateString()
                           : new Date(
-                              payment.createdAt
-                            ).toLocaleDateString()}
+                            payment.createdAt
+                          ).toLocaleDateString()}
                       </p>
                     </div>
 

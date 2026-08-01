@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function AddPropertyPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -36,7 +36,7 @@ export default function AddPropertyPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/landlord/properties', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

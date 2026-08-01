@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,7 +123,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-4 py-10 flex items-center justify-center">
       <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-8 sm:p-10 shadow-2xl">
-        
+
         {/* Mobile / Center Logo */}
         <div className="mb-8 flex items-center justify-center gap-2">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-white shadow-md">
@@ -156,7 +156,7 @@ export default function RegisterPage() {
 
         {/* Form */}
         <form onSubmit={handleRegister} className="space-y-5">
-          
+
           {/* ================= ROLE SELECTION ================= */}
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -168,18 +168,16 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setRole('TENANT')}
-                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${
-                  role === 'TENANT'
+                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${role === 'TENANT'
                     ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                     : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
-                }`}
+                  }`}
               >
                 <UserRound size={22} />
                 <span>Tenant</span>
                 <span
-                  className={`text-xs font-normal ${
-                    role === 'TENANT' ? 'text-blue-100' : 'text-slate-400'
-                  }`}
+                  className={`text-xs font-normal ${role === 'TENANT' ? 'text-blue-100' : 'text-slate-400'
+                    }`}
                 >
                   Find a home
                 </span>
@@ -189,18 +187,16 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setRole('LANDLORD')}
-                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${
-                  role === 'LANDLORD'
+                className={`flex flex-col items-center justify-center gap-2 rounded-xl border py-4 text-sm font-semibold transition cursor-pointer ${role === 'LANDLORD'
                     ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                     : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-blue-300 hover:bg-white'
-                }`}
+                  }`}
               >
                 <Building2 size={22} />
                 <span>Landlord</span>
                 <span
-                  className={`text-xs font-normal ${
-                    role === 'LANDLORD' ? 'text-blue-100' : 'text-slate-400'
-                  }`}
+                  className={`text-xs font-normal ${role === 'LANDLORD' ? 'text-blue-100' : 'text-slate-400'
+                    }`}
                 >
                   List a property
                 </span>

@@ -27,7 +27,7 @@ export default function LandlordOverview() {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch Properties
-      const propRes = await fetch('http://localhost:5000/api/landlord/properties', { headers });
+      const propRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', { headers });
       const propResult = await propRes.json();
       if (propResult.success) {
         const data = Array.isArray(propResult.data) ? propResult.data : [propResult.data];
@@ -35,7 +35,7 @@ export default function LandlordOverview() {
       }
 
       // Fetch Requests
-      const reqRes = await fetch('http://localhost:5000/api/landlord/requests', { headers });
+      const reqRes = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/requests', { headers });
       const reqResult = await reqRes.json();
       if (reqResult.success) {
         setRequests(reqResult.data || []);
@@ -124,7 +124,7 @@ export default function LandlordOverview() {
           <div className="h-64 flex items-end justify-between gap-4 pt-8 px-4 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((month, idx) => (
               <div key={month} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                <div 
+                <div
                   className="w-full bg-indigo-600/80 rounded-t-lg transition-all hover:bg-indigo-600"
                   style={{ height: `${Math.max(20, (idx + 1) * 15)}%` }}
                 ></div>

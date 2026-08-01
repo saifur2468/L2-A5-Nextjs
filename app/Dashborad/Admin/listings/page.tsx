@@ -18,16 +18,16 @@ interface Property {
   amenities: string[];
   isAvailable: boolean;
   landlord:
-    | {
-        name: string;
-        email: string;
-      }
-    | string;
+  | {
+    name: string;
+    email: string;
+  }
+  | string;
   category:
-    | {
-        name: string;
-      }
-    | string;
+  | {
+    name: string;
+  }
+  | string;
 }
 
 interface RentalRequest {
@@ -37,17 +37,17 @@ interface RentalRequest {
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   createdAt: string;
   tenant:
-    | {
-        name: string;
-        email: string;
-      }
-    | string;
+  | {
+    name: string;
+    email: string;
+  }
+  | string;
   property:
-    | {
-        title: string;
-        pricePerMonth: number;
-      }
-    | string;
+  | {
+    title: string;
+    pricePerMonth: number;
+  }
+  | string;
 }
 
 interface ApiResponse<T> {
@@ -74,8 +74,8 @@ export default function ContentModerationPage() {
 
         const endpoint =
           activeTab === 'properties'
-            ? 'http://localhost:5000/api/admin/properties'
-            : 'http://localhost:5000/api/admin/rentals';
+            ? 'https://prisma-project-tau-dun.vercel.app/api/admin/properties'
+            : 'https://prisma-project-tau-dun.vercel.app/api/admin/rentals';
 
         const res = await fetch(endpoint, {
           method: 'GET',
@@ -130,11 +130,10 @@ export default function ContentModerationPage() {
         <button
           type="button"
           onClick={() => setActiveTab('properties')}
-          className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
-            activeTab === 'properties'
+          className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${activeTab === 'properties'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'text-slate-500 hover:bg-slate-100'
-          }`}
+            }`}
         >
           <Building2 size={18} />
           Properties ({properties.length})
@@ -143,11 +142,10 @@ export default function ContentModerationPage() {
         <button
           type="button"
           onClick={() => setActiveTab('rentals')}
-          className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
-            activeTab === 'rentals'
+          className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${activeTab === 'rentals'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'text-slate-500 hover:bg-slate-100'
-          }`}
+            }`}
         >
           <FileText size={18} />
           Rental Requests ({rentals.length})
@@ -184,11 +182,10 @@ export default function ContentModerationPage() {
                     </span>
 
                     <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                        item.isAvailable
+                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${item.isAvailable
                           ? 'bg-emerald-50 text-emerald-600'
                           : 'bg-red-50 text-red-600'
-                      }`}
+                        }`}
                     >
                       {item.isAvailable ? 'Available' : 'Rented'}
                     </span>
@@ -320,21 +317,20 @@ export default function ContentModerationPage() {
                         ৳
                         {typeof req.property === 'object'
                           ? req.property?.pricePerMonth?.toLocaleString(
-                              'en-US'
-                            )
+                            'en-US'
+                          )
                           : '0'}
                       </td>
 
                       {/* Status */}
                       <td className="p-4">
                         <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-                            req.status === 'APPROVED'
+                          className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${req.status === 'APPROVED'
                               ? 'bg-emerald-50 text-emerald-600'
                               : req.status === 'REJECTED'
-                              ? 'bg-red-50 text-red-600'
-                              : 'bg-amber-50 text-amber-600'
-                          }`}
+                                ? 'bg-red-50 text-red-600'
+                                : 'bg-amber-50 text-amber-600'
+                            }`}
                         >
                           {req.status}
                         </span>
@@ -344,8 +340,8 @@ export default function ContentModerationPage() {
                       <td className="p-4 text-xs text-slate-500">
                         {req.createdAt
                           ? new Date(
-                              req.createdAt
-                            ).toLocaleDateString('en-US')
+                            req.createdAt
+                          ).toLocaleDateString('en-US')
                           : 'N/A'}
                       </td>
                     </tr>

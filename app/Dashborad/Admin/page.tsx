@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { Users, Building2, Clock, CheckCircle2, TrendingUp, Activity } from 'lucide-react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  BarChart, Bar, Legend 
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, Legend
 } from 'recharts';
 
 
@@ -38,7 +38,7 @@ export default function AdminOverviewPage() {
         setLoading(true);
         const token = localStorage.getItem('token');
 
-        const res = await fetch('http://localhost:5000/api/v1/admin/stats', {
+        const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/v1/admin/stats', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -47,17 +47,17 @@ export default function AdminOverviewPage() {
 
         if (res.ok) {
           const result = await res.json();
-         
+
           const data = result?.data || result;
-          
+
           setStatsData({
-            totalUsers: data?.totalUsers || 1250, 
+            totalUsers: data?.totalUsers || 1250,
             totalProperties: data?.totalProperties || 340,
             pendingRequests: data?.pendingRequests || 25,
             activeRentals: data?.activeRentals || 180,
           });
         } else {
-          
+
           setStatsData({
             totalUsers: 1250,
             totalProperties: 340,
@@ -182,18 +182,18 @@ export default function AdminOverviewPage() {
               <AreaChart data={dummyRevenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorRentals" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                 />
                 <Area type="monotone" dataKey="users" name="Users" stroke="#6366f1" strokeWidth={2.5} fillOpacity={1} fill="url(#colorUsers)" />
@@ -216,7 +216,7 @@ export default function AdminOverviewPage() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="status" stroke="#94a3b8" fontSize={12} tickLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                 />
                 <Bar dataKey="count" fill="#6366f1" radius={[6, 6, 0, 0]} />

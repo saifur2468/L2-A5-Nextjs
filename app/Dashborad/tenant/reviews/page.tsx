@@ -11,12 +11,12 @@ export default function ReviewsPage() {
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
 
- 
+
   useEffect(() => {
-    fetch('http://localhost:5000/api/properties')
+    fetch('https://prisma-project-tau-dun.vercel.app/api/properties')
       .then((res) => res.json())
       .then((data) => {
-       
+
         if (data.success && Array.isArray(data.data)) {
           setProperties(data.data);
         } else if (Array.isArray(data)) {
@@ -30,7 +30,7 @@ export default function ReviewsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!propertyId) {
       toast.error('Please select a property');
       return;
@@ -40,7 +40,7 @@ export default function ReviewsPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch('https://prisma-project-tau-dun.vercel.app/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,16 +74,16 @@ export default function ReviewsPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold text-slate-800">Property Reviews</h1>
-      
+
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4 max-w-xl">
         <h2 className="font-bold text-slate-800 text-base">Leave a New Property Review</h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          
+
           {/* Property Selection Dropdown */}
           <div>
             <label className="text-xs font-semibold text-slate-600">Select Property</label>
-            <select 
+            <select
               value={propertyId}
               onChange={(e) => setPropertyId(e.target.value)}
               required
@@ -101,8 +101,8 @@ export default function ReviewsPage() {
           {/* Rating Selection */}
           <div>
             <label className="text-xs font-semibold text-slate-600">Rating</label>
-            <select 
-              value={rating} 
+            <select
+              value={rating}
               onChange={(e) => setRating(e.target.value)}
               className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm bg-white focus:outline-none focus:border-indigo-600"
             >
@@ -117,19 +117,19 @@ export default function ReviewsPage() {
           {/* Comment / Feedback */}
           <div>
             <label className="text-xs font-semibold text-slate-600">Feedback</label>
-            <textarea 
-              rows={3} 
+            <textarea
+              rows={3}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Outstanding place! Highly recommended." 
+              placeholder="Outstanding place! Highly recommended."
               required
-              className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:border-indigo-600" 
+              className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:border-indigo-600"
             />
           </div>
 
           {/* Submit Button */}
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition cursor-pointer disabled:opacity-50"
           >

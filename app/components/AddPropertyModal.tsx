@@ -24,7 +24,7 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
     isAvailable: true,
   });
 
-  
+
   const fallbackCategories = [
     { id: '1', name: 'White House' },
     { id: '2', name: 'borak place' },
@@ -44,7 +44,7 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
         amenities: formData.amenities.split(',').map((item) => item.trim()),
       };
 
-      const res = await fetch('http://localhost:5000/api/landlord/properties', {
+      const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

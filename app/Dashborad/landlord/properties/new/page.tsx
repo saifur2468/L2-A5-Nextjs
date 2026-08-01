@@ -137,17 +137,17 @@ export default function AddPropertyPage() {
   const [pricePerMonth, setPricePerMonth] = useState('');
   const [amenitiesInput, setAmenitiesInput] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
         const res = await fetch(`${API_URL}/categories`);
         const data = await res.json();
         if (data.success && Array.isArray(data.data)) {
@@ -167,7 +167,7 @@ export default function AddPropertyPage() {
     setSuccess('');
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
       const token = localStorage.getItem('token');
 
       if (!token) {
@@ -176,7 +176,7 @@ export default function AddPropertyPage() {
         return;
       }
 
-    
+
       const amenities = amenitiesInput.split(',').map((item) => item.trim()).filter(Boolean);
 
       const res = await fetch(`${API_URL}/landlord/properties`, {
@@ -216,7 +216,7 @@ export default function AddPropertyPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6">
-        
+
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <Building className="w-6 h-6 text-black" /> Add New Property
