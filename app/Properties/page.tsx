@@ -385,10 +385,19 @@ export default function PropertiesPage() {
           params.append('maxPrice', maxPrice.toString());
         }
 
-        const API_URL =
-          process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
+        // const API_URL =
+        //   process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app/api';
 
        
+        // const queryString = params.toString();
+        // const url = queryString ? `${API_URL}/properties?${queryString}` : `${API_URL}/properties`;
+
+        // const response = await fetch(url, {
+        //   method: 'GET',
+        //   cache: 'no-store',
+        // });
+const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
+
         const queryString = params.toString();
         const url = queryString ? `${API_URL}/properties?${queryString}` : `${API_URL}/properties`;
 
@@ -396,7 +405,6 @@ export default function PropertiesPage() {
           method: 'GET',
           cache: 'no-store',
         });
-
         if (!response.ok) {
           throw new Error('Failed to fetch properties');
         }

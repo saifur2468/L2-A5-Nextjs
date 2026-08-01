@@ -119,8 +119,51 @@ export default function PropertyDetailsPage() {
         // 1. Get Property
         // ========================================
 
+        // const propertyRes = await fetch(
+        //   `${API_URL}/properties?location=`,
+        //   {
+        //     method: 'GET',
+        //     cache: 'no-store',
+        //   }
+        // );
+
+        // if (!propertyRes.ok) {
+        //   throw new Error(
+        //     'Failed to fetch properties'
+        //   );
+        // }
+
+        // const propertyResult =
+        //   await propertyRes.json();
+
+        // if (
+        //   propertyResult.success &&
+        //   Array.isArray(propertyResult.data)
+        // ) {
+        //   const foundProperty =
+        //     propertyResult.data.find(
+        //       (item: Property) =>
+        //         item.id === id
+        //     );
+
+        //   if (foundProperty) {
+        //     setProperty(foundProperty);
+        //   } else {
+        //     setError(
+        //       'Property not found'
+        //     );
+        //   }
+        // } else {
+        //   setError(
+        //     'Property not found'
+        //   );
+        // }
+
+        const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
+
+        
         const propertyRes = await fetch(
-          `${API_URL}/properties?location=`,
+          `${API_URL}/properties/${id}`,
           {
             method: 'GET',
             cache: 'no-store',
@@ -128,37 +171,16 @@ export default function PropertyDetailsPage() {
         );
 
         if (!propertyRes.ok) {
-          throw new Error(
-            'Failed to fetch properties'
-          );
+          throw new Error('Failed to fetch property details');
         }
 
-        const propertyResult =
-          await propertyRes.json();
+        const propertyResult = await propertyRes.json();
 
-        if (
-          propertyResult.success &&
-          Array.isArray(propertyResult.data)
-        ) {
-          const foundProperty =
-            propertyResult.data.find(
-              (item: Property) =>
-                item.id === id
-            );
-
-          if (foundProperty) {
-            setProperty(foundProperty);
-          } else {
-            setError(
-              'Property not found'
-            );
-          }
+        if (propertyResult.success && propertyResult.data) {
+          setProperty(propertyResult.data);
         } else {
-          setError(
-            'Property not found'
-          );
+          setError('Property not found');
         }
-
         // ========================================
         // 2. Get Tenant's Own Rental Requests
         // IMPORTANT:
