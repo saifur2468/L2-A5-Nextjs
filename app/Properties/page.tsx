@@ -38,7 +38,7 @@ export default function PropertiesPage() {
   // Filters
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
-  const [maxPrice, setMaxPrice] = useState(100000);
+ const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -52,9 +52,12 @@ export default function PropertiesPage() {
           params.append('location', location.trim());
         }
 
-        if (maxPrice) {
-          params.append('maxPrice', maxPrice.toString());
-        }
+        // if (maxPrice) {
+        //   params.append('maxPrice', maxPrice.toString());
+        // }
+        if (maxPrice !== null) {
+  params.append('maxPrice', maxPrice.toString());
+}
 
         const API_URL =
           process.env.NEXT_PUBLIC_API_URL || 'https://prisma-project-tau-dun.vercel.app';
