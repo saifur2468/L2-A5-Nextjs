@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Building2, FileText, DollarSign, Plus, TrendingUp } from 'lucide-react';
-import { Property, RentalRequest } from '@/types';
+import { Property, RentalRequest } from '../../dashborad/landlord/types';
 import Toast from '../../components/Toast';
 import AddPropertyModal from '../../components/AddPropertyModal';
 
