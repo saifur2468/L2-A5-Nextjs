@@ -14,6 +14,11 @@ RentNest connects **Tenants, Landlords, and Administrators** in a seamless ecosy
 * **Video Explanation:** `YOUR_VIDEO_URL`
 
 ---
+---👤 **Admin Credentials **
+Email :admin26@gmail.com
+Password:123456
+ ---  
+##
 
 ## ✨ Key Features
 
