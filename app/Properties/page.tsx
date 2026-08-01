@@ -175,27 +175,27 @@ export default function PropertiesPage() {
 </span>
               </div>
               <input
-                type="range"
-                min="5000"
-                max="150000"
-                step="5000"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-black cursor-pointer"
-              />
+  type="range"
+  min="5000"
+  max="150000"
+  step="5000"
+  value={maxPrice !== null ? maxPrice : 0}
+  onChange={(e) => setMaxPrice(Number(e.target.value))}
+  className="w-full accent-black cursor-pointer"
+/>
             </div>
 
             {/* Reset */}
-            <button
-              onClick={() => {
-                setSearch('');
-                setLocation('');
-                setMaxPrice(100000);
-              }}
-              className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
-            >
-              Reset Filters
-            </button>
+           <button
+  onClick={() => {
+    setSearch('');
+    setLocation('');
+    setMaxPrice(null); 
+  }}
+  className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
+>
+  Reset Filters
+</button>
           </aside>
 
           {/* Main List */}
