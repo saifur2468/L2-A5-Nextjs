@@ -1,0 +1,575 @@
+
+Backend Base URL
+
+https://prisma-project-tau-dun.vercel.app/
+
+If the deployed backend URL changes, update NEXT_PUBLIC_API_URL in the frontend environment variables.
+
+Authentication
+
+Protected endpoints require a JWT access token.
+
+The frontend sends the token using:
+
+Authorization: Bearer <token>
+
+The backend validates the token with authGuard and checks the user's role with checkRole().
+
+Public API Endpoints
+
+Method
+
+Endpoint
+
+Frontend Usage
+
+Purpose
+
+GET
+
+/properties
+
+Properties page / property listing
+
+Fetch all properties and apply filters
+
+GET
+
+/properties/:id
+
+Property details page
+
+Fetch a single property
+
+GET
+
+/categories
+
+Property filter/category UI
+
+Fetch available property categories
+
+Frontend Components
+
+PropertiesPage → GET /properties
+
+PropertyDetailsPage → GET /properties/:id
+
+Category/filter UI → GET /categories
+
+Authentication API Endpoints
+
+Method
+
+Endpoint
+
+Frontend Usage
+
+Purpose
+
+POST
+
+/auth/register
+
+Register page
+
+Create a new user account
+
+POST
+
+/auth/login
+
+Login page
+
+Authenticate user and receive JWT
+
+Frontend Components
+
+RegisterPage → POST /auth/register
+
+LoginPage → POST /auth/login
+
+After successful login, the frontend stores the authentication information and sends the JWT with protected API requests.
+
+Tenant API Endpoints
+
+Method
+
+Endpoint
+
+Auth
+
+Frontend Usage
+
+Purpose
+
+POST
+
+/rentals
+
+TENANT
+
+RentalRequestModal
+
+Submit a rental request
+
+GET
+
+/rentals
+
+TENANT
+
+Tenant rental/request page
+
+Get the logged-in tenant's rental requests
+
+POST
+
+/reviews
+
+TENANT
+
+Review form / property page
+
+Submit a property review
+
+Frontend Components
+
+RentalRequestModal
+
+POST /rentals
+Authorization: Bearer <token>
+
+Used when a tenant sends a rental request for a property.
+
+Tenant Rental Requests Page
+
+GET /rentals
+Authorization: Bearer <token>
+
+Used to display the logged-in tenant's rental requests and their current status.
+
+Review Form
+
+POST /reviews
+Authorization: Bearer <token>
+
+Used by tenants to submit reviews.
+
+Landlord API Endpoints
+
+Method
+
+Endpoint
+
+Auth
+
+Frontend Usage
+
+Purpose
+
+GET
+
+/landlord/properties
+
+LANDLORD
+
+LandlordDashboard
+
+Get landlord's properties
+
+POST
+
+/landlord/properties
+
+LANDLORD
+
+AddPropertyPage
+
+Create a new property
+
+PUT
+
+/landlord/properties/:id
+
+LANDLORD
+
+Edit property UI
+
+Update a property
+
+DELETE
+
+/landlord/properties/:id
+
+LANDLORD
+
+Property management UI
+
+Delete a property
+
+GET
+
+/landlord/requests
+
+LANDLORD
+
+Landlord requests page
+
+Get rental requests for landlord properties
+
+PATCH
+
+/landlord/requests/:id
+
+LANDLORD
+
+Rental request management UI
+
+Approve/reject a rental request
+
+LandlordDashboard
+
+GET /landlord/properties
+Authorization: Bearer <token>
+
+Loads properties owned by the currently logged-in landlord.
+
+AddPropertyPage
+
+POST /landlord/properties
+Authorization: Bearer <token>
+
+Creates a new property from the landlord's property form.
+
+Edit Property
+
+PUT /landlord/properties/:id
+Authorization: Bearer <token>
+
+Updates an existing landlord property.
+
+Delete Property
+
+DELETE /landlord/properties/:id
+Authorization: Bearer <token>
+
+Deletes a property owned by the landlord.
+
+Landlord Rental Requests
+
+GET /landlord/requests
+Authorization: Bearer <token>
+
+Loads rental requests submitted by tenants for the landlord's properties.
+
+Handle Rental Request
+
+PATCH /landlord/requests/:id
+Authorization: Bearer <token>
+
+Used by the landlord to update the rental request status, such as approving or rejecting a request.
+
+Payment API Endpoints
+
+Method
+
+Endpoint
+
+Auth
+
+Frontend Usage
+
+Purpose
+
+POST
+
+/payments/create
+
+TENANT
+
+Checkout page
+
+Create Stripe PaymentIntent
+
+POST
+
+/payments/confirm/:transactionId
+
+TENANT
+
+Checkout form
+
+Confirm/verify payment
+
+GET
+
+/payments/history
+
+TENANT
+
+Payment history page
+
+Fetch tenant payment history
+
+Checkout Page
+
+POST /payments/create
+Authorization: Bearer <token>
+
+Used to create a Stripe PaymentIntent before displaying/processing the payment form.
+
+Checkout Form
+
+POST /payments/confirm/:transactionId
+Authorization: Bearer <token>
+
+The transactionId is passed as a URL parameter.
+
+Example:
+
+POST /payments/confirm/transaction_id_here
+
+Used after payment processing to confirm the transaction and update the rental/payment status.
+
+Payment History Page
+
+GET /payments/history
+Authorization: Bearer <token>
+
+Used to display the tenant's previous payment records.
+
+Admin API Endpoints
+
+Method
+
+Endpoint
+
+Auth
+
+Frontend Usage
+
+Purpose
+
+GET
+
+/admin/users
+
+ADMIN
+
+Admin users page
+
+Get all users
+
+PATCH
+
+/admin/users/:id
+
+ADMIN
+
+User management UI
+
+Toggle user status
+
+GET
+
+/admin/properties
+
+ADMIN
+
+Admin properties page
+
+Get all properties for moderation
+
+GET
+
+/admin/rentals
+
+ADMIN
+
+Admin rentals page
+
+Get all rental requests
+
+Admin Users
+
+GET /admin/users
+Authorization: Bearer <token>
+
+Displays all registered users.
+
+Toggle User Status
+
+PATCH /admin/users/:id
+Authorization: Bearer <token>
+
+Used by the admin to activate/deactivate a user.
+
+Admin Properties
+
+GET /admin/properties
+Authorization: Bearer <token>
+
+Loads all properties for admin management/moderation.
+
+Admin Rentals
+
+GET /admin/rentals
+Authorization: Bearer <token>
+
+Loads all rental requests for admin monitoring.
+
+Frontend-to-Backend Component Mapping
+
+Frontend Component / Page
+
+API Endpoint(s)
+
+RegisterPage
+
+POST /auth/register
+
+LoginPage
+
+POST /auth/login
+
+PropertiesPage
+
+GET /properties, GET /categories
+
+PropertyDetailsPage
+
+GET /properties/:id
+
+RentalRequestModal
+
+POST /rentals
+
+Tenant Rental Requests
+
+GET /rentals
+
+Review Form
+
+POST /reviews
+
+LandlordDashboard
+
+GET /landlord/properties
+
+AddPropertyPage
+
+POST /landlord/properties
+
+Edit Property UI
+
+PUT /landlord/properties/:id
+
+Property Management UI
+
+DELETE /landlord/properties/:id
+
+Landlord Requests
+
+GET /landlord/requests
+
+Request Approval/Rejection UI
+
+PATCH /landlord/requests/:id
+
+Checkout Page
+
+POST /payments/create
+
+CheckoutForm
+
+POST /payments/confirm/:transactionId
+
+Payment History Page
+
+GET /payments/history
+
+Admin Users Page
+
+GET /admin/users, PATCH /admin/users/:id
+
+Admin Properties Page
+
+GET /admin/properties
+
+Admin Rentals Page
+
+GET /admin/rentals
+
+
+
+Role-Based API Access
+
+The backend protects endpoints using authGuard and checkRole().
+
+Role
+
+Accessible API Groups
+
+Public
+
+Properties, Property Details, Categories
+
+Tenant
+
+Rentals, Reviews, Payments
+
+Landlord
+
+Landlord Properties, Rental Requests
+
+Admin
+
+Users, Properties, Rentals
+
+Unauthorized requests should be handled by the frontend and shown to the user with an appropriate error message.
+
+API Integration Checklist
+
+Property listing API integrated
+
+Property details API integrated
+
+Category API integrated
+
+User registration API integrated
+
+User login API integrated
+
+Tenant rental request API integrated
+
+Tenant rental history/request API integrated
+
+Review API integrated
+
+Landlord property listing API integrated
+
+Create property API integrated
+
+Update property API integrated
+
+Delete property API integrated
+
+Landlord rental request API integrated
+
+Rental request status update API integrated
+
+Stripe payment intent API integrated
+
+Payment confirmation API integrated
+
+Payment history API integrated
+
+Admin user API integrated
+
+Admin user status update API integrated
+
+Admin property API integrated
+
+Admin rental API integrated
+
