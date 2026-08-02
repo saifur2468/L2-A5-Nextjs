@@ -8,10 +8,10 @@ RentNest connects **Tenants, Landlords, and Administrators** in a seamless ecosy
 
 ## 🚀 Live Demos & Links
 
-* **Frontend Repository:** `YOUR_FRONTEND_REPOSITORY_URL`
-* **Backend API Base URL:** `YOUR_BACKEND_API_URL`
+* **Live Links:** `https://l2-a5-nextjs.vercel.app/`
+* **Backend API Base URL:** `https://prisma-project-tau-dun.vercel.app/`
 * **Backend Repository:** https://github.com/saifur2468/L2-A4-Prisma
-* **Video Explanation:** `YOUR_VIDEO_URL`
+* **Video Explanation:** `https://drive.google.com/file/d/12IDa_6-TgiB9Hmb4OfNGDsJ0ks30jYUA/view?usp=sharing`
 
 ---
 ---👤 **Admin Credentials **
