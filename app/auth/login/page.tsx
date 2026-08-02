@@ -40,11 +40,18 @@ export default function LoginPage() {
 
       const userRole = data.user?.role || data.data?.user?.role;
 
+      // if (userRole === 'ADMIN') {
+      //   router.push('/dashborad/admin');
+      // } else {
+      //   router.push('/properties');
+      // }
       if (userRole === 'ADMIN') {
-        router.push('/dashborad/admin');
-      } else {
-        router.push('/properties');
-      }
+  router.push('/dashborad/admin');
+} else if (userRole === 'LANDLORD') {
+  router.push('/dashborad/landlord'); 
+} else {
+  router.push('/properties');
+}
 
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
