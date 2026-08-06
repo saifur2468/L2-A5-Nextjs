@@ -69,11 +69,11 @@ const faqData = [
 ];
 
 export default function FAQSection() {
-  const [openFaq, setOpenFaq] = useState(1); // First item open by default
+  const [openFaq, setOpenFaq] = useState<number | null>(1); // First item open by default
 
-  const toggleFaq = (id) => {
-    setOpenFaq(openFaq === id ? null : id);
-  };
+  const toggleFaq = (id: number) => {
+  setOpenFaq(openFaq === id ? null : id);
+};
 
   return (
     <section className="bg-white py-20 px-4 md:px-12 font-sans relative overflow-hidden">
