@@ -1,70 +1,150 @@
-import { ShieldCheck, Zap, Users, Headphones, BadgePercent, Clock } from 'lucide-react';
+"use client";
 
-export default function WhyChooseUs() {
-  const features = [
-    {
-      icon: <ShieldCheck className="w-7 h-7 text-blue-600" />,
-      title: '100% Verified Listings',
-      description: 'Every single property and landlord is verified to ensure zero fraud and maximum safety for tenants.',
-    },
-    {
-      icon: <BadgePercent className="w-7 h-7 text-blue-600" />,
-      title: 'Zero Brokerage Fees',
-      description: 'Connect directly with verified landlords. No middleman, no hidden agent commission fees.',
-    },
-    {
-      icon: <Zap className="w-7 h-7 text-blue-600" />,
-      title: 'Instant Booking & Payment',
-      description: 'Secure your dream home online with instant payment system powered by Stripe/Local Gateways.',
-    },
-    {
-      icon: <Headphones className="w-7 h-7 text-blue-600" />,
-      title: '24/7 Dedicated Support',
-      description: 'Our customer success team is available round-the-clock to assist with any rental dispute or query.',
-    },
-    {
-      icon: <Clock className="w-7 h-7 text-blue-600" />,
-      title: 'Fast Agreement Process',
-      description: 'Digital rental agreements completed within minutes without physical paperwork hassles.',
-    },
-    {
-      icon: <Users className="w-7 h-7 text-blue-600" />,
-      title: 'Trusted Community',
-      description: 'Join thousands of happy tenants and landlords already using our smart rental ecosystem.',
-    },
-  ];
+import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { motion, useInView, animate } from "framer-motion";
+
+// --- Animated Counter Component ---
+const Counter = ({ value, suffix = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (isInView && ref.current) {
+      const controls = animate(0, value, {
+        duration: 2.5,
+        ease: "easeOut",
+        onUpdate(value) {
+          if (ref.current) {
+            ref.current.textContent = Math.floor(value) + suffix;
+          }
+        },
+      });
+      return () => controls.stop();
+    }
+  }, [isInView, value, suffix]);
+
+  return <span ref={ref}>0{suffix}</span>;
+};
+
+// --- FAQ Data ---
+const faqData = [
+  {
+    id: 1,
+    question: "What services do you provide?",
+    answer:
+      "These agents work with clients to understand their needs and preferences and then help them find properties.",
+  },
+  {
+    id: 2,
+    question: "How do I know how much my property is worth?",
+    answer:
+      "We perform detailed market analysis and property evaluations to determine the most accurate market value for your property.",
+  },
+  {
+    id: 3,
+    question: "How long does it take to sell a property?",
+    answer:
+      "The duration varies based on market conditions, location, and pricing, but our strategic marketing typically speeds up the process.",
+  },
+  {
+    id: 4,
+    question: "Do you offer property management services?",
+    answer:
+      "Yes, we offer complete property management including tenant screening, maintenance, and rent collection.",
+  },
+];
+
+// --- Stats Data ---
+const statsData = [
+  { value: 67, suffix: "k", label: "Square Meters" },
+  { value: 45, suffix: "+", label: "Green Spaces" },
+  { value: 12, suffix: "", label: "Years of Experience" },
+  { value: 15, suffix: "", label: "Skilled Professionals" },
+];
+
+export default function WhyChooseUsSection() {
+  const [openFaq, setOpenFaq] = useState(1);
+
+  const toggleFaq = (id) => {
+    setOpenFaq(openFaq === id ? null : id);
+  };
 
   return (
-    <section className="py-20 bg-gray-50/50">
+    <section className="bg-white py-16 md:py-24 text-gray-800 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold text-blue-600 tracking-widest uppercase bg-blue-50 px-3 py-1.5 rounded-full">
-            Why Rent With Us
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-4 tracking-tight">
-            Designed for Modern & Hassle-free Renting
-          </h2>
-          <p className="text-gray-600 text-sm sm:text-base mt-3">
-            We bridge the gap between landlords and tenants with trust, transparency, and top-tier technology.
-          </p>
+        
+        {/* Top Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          
+          {/* Left Side: 3D Floor Plan Image */}
+          <div className="flex justify-center items-center">
+            <div className="relative w-full max-w-lg aspect-square">
+              {/* Replace src with your 3D floor plan image path */}
+              <Image
+                src="/Screenshot 2026-08-06 180038.png" 
+                alt="3D Apartment Layout"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Right Side: Header & FAQ Accordion */}
+          <div>
+            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-2 block">
+              WHY OUR AGENCY
+            </span>
+            <h2 className="text-3xl md:text-5xl font-serif italic font-medium text-gray-900 mb-8 leading-tight">
+              Experience the Best in Real Estate Services
+            </h2>
+
+            {/* Accordion */}
+            <div className="space-y-4 border-t border-gray-200 pt-4">
+              {faqData.map((faq) => (
+                <div key={faq.id} className="border-b border-gray-200 pb-4">
+                  <button
+                    onClick={() => toggleFaq(faq.id)}
+                    className="w-full flex justify-between items-center text-left py-2 font-semibold text-gray-800 hover:text-black transition-colors"
+                  >
+                    <span className="text-base md:text-lg">{faq.question}</span>
+                    <span className="text-xl font-light ml-4">
+                      {openFaq === faq.id ? "−" : "+"}
+                    </span>
+                  </button>
+                  
+                  {openFaq === faq.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-gray-500 text-sm md:text-base leading-relaxed mt-2"
+                    >
+                      {faq.answer}
+                    </motion.div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, idx) => (
-            <div
-              key={idx}
-              className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+        {/* Bottom Counter Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 text-center border-t border-gray-100">
+          {statsData.map((stat, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <h3 className="text-5xl md:text-6xl font-serif italic text-gray-900 mb-2">
+                <Counter value={stat.value} suffix={stat.suffix} />
+              </h3>
+              <p className="text-sm font-medium text-gray-600 tracking-wide">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
