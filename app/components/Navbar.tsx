@@ -234,6 +234,17 @@ export default function Navbar() {
               Dashboard
               
             </Link>
+            <Link
+              href="/contact"
+              className={`text-xl  font-serif transition ${
+                isActive('/contact')
+                  ? 'text-blue-600'
+                  : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              Contact
+        
+           </Link>
               {/* Auth */}
               {token ? (
                 <div className="border-t border-gray-100 pt-4 mt-2">
