@@ -109,8 +109,11 @@ export default function Navbar() {
               }`}
             >
               All Apartments
-            </Link>
+        
+           </Link>
+            
  <Link
+
               href="/dashborad"
               className={`text-xl  font-serif transition ${
                 isActive('/dashborad')
@@ -121,6 +124,17 @@ export default function Navbar() {
               Dashboard
               
             </Link>
+            <Link
+              href="/contact"
+              className={`text-xl  font-serif transition ${
+                isActive('/contact')
+                  ? 'text-blue-600'
+                  : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              Contact
+        
+           </Link>
             {/* Logged In */}
             {token ? (
               <div className="flex items-center gap-3">
