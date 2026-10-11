@@ -16,10 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+      <body>
         <ToastContainer position="top-right" autoClose={3000} />
         <Navbar />
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4">{children}</main>
+        <main>{children}</main>
         <Footer></Footer>
       </body>
     </html>

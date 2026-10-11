@@ -7,19 +7,20 @@ import TestimonialSection from './components/TestimonialSection'
 
 
 ;
+import FeaturedProperties from './components/Featuredproperties ';
+
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className='bg-white'>
 
       <HeroSection />
       <MarqueeSection></MarqueeSection>
-
-     
-
+      <FeaturedProperties></FeaturedProperties>
       <WhyChooseUs></WhyChooseUs>
+  
       <TestimonialSection></TestimonialSection>
-      <FaqSection></FaqSection>
+     
     </main>
   );
 }
