@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Loader2, Image as ImageIcon, ChevronDown } from 'lucide-react';
 
-import { Category } from '../dashborad/landlord/types';
+import { Category } from '../dashborad/landlord/types/index';
 interface AddPropertyModalProps {
   categories?: Category[];
   onClose: () => void;
