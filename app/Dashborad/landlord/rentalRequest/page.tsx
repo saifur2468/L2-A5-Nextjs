@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { RentalRequest } from '../../../dashborad/landlord/types';
-
+// import { RentalRequest } from '../../../dashborad/landlord/types';
+import { RentalRequest } from '../types';
 export default function RentalRequestPage() {
   const [requests, setRequests] = useState<RentalRequest[]>([]);
   const [loading, setLoading] = useState(true);
