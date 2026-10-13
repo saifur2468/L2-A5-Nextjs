@@ -309,7 +309,7 @@ function MediumCard({ p }: { p: (typeof FEATURED)[0] }) {
 function CompactCard({ p }: { p: (typeof COMPACT)[0] }) {
   return (
     <Link
-      href={`/apartments/${p.id}`}
+      href={`/properties`}
       className="group flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-600"
     >
       <div className="relative h-20 w-20 flex-none overflow-hidden rounded-xl bg-slate-100">
