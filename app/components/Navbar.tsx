@@ -9,7 +9,7 @@ import {
   Menu,
   X,
   LayoutDashboard,
-  Bookmark,
+  
   ChevronDown,
   Sun,
   Moon,
@@ -105,6 +105,7 @@ export default function Navbar() {
     { name: 'About', href: '/aboutsection' },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Contact', href: '/contact' },
+    
   ];
 
   return (
@@ -114,9 +115,6 @@ export default function Navbar() {
 
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              R
-            </div>
             <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
               Rent<span className="text-blue-600 dark:text-blue-400">Nest</span>
             </span>
@@ -161,9 +159,9 @@ export default function Navbar() {
                   onClick={() => setProfileDropdown(!profileDropdown)}
                   className="flex items-center gap-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 pr-3 rounded-full border border-gray-200 dark:border-gray-700 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
+                  {/* <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
                     {role ? role[0] : 'U'}
-                  </div>
+                  </div> */}
                   <span className="text-xs font-semibold uppercase text-gray-700 dark:text-gray-200 bg-blue-100 dark:bg-blue-900/50 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
                     {role || 'User'}
                   </span>
@@ -186,14 +184,7 @@ export default function Navbar() {
                       Dashboard
                     </Link>
 
-                    <Link
-                      href="/bookings"
-                      onClick={() => setProfileDropdown(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                    >
-                      <Bookmark className="w-4 h-4 text-gray-400" />
-                      My Bookings
-                    </Link>
+                 
 
                     <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
 
@@ -287,14 +278,7 @@ export default function Navbar() {
                     Dashboard
                   </Link>
 
-                  <Link
-                    href="/bookings"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    <Bookmark className="w-4 h-4 text-gray-400" />
-                    My Bookings
-                  </Link>
+                  
 
                   <button
                     onClick={handleLogout}

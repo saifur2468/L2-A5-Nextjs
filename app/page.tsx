@@ -1,14 +1,8 @@
 import HeroSection from '@/app/components/Herosection';
 import WhyChooseUs from './components/WhyChooseUs';
-import FaqSection from './components/FaqSection';
-import MarqueeSection from './components/MarqueeSection'
-import TestimonialSection from './components/TestimonialSection'
-
-
-
-;
-import FeaturedProperties from './components/Featuredproperties ';
-
+import MarqueeSection from './components/MarqueeSection';
+import TestimonialSection from './components/TestimonialSection';
+import FeaturesSection from './components/Featuredproperties ';
 
 export default function HomePage() {
   return (
@@ -16,9 +10,8 @@ export default function HomePage() {
 
       <HeroSection />
       <MarqueeSection></MarqueeSection>
-      <FeaturedProperties></FeaturedProperties>
+      <FeaturesSection></FeaturesSection>
       <WhyChooseUs></WhyChooseUs>
-  
       <TestimonialSection></TestimonialSection>
      
     </main>
