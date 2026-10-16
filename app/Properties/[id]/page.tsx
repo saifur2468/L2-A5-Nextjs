@@ -17,9 +17,6 @@ import {
   Loader2,
 } from 'lucide-react';
 
-// ========================================
-// Types
-// ========================================
 
 interface Category {
   name: string;
@@ -92,17 +89,9 @@ export default function PropertyDetailsPage() {
   const [reqError, setReqError] =
     useState('');
 
-  // ========================================
-  // API URL
-  // ========================================
-
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'https://prisma-project-tau-dun.vercel.app/api';
-
-  // ========================================
-  // Fetch Property Details
-  // ========================================
 
   useEffect(() => {
     if (!id) return;
@@ -114,50 +103,6 @@ export default function PropertyDetailsPage() {
 
         const token =
           localStorage.getItem('token');
-
-        // ========================================
-        // 1. Get Property
-        // ========================================
-
-        // const propertyRes = await fetch(
-        //   `${API_URL}/properties?location=`,
-        //   {
-        //     method: 'GET',
-        //     cache: 'no-store',
-        //   }
-        // );
-
-        // if (!propertyRes.ok) {
-        //   throw new Error(
-        //     'Failed to fetch properties'
-        //   );
-        // }
-
-        // const propertyResult =
-        //   await propertyRes.json();
-
-        // if (
-        //   propertyResult.success &&
-        //   Array.isArray(propertyResult.data)
-        // ) {
-        //   const foundProperty =
-        //     propertyResult.data.find(
-        //       (item: Property) =>
-        //         item.id === id
-        //     );
-
-        //   if (foundProperty) {
-        //     setProperty(foundProperty);
-        //   } else {
-        //     setError(
-        //       'Property not found'
-        //     );
-        //   }
-        // } else {
-        //   setError(
-        //     'Property not found'
-        //   );
-        // }
 
         const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
 
@@ -181,12 +126,6 @@ export default function PropertyDetailsPage() {
         } else {
           setError('Property not found');
         }
-        // ========================================
-        // 2. Get Tenant's Own Rental Requests
-        // IMPORTANT:
-        // Do NOT call /admin/rentals here
-        // ========================================
-
         if (token) {
           try {
             const rentalsRes =
@@ -320,10 +259,6 @@ export default function PropertyDetailsPage() {
       setSubmitting(false);
     }
   };
-  // ========================================
-  // Payment Redirect
-  // ========================================
-
   const handlePaymentRedirect = () => {
     if (!existingRental?.id) {
       return;
@@ -333,10 +268,6 @@ export default function PropertyDetailsPage() {
       `/payment/checkout?rentalId=${existingRental.id}`
     );
   };
-
-  // ========================================
-  // Loading State
-  // ========================================
 
   if (loading) {
     return (
@@ -353,11 +284,6 @@ export default function PropertyDetailsPage() {
       </div>
     );
   }
-
-  // ========================================
-  // Error State
-  // ========================================
-
   if (error || !property) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
@@ -387,132 +313,164 @@ export default function PropertyDetailsPage() {
       </div>
     );
   }
-
-  // ========================================
-  // Main UI
-  // ========================================
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
 
-      {/* ========================================
-          Banner Image
-      ======================================== */}
-
-      <div className="relative h-72 md:h-96 w-full rounded-3xl overflow-hidden shadow-sm">
-        <Image
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200"
-          alt={property.title}
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-
-        <div className="absolute bottom-6 left-6 right-6">
-          <span className="inline-block px-3 py-1 rounded-full bg-white/90 text-gray-800 text-xs font-bold">
-            {property.isAvailable
-              ? 'Available'
-              : 'Not Available'}
-          </span>
+      <div className="flex flex-col md:flex-row bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="relative w-full md:w-2/5 h-72 md:h-auto md:min-h-[520px] shrink-0">
+          <Image
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200"
+            alt={property.title}
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 40vw"
+          />
         </div>
-      </div>
+        <div className="flex-1 p-6 md:p-8 flex flex-col">
 
-      {/* ========================================
-          Content
-      ======================================== */}
+          {/* Title + Price */}
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="min-w-0">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {property.title}
+              </h1>
 
-        {/* ========================================
-            Left Content
-        ======================================== */}
+              <p className="text-gray-500 flex items-start gap-1.5 mt-2">
+                <MapPin className="w-4 h-4 mt-1 shrink-0 text-gray-400" />
 
-        <div className="lg:col-span-2 space-y-6">
+                {property.location}
+              </p>
+            </div>
 
-          {/* Title */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {property.title}
-            </h1>
+            <p className="text-2xl font-bold text-green-600 whitespace-nowrap">
+              ৳
+              {property.pricePerMonth?.toLocaleString(
+                'en-US'
+              )}
 
-            <p className="text-gray-500 flex items-center gap-1 mt-2">
-              <MapPin className="w-4 h-4 text-blue-600" />
-
-              {property.location}
+              <span className="text-sm font-normal text-gray-500">
+                {' '}
+                / month
+              </span>
             </p>
           </div>
 
+          {/* Info grid (Type / Vendor / Status) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 mt-6">
+
+            <div>
+              <p className="text-xs text-gray-400">
+                Category
+              </p>
+
+              <p className="mt-1 font-semibold text-gray-900">
+                {typeof property.category ===
+                  'string'
+                  ? property.category
+                  : property.category?.name ||
+                  'Rent'}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-gray-400">
+                Owner
+              </p>
+
+              <p className="mt-1 font-semibold text-gray-900 flex items-center gap-1">
+                {typeof property.landlord ===
+                  'string'
+                  ? property.landlord
+                  : property.landlord?.name ||
+                  'Landlord'}
+
+                <CheckCircle2 className="w-4 h-4 text-blue-500" />
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-gray-400">
+                Availability
+              </p>
+
+              <p
+                className={`mt-1 font-semibold ${property.isAvailable
+                  ? 'text-green-600'
+                  : 'text-red-500'
+                  }`}
+              >
+                {property.isAvailable
+                  ? 'Available'
+                  : 'Not Available'}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-gray-400">
+                Contact
+              </p>
+
+              <p className="mt-1 font-semibold text-gray-900 break-all text-sm">
+                {typeof property.landlord ===
+                  'object'
+                  ? property.landlord?.email ||
+                  'landlord@test.com'
+                  : 'landlord@test.com'}
+              </p>
+            </div>
+          </div>
+
+          {/* Dashed divider */}
+          <div className="border-t border-dashed border-gray-300 my-6" />
+
           {/* Description */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-2">
               Description
             </h3>
 
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 text-sm leading-relaxed">
               {property.description}
             </p>
           </div>
 
-          {/* Amenities */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
+          {/* Dashed divider */}
+          <div className="border-t border-dashed border-gray-300 my-6" />
+
+          {/* Amenities (icon row like screenshot) */}
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">
               Amenities
             </h3>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
               {property.amenities?.map(
                 (amenity, index) => (
                   <span
                     key={`${amenity}-${index}`}
-                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium"
+                    className="flex items-center gap-1.5 text-sm text-gray-500"
                   >
+                    <CheckCircle2 className="w-4 h-4 text-gray-400" />
+
                     {amenity}
                   </span>
                 )
               )}
             </div>
           </div>
-        </div>
 
-        {/* ========================================
-            Right Sidebar
-        ======================================== */}
+          {/* Dashed divider */}
+          <div className="border-t border-dashed border-gray-300 my-6" />
+          <div className="mt-auto">
 
-        <div className="space-y-6">
-
-          {/* Pricing Card */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
-
-            <div>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">
-                Monthly Rent
-              </span>
-
-              <p className="text-3xl font-black text-gray-900">
-                ৳
-                {property.pricePerMonth?.toLocaleString(
-                  'en-US'
-                )}
-
-                <span className="text-sm font-normal text-gray-500">
-                  {' '}
-                  / month
-                </span>
-              </p>
-            </div>
-
-            {/* ========================================
-                PENDING
-            ======================================== */}
-
+            {/* PENDING */}
             {existingRental?.status ===
               'PENDING' ? (
               <button
                 disabled
-                className="w-full py-4 rounded-xl font-bold text-white bg-amber-500 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-not-allowed"
+                className="w-full md:w-auto md:min-w-[260px] px-8 py-4 rounded-xl font-bold text-white bg-amber-500 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-not-allowed"
               >
                 <Clock className="w-5 h-5 animate-pulse" />
 
@@ -521,13 +479,11 @@ export default function PropertyDetailsPage() {
             ) : existingRental?.status ===
               'APPROVED' ? (
 
-              /* ========================================
-                  APPROVED
-              ======================================== */
+              /* APPROVED */
 
-              <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                <div className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                   <CheckCircle2 className="w-3.5 h-3.5" />
 
                   Request Approved!
@@ -537,7 +493,7 @@ export default function PropertyDetailsPage() {
                   onClick={
                     handlePaymentRedirect
                   }
-                  className="w-full py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer"
+                  className="w-full sm:w-auto sm:min-w-[260px] px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer"
                 >
                   <CreditCard className="w-5 h-5" />
 
@@ -546,10 +502,6 @@ export default function PropertyDetailsPage() {
               </div>
 
             ) : (
-
-              /* ========================================
-                  REJECTED / NO REQUEST
-              ======================================== */
 
               <button
                 onClick={() => {
@@ -560,7 +512,7 @@ export default function PropertyDetailsPage() {
                 disabled={
                   !property.isAvailable
                 }
-                className={`w-full py-4 rounded-xl font-bold text-white transition flex items-center justify-center gap-2 ${property.isAvailable
+                className={`w-full md:w-auto md:min-w-[260px] px-8 py-4 rounded-xl font-bold text-white transition flex items-center justify-center gap-2 ${property.isAvailable
                   ? 'bg-black hover:bg-gray-800 cursor-pointer shadow-lg'
                   : 'bg-gray-400 cursor-not-allowed'
                   }`}
@@ -574,48 +526,8 @@ export default function PropertyDetailsPage() {
               </button>
             )}
           </div>
-
-          {/* Landlord Info */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <h3 className="text-sm font-bold text-gray-900 mb-4">
-              Property Owner
-            </h3>
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold">
-                <User className="w-5 h-5" />
-              </div>
-
-              <div>
-                <p className="font-bold text-gray-900 flex items-center gap-1">
-
-                  {typeof property.landlord ===
-                    'string'
-                    ? property.landlord
-                    : property.landlord?.name ||
-                    'Landlord'}
-
-                  <CheckCircle2 className="w-4 h-4 text-blue-500" />
-                </p>
-
-                <p className="text-xs text-gray-500">
-                  {typeof property.landlord ===
-                    'object'
-                    ? property.landlord?.email ||
-                    'landlord@test.com'
-                    : 'landlord@test.com'}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-
-      {/* ========================================
-          Rental Request Modal
-      ======================================== */}
-
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
 
@@ -764,9 +676,6 @@ export default function PropertyDetailsPage() {
     </div>
   );
 }
-
-
-
 
 
 
