@@ -9,6 +9,8 @@ import {
   Search,
   Filter,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface Category {
@@ -40,10 +42,13 @@ export default function PropertiesPage() {
   const [location, setLocation] = useState('');
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; 
+
   useEffect(() => {
     let ignore = false;
 
-    // Direct Async Function inside Effect
     (async () => {
       try {
         const params = new URLSearchParams();
@@ -55,7 +60,7 @@ export default function PropertiesPage() {
         if (maxPrice !== null) {
           params.append('maxPrice', maxPrice.toString());
         }
-const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
+        const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
 
         const queryString = params.toString();
         const url = queryString ? `${API_URL}/properties?${queryString}` : `${API_URL}/properties`;
@@ -74,6 +79,7 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
           if (result.success) {
             setProperties(result.data || []);
             setError('');
+            setCurrentPage(1); 
           } else {
             setProperties([]);
             setError(result.message || 'Failed to load properties');
@@ -106,6 +112,11 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
     );
   });
 
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentProperties = filteredProperties.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="max-w-7xl mx-auto">
@@ -137,7 +148,10 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
                 <input
                   type="text"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setCurrentPage(1);
+                  }}
                   placeholder="Search property..."
                   className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black"
                 />
@@ -185,6 +199,7 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
                 setSearch('');
                 setLocation('');
                 setMaxPrice(null);
+                setCurrentPage(1);
               }}
               className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
             >
@@ -193,7 +208,7 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
           </aside>
 
           {/* Main List */}
-          <main className="lg:col-span-3">
+          <main className="lg:col-span-3 space-y-8">
             {/* Loading */}
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,9 +245,9 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
             )}
 
             {/* Property Cards */}
-            {!loading && !error && filteredProperties.length > 0 && (
+            {!loading && !error && currentProperties.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredProperties.map((property) => (
+                {currentProperties.map((property) => (
                   <Link
                     key={property.id}
                     href={`/properties/${property.id}`}
@@ -299,6 +314,46 @@ const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
                     </div>
                   </Link>
                 ))}
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {!loading && !error && totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-6">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  aria-label="Previous Page"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, index) => {
+                  const pageNumber = index + 1;
+                  return (
+                    <button
+                      key={pageNumber}
+                      onClick={() => setCurrentPage(pageNumber)}
+                      className={`px-4 py-2 rounded-xl text-sm font-bold transition ${
+                        currentPage === pageNumber
+                          ? 'bg-black text-white shadow-md'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                })}
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  aria-label="Next Page"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
             )}
           </main>

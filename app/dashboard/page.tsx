@@ -14,13 +14,13 @@ export default function DashboardRootPage() {
         const user = JSON.parse(userStr);
 
         if (user.role === 'ADMIN') {
-          router.push('/dashborad/admin');
+          router.push('/dashboard/admin');
           return;
         } else if (user.role === 'LANDLORD') {
-          router.push('/dashborad/landlord');
+          router.push('/dashboard/landlord');
           return;
         } else if (user.role === 'TENANT') {
-          router.push('/dashborad/tenant');
+          router.push('/dashboard/tenant');
           return;
         }
       } catch (e) {
@@ -29,7 +29,7 @@ export default function DashboardRootPage() {
     }
 
     
-    router.push('/dashborad/tenant');
+    router.push('/dashboard/tenant');
   }, [router]);
 
   return (

@@ -40,15 +40,11 @@ export default function LoginPage() {
 
       const userRole = data.user?.role || data.data?.user?.role;
 
-      // if (userRole === 'ADMIN') {
-      //   router.push('/dashborad/admin');
-      // } else {
-      //   router.push('/properties');
-      // }
+    
       if (userRole === 'ADMIN') {
-  router.push('/dashborad/admin');
+  router.push('/dashboard/admin');
 } else if (userRole === 'LANDLORD') {
-  router.push('/dashborad/landlord'); 
+  router.push('/dashboard/landlord'); 
 } else {
   router.push('/properties');
 }
