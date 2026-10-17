@@ -7,6 +7,7 @@ import Footer from '@/app/components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from './components/ui/theme-provider';
+import ChatBot from './components/ChatBot';
 
 export const metadata: Metadata = {
   title: 'RentNest',
@@ -33,6 +34,7 @@ export default function RootLayout({
           <main>{children}</main>
 
           <Footer />
+          <ChatBot></ChatBot>
         </ThemeProvider>
       </body>
     </html>
