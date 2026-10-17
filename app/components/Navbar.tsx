@@ -10,6 +10,7 @@ import {
   X,
   LayoutDashboard,
   ChevronDown,
+  User,
 } from 'lucide-react';
 import { ThemeToggle } from './ui/theme-toggle';
 
@@ -123,11 +124,11 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex items-center gap-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 pr-3 rounded-full border border-gray-200 dark:border-gray-700 transition-colors"
+                  className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 pr-3 rounded-full border border-gray-200 dark:border-gray-700 transition-colors cursor-pointer"
                 >
-                  <span className="text-xs font-semibold uppercase text-gray-700 dark:text-gray-200 bg-blue-100 dark:bg-blue-900/50 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
-                    {role || 'User'}
-                  </span>
+                  <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <User className="w-4 h-4" />
+                  </div>
                   <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${profileDropdown ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -151,7 +152,7 @@ export default function Navbar() {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition font-medium"
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition font-medium cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       Logout
@@ -236,7 +237,7 @@ export default function Navbar() {
 
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl transition text-sm font-semibold"
+                    className="w-full flex items-center justify-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl transition text-sm font-semibold cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout

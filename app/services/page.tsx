@@ -29,7 +29,7 @@ import {
 /* ---------- Animation variants ---------- */
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
 };
 
 const stagger = {
@@ -69,7 +69,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-gray-950 text-slate-900 dark:text-white overflow-x-hidden">
       
       {/* Scroll Progress Bar */}
-     
+      
 
       {/* 1. Header Section (Matched with Screenshot Style) */}
       <section className="bg-white dark:bg-gray-900 border-b border-slate-100 dark:border-gray-800 pt-16 pb-12">
@@ -132,10 +132,6 @@ export default function ServicesPage() {
 
         </div>
       </section>
-
-      
-
-     
 
     </div>
   );
