@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2, Image as ImageIcon, ChevronDown } from 'lucide-react';
+import { Loader2, Image as ImageIcon, ChevronDown, UploadCloud } from 'lucide-react';
 
 import type { Category } from "../dashboard/landlord/types";
 interface AddPropertyModalProps {
@@ -13,6 +13,8 @@ interface AddPropertyModalProps {
 
 export default function AddPropertyModal({ categories = [], onClose, onSuccess, showToast }: AddPropertyModalProps) {
   const [loading, setLoading] = useState(false);
+  const [uploadingImg, setUploadingImg] = useState(false);
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -24,14 +26,42 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
     isAvailable: true,
   });
 
-
   const fallbackCategories = [
-    { id: '1', name: 'White House' },
-    { id: '2', name: 'borak place' },
-    { id: '3', name: 'No House name' },
+    { id: '1', name: 'Apartment' },
+    { id: '2', name: 'Family House' },
+    { id: '3', name: 'sublet' },
+    { id: '4', name: 'Duplex' },
+    { id: '5', name: 'PentHouse' },
   ];
 
   const categoryList = categories.length > 0 ? categories : fallbackCategories;
+
+  // ঐচ্ছিক: লোকাল ফাইল থেকে ক্লাউডিনারিতে ডাইরেক্ট আপলোড করার ফাংশন (যদি প্রয়োজন হয়)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImg(true);
+    const data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', 'your_unsigned_preset'); // আপনার ক্লাউডিনারি প্রিসেট নাম এখানে দিন
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+        method: 'POST',
+        body: data,
+      });
+      const result = await res.json();
+      if (result.secure_url) {
+        setFormData((prev) => ({ ...prev, imageUrl: result.secure_url }));
+        showToast('Image uploaded successfully!', 'success');
+      }
+    } catch (err) {
+      showToast('Image upload failed!', 'error');
+    } finally {
+      setUploadingImg(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +69,14 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
     try {
       const token = localStorage.getItem('token') as string;
       const payload = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
+        location: formData.location,
         pricePerMonth: Number(formData.pricePerMonth),
+        categoryId: formData.categoryId,
         amenities: formData.amenities.split(',').map((item) => item.trim()),
+        images: formData.imageUrl ? [formData.imageUrl] : [], // Prisma Schema-র images অ্যারের সাথে ম্যাচ করার জন্য
+        isAvailable: formData.isAvailable,
       };
 
       const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/landlord/properties', {
@@ -137,7 +172,7 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-600">Image URL</label>
+            <label className="text-xs font-semibold text-slate-600">Image URL / Link</label>
             <div className="mt-1 flex items-center gap-2">
               <ImageIcon size={18} className="text-slate-400 shrink-0" />
               <input
@@ -148,6 +183,11 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
                 className="w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:border-indigo-600 text-slate-700"
               />
             </div>
+            {formData.imageUrl && (
+              <div className="mt-2">
+                <img src={formData.imageUrl} alt="Preview" className="h-20 w-full object-cover rounded-xl border border-slate-100" />
+              </div>
+            )}
           </div>
 
           <div>

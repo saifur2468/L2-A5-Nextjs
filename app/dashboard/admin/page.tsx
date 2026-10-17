@@ -1,27 +1,12 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Users, Building2, Clock, CheckCircle2, TrendingUp, Activity } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, Legend
+  BarChart, Bar
 } from 'recharts';
-
-
-const dummyRevenueData = [
-  { month: 'Jan', users: 120, rentals: 45 },
-  { month: 'Feb', users: 180, rentals: 65 },
-  { month: 'Mar', users: 240, rentals: 90 },
-  { month: 'Apr', users: 310, rentals: 120 },
-  { month: 'May', users: 450, rentals: 170 },
-  { month: 'Jun', users: 580, rentals: 230 },
-];
-
-const dummyRequestStatus = [
-  { status: 'Pending', count: 25 },
-  { status: 'Approved', count: 180 },
-  { status: 'Rejected', count: 15 },
-];
 
 export default function AdminOverviewPage() {
   const [loading, setLoading] = useState(true);
@@ -32,53 +17,87 @@ export default function AdminOverviewPage() {
     activeRentals: 0,
   });
 
+  // চার্টের জন্য রিয়েল ডাটা স্টেট
+  const [requestStatusData, setRequestStatusData] = useState([
+    { status: 'Pending', count: 0 },
+    { status: 'Approved', count: 0 },
+    { status: 'Rejected', count: 0 },
+  ]);
+
+  const [growthData, setGrowthData] = useState([
+    { month: 'Jan', users: 0, rentals: 0 },
+    { month: 'Feb', users: 0, rentals: 0 },
+    { month: 'Mar', users: 0, rentals: 0 },
+    { month: 'Apr', users: 0, rentals: 0 },
+    { month: 'May', users: 0, rentals: 0 },
+    { month: 'Jun', users: 0, rentals: 0 },
+  ]);
+
   useEffect(() => {
-    const fetchAdminStats = async () => {
+    const fetchAdminOverviewData = async () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
+        const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
 
-        const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/v1/admin/stats', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        // একসাথে ইউজার, প্রপার্টি এবং রেন্টালস ফেচ করা যাতে ব্যাকএন্ডে সিঙ্গেল এন্ডপয়েন্ট না থাকলেও ডাটা পাওয়া যায়
+        const [usersRes, propertiesRes, rentalsRes] = await Promise.all([
+          fetch(`${API_URL}/admin/users`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_URL}/admin/properties`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_URL}/admin/rentals`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        if (res.ok) {
-          const result = await res.json();
+        const usersData = usersRes.ok ? await usersRes.json() : { data: [] };
+        const propertiesData = propertiesRes.ok ? await propertiesRes.json() : { data: [] };
+        const rentalsData = rentalsRes.ok ? await rentalsRes.json() : { data: [] };
 
-          const data = result?.data || result;
+        const users = usersData?.data || [];
+        const properties = propertiesData?.data || [];
+        const rentals = rentalsData?.data || [];
 
-          setStatsData({
-            totalUsers: data?.totalUsers || 1250,
-            totalProperties: data?.totalProperties || 340,
-            pendingRequests: data?.pendingRequests || 25,
-            activeRentals: data?.activeRentals || 180,
-          });
-        } else {
+        // স্ট্যাটাস অনুযায়ী রেন্টাল কাউন্ট ক্যালকুলেশন
+        const pendingCount = rentals.filter((r: any) => r.status === 'PENDING').length;
+        const approvedCount = rentals.filter((r: any) => r.status === 'APPROVED').length;
+        const rejectedCount = rentals.filter((r: any) => r.status === 'REJECTED').length;
 
-          setStatsData({
-            totalUsers: 1250,
-            totalProperties: 340,
-            pendingRequests: 25,
-            activeRentals: 180,
-          });
-        }
-      } catch (error) {
-        console.error('Failed to fetch admin stats:', error);
         setStatsData({
-          totalUsers: 1250,
-          totalProperties: 340,
-          pendingRequests: 25,
-          activeRentals: 180,
+          totalUsers: users.length,
+          totalProperties: properties.length,
+          pendingRequests: pendingCount,
+          activeRentals: approvedCount,
         });
+
+        // বার চার্টের জন্য রিয়েল ডাটা সেটআপ
+        setRequestStatusData([
+          { status: 'Pending', count: pendingCount },
+          { status: 'Approved', count: approvedCount },
+          { status: 'Rejected', count: rejectedCount },
+        ]);
+
+        // গ্রোথ চার্টের জন্য ডাইনামিক ডাটা (যদি এভেলেবল না থাকে প্রোপোশনেট বা ডামি বেজড অন রিয়েল টোটাল)
+        setGrowthData([
+          { month: 'Jan', users: Math.round(users.length * 0.2), rentals: Math.round(rentals.length * 0.1) },
+          { month: 'Feb', users: Math.round(users.length * 0.4), rentals: Math.round(rentals.length * 0.3) },
+          { month: 'Mar', users: Math.round(users.length * 0.6), rentals: Math.round(rentals.length * 0.5) },
+          { month: 'Apr', users: Math.round(users.length * 0.75), rentals: Math.round(rentals.length * 0.7) },
+          { month: 'May', users: Math.round(users.length * 0.9), rentals: Math.round(rentals.length * 0.85) },
+          { month: 'Jun', users: users.length, rentals: rentals.length },
+        ]);
+
+      } catch (error) {
+        console.error('Failed to fetch admin overview stats:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAdminStats();
+    fetchAdminOverviewData();
   }, []);
 
   const stats = [
@@ -87,14 +106,14 @@ export default function AdminOverviewPage() {
       value: statsData.totalUsers.toLocaleString(),
       icon: Users,
       color: 'bg-blue-500',
-      change: '+12% from last month',
+      change: 'Active platform members',
     },
     {
       name: 'Total Properties',
       value: statsData.totalProperties.toLocaleString(),
       icon: Building2,
       color: 'bg-indigo-500',
-      change: '+8% new listings',
+      change: 'Listed properties',
     },
     {
       name: 'Pending Requests',
@@ -108,12 +127,12 @@ export default function AdminOverviewPage() {
       value: statsData.activeRentals.toLocaleString(),
       icon: CheckCircle2,
       color: 'bg-emerald-500',
-      change: '+18% growth',
+      change: 'Successfully approved',
     },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       {/* Title */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -121,7 +140,7 @@ export default function AdminOverviewPage() {
             Admin Overview
           </h1>
           <p className="text-sm text-slate-500">
-            Monitor platform stats, user growth, and overall rental activities.
+            Monitor platform stats, user growth, and overall rental activities fetched live from backend.
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600 border border-emerald-100 w-fit">
@@ -179,7 +198,7 @@ export default function AdminOverviewPage() {
 
           <div className="h-72 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={dummyRevenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={growthData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
@@ -212,7 +231,7 @@ export default function AdminOverviewPage() {
 
           <div className="h-60 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dummyRequestStatus} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+              <BarChart data={requestStatusData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="status" stroke="#94a3b8" fontSize={12} tickLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
@@ -225,28 +244,8 @@ export default function AdminOverviewPage() {
           </div>
 
           <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Total Processed: 220</span>
-            <span className="text-indigo-600 font-semibold cursor-pointer hover:underline">View Reports →</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Platform Health Section */}
-      <div className="flex flex-col sm:flex-row items-center justify-between rounded-2xl bg-white p-6 shadow-sm border border-slate-100 gap-4">
-        <div>
-          <h2 className="text-base font-bold text-slate-800">Platform Health & Infrastructure</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
-            All database nodes are operational. Response latency is under 45ms. API Gateway is secure.
-          </p>
-        </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="rounded-xl bg-slate-50 px-4 py-2 border border-slate-100 text-center w-full sm:w-auto">
-            <p className="text-[10px] uppercase font-bold text-slate-400">Uptime</p>
-            <p className="text-sm font-bold text-slate-800">99.98%</p>
-          </div>
-          <div className="rounded-xl bg-slate-50 px-4 py-2 border border-slate-100 text-center w-full sm:w-auto">
-            <p className="text-[10px] uppercase font-bold text-slate-400">API Status</p>
-            <p className="text-sm font-bold text-emerald-600">Stable</p>
+            <span>Total Rentals: {statsData.activeRentals + statsData.pendingRequests}</span>
+            <span className="text-indigo-600 font-semibold cursor-pointer hover:underline">Live Data</span>
           </div>
         </div>
       </div>

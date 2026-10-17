@@ -1,35 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AddPropertyPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [fetchingCategories, setFetchingCategories] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     pricePerMonth: '',
     location: '',
-    category: '',
+    categoryId: '',
     imageUrl: '',
     amenities: '',
     isAvailable: true,
   });
 
-  const categoryList = [
-    'Apartment',
-    'Family House',
-    'Sublet',
-    'Hostel / Mess',
-    'Studio Apartment',
-    'Commercial Space',
-    'Duplex',
-  ];
+  // 1. Fetch Dynamic Categories from Database API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('https://prisma-project-tau-dun.vercel.app/api/categories');
+        const result = await res.json();
+        if (result.success) {
+          setCategories(result.data || []);
+        }
+        console.log('Fetched categories:', result.data);
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      } finally {
+        setFetchingCategories(false);
+      }
+    };
 
+    fetchCategories();
+  }, []);
+
+  // 2. Submit Property with correct database mapping
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -43,9 +56,14 @@ export default function AddPropertyPage() {
           Authorization: `Bearer ` + token,
         },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
           pricePerMonth: Number(formData.pricePerMonth),
-          amenities: formData.amenities.split(',').map((item) => item.trim()),
+          categoryId: formData.categoryId, // Pass Category ID for Prisma Relation
+          amenities: formData.amenities ? formData.amenities.split(',').map((item) => item.trim()) : [],
+          images: formData.imageUrl ? [formData.imageUrl] : [],
+          isAvailable: formData.isAvailable,
         }),
       });
 
@@ -105,19 +123,21 @@ export default function AddPropertyPage() {
             <div className="relative">
               <select
                 required
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                value={formData.categoryId}
+                onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
                 className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer"
               >
-                <option value="" disabled>Select Category</option>
-                {categoryList.map((catName, index) => (
-                  <option key={index} value={catName}>
-                    {catName}
+                <option value="" disabled>
+                  {fetchingCategories ? 'Loading categories...' : 'Select Category'}
+                </option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
                   </option>
                 ))}
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                <ChevronDown size={18} />
+                {fetchingCategories ? <Loader2 size={18} className="animate-spin" /> : <ChevronDown size={18} />}
               </div>
             </div>
           </div>
@@ -201,3 +221,31 @@ export default function AddPropertyPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
