@@ -3,8 +3,9 @@ import WhyChooseUs from './components/WhyChooseUs';
 import MarqueeSection from './components/MarqueeSection';
 import TestimonialSection from './components/TestimonialSection';
 import FeaturedProperties from './components/Featuredproperties ';
-import WhyChooseUsSection from './components/WhyChooseUs';
+
 import NewsConsultSection from './components/NewsConsultSection';
+import PopularLocations from './components/PopularLocations';
 
 
 
@@ -15,7 +16,7 @@ export default function HomePage() {
       <HeroSection />
       <MarqueeSection></MarqueeSection>
       <FeaturedProperties></FeaturedProperties>
-      
+      <PopularLocations></PopularLocations>
       <WhyChooseUs></WhyChooseUs>
       <NewsConsultSection></NewsConsultSection>
       <TestimonialSection></TestimonialSection>

@@ -103,8 +103,9 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'All Apartments', href: '/properties' },
     { name: 'About', href: '/aboutsection' },
-    { name: 'Privacy Policy', href: '/privacy' },
+    {name:'services',href:'/services'},
     { name: 'Contact', href: '/contact' },
+     
     
   ];
 
