@@ -118,33 +118,33 @@ export default function PropertiesPage() {
   const currentProperties = filteredProperties.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 px-4 py-10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
             Explore Properties
           </h1>
-          <p className="text-gray-500 mt-2">
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
             Find your perfect rental property.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Filter */}
-          <aside className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-fit space-y-6">
-            <div className="flex items-center gap-2 border-b pb-4">
-              <Filter className="w-5 h-5 text-gray-700" />
-              <h2 className="font-bold text-gray-900">Filters</h2>
+          <aside className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm h-fit space-y-6 transition-colors duration-300">
+            <div className="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-4">
+              <Filter className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              <h2 className="font-bold text-gray-900 dark:text-white">Filters</h2>
             </div>
 
             {/* Search */}
             <div>
-              <label className="block text-xs font-bold text-gray-600 uppercase mb-2">
+              <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase mb-2">
                 Search
               </label>
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-3.5 text-gray-400" />
+                <Search className="w-4 h-4 absolute left-3 top-3.5 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   value={search}
@@ -153,14 +153,14 @@ export default function PropertiesPage() {
                     setCurrentPage(1);
                   }}
                   placeholder="Search property..."
-                  className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all"
                 />
               </div>
             </div>
 
             {/* Location */}
             <div>
-              <label className="block text-xs font-bold text-gray-600 uppercase mb-2">
+              <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase mb-2">
                 Location
               </label>
               <input
@@ -168,17 +168,17 @@ export default function PropertiesPage() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Dhanmondi, Gulshan..."
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all"
               />
             </div>
 
             {/* Max Price */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-xs font-bold text-gray-600 uppercase">
+                <label className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase">
                   Max Rent
                 </label>
-                <span className="text-xs font-bold text-blue-600">
+                <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
                   ৳{maxPrice?.toLocaleString() || 0}
                 </span>
               </div>
@@ -189,7 +189,7 @@ export default function PropertiesPage() {
                 step="5000"
                 value={maxPrice !== null ? maxPrice : 0}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-black cursor-pointer"
+                className="w-full accent-black dark:accent-white cursor-pointer"
               />
             </div>
 
@@ -201,7 +201,7 @@ export default function PropertiesPage() {
                 setMaxPrice(null);
                 setCurrentPage(1);
               }}
-              className="w-full py-2.5 text-xs font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition cursor-pointer"
+              className="w-full py-2.5 text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 transition cursor-pointer"
             >
               Reset Filters
             </button>
@@ -215,7 +215,7 @@ export default function PropertiesPage() {
                 {[1, 2, 3, 4].map((item) => (
                   <div
                     key={item}
-                    className="bg-white rounded-3xl h-80 animate-pulse border border-gray-100"
+                    className="bg-white dark:bg-gray-900 rounded-3xl h-80 animate-pulse border border-gray-100 dark:border-gray-800"
                   />
                 ))}
               </div>
@@ -223,11 +223,11 @@ export default function PropertiesPage() {
 
             {/* Error */}
             {!loading && error && (
-              <div className="text-center py-16 bg-white rounded-3xl border">
+              <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 transition-colors">
                 <p className="text-red-500 font-medium">{error}</p>
                 <button
                   onClick={() => setLoading(true)}
-                  className="mt-4 px-5 py-2 bg-black text-white rounded-xl text-sm"
+                  className="mt-4 px-5 py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl text-sm font-semibold transition"
                 >
                   Try Again
                 </button>
@@ -236,9 +236,9 @@ export default function PropertiesPage() {
 
             {/* No Data */}
             {!loading && !error && filteredProperties.length === 0 && (
-              <div className="text-center py-16 bg-white rounded-3xl border">
-                <HomeIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500 font-medium">
+              <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 transition-colors">
+                <HomeIcon className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                <p className="text-gray-500 dark:text-gray-400 font-medium">
                   No properties match your filter.
                 </p>
               </div>
@@ -251,10 +251,10 @@ export default function PropertiesPage() {
                   <Link
                     key={property.id}
                     href={`/properties/${property.id}`}
-                    className="group bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
+                    className="group bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
                   >
                     {/* Image */}
-                    <div className="relative h-52 w-full bg-gray-100 overflow-hidden">
+                    <div className="relative h-52 w-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
                       <Image
                         src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800"
                         alt={property.title}
@@ -268,8 +268,8 @@ export default function PropertiesPage() {
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${
                             property.isAvailable
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-red-100 text-red-700'
+                              ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
+                              : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
                           }`}
                         >
                           {property.isAvailable ? 'Available' : 'Not Available'}
@@ -278,7 +278,7 @@ export default function PropertiesPage() {
 
                       {/* Price */}
                       <div className="absolute bottom-4 right-4">
-                        <span className="bg-black/80 text-white px-3 py-1.5 rounded-xl text-sm font-bold">
+                        <span className="bg-black/80 dark:bg-gray-800/90 backdrop-blur-md text-white px-3 py-1.5 rounded-xl text-sm font-bold border border-white/10">
                           ৳{property.pricePerMonth.toLocaleString()} /mo
                         </span>
                       </div>
@@ -287,27 +287,27 @@ export default function PropertiesPage() {
                     {/* Content */}
                     <div className="p-5 flex flex-col flex-1">
                       {property.category?.name && (
-                        <span className="text-xs font-semibold text-blue-600 mb-1">
+                        <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1">
                           {property.category.name}
                         </span>
                       )}
 
-                      <h3 className="font-bold text-gray-900 text-lg group-hover:text-blue-600 transition line-clamp-1">
+                      <h3 className="font-bold text-gray-900 dark:text-white text-lg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition line-clamp-1">
                         {property.title}
                       </h3>
 
-                      <p className="text-sm text-gray-500 flex items-center gap-1 mt-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-2">
                         <MapPin className="w-4 h-4" />
                         {property.location}
                       </p>
 
-                      <p className="text-sm text-gray-500 mt-3 line-clamp-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 line-clamp-2">
                         {property.description}
                       </p>
 
                       {/* Action CTA Badge */}
-                      <div className="mt-4 flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="text-xs font-semibold text-gray-600 group-hover:text-black flex items-center gap-1">
+                      <div className="mt-4 flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white flex items-center gap-1 transition-colors">
                           View Details & Rent <ArrowRight className="w-3.5 h-3.5" />
                         </span>
                       </div>
@@ -323,7 +323,7 @@ export default function PropertiesPage() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  className="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
                   aria-label="Previous Page"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -337,8 +337,8 @@ export default function PropertiesPage() {
                       onClick={() => setCurrentPage(pageNumber)}
                       className={`px-4 py-2 rounded-xl text-sm font-bold transition ${
                         currentPage === pageNumber
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-100'
+                          ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
+                          : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                       }`}
                     >
                       {pageNumber}
@@ -349,7 +349,7 @@ export default function PropertiesPage() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  className="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
                   aria-label="Next Page"
                 >
                   <ChevronRight className="w-5 h-5" />

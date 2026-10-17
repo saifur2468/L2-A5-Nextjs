@@ -1,37 +1,39 @@
 import './globals.css';
+import type { Metadata } from 'next';
+
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
-import 'react-toastify/dist/ReactToastify.css'; 
+
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-export const metadata = {
+import { ThemeProvider } from './components/ui/theme-provider';
+
+export const metadata: Metadata = {
   title: 'RentNest',
   description: 'Rental property marketplace',
 };
 
-
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-       <ToastContainer 
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-        <Navbar />
-        <main>{children}</main>
-        <Footer></Footer>
+        <ThemeProvider>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            theme="colored"
+          />
+
+          <Navbar />
+
+          <main>{children}</main>
+
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

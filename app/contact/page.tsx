@@ -3,22 +3,22 @@ import { Phone, Mail, MapPin, Clock, Building2 } from "lucide-react";
 
 export default function ContactPage() {
   return (
-    <main className="bg-stone-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans">
+    <main className="bg-stone-100 dark:bg-gray-950 min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans transition-colors duration-300">
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Side: Contact Form Card */}
-        <div className="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-stone-100">
+        <div className="lg:col-span-6 bg-white dark:bg-gray-900 rounded-3xl p-8 sm:p-10 shadow-sm border border-stone-100 dark:border-gray-800 transition-colors duration-300">
           
           {/* Subheading Badge */}
           <div className="flex items-center gap-2 mb-4">
             <Building2 className="w-5 h-5 text-lime-500" />
-            <span className="text-sm font-bold text-stone-800 tracking-wide">
+            <span className="text-sm font-bold text-stone-800 dark:text-stone-200 tracking-wide">
               Connect With Us
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-stone-900 leading-tight mb-8">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-stone-900 dark:text-white leading-tight mb-8">
             Secure Your Future <br />
             Luxury Home Today
           </h1>
@@ -30,13 +30,13 @@ export default function ContactPage() {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                className="w-full px-5 py-3.5 bg-stone-100/80 border border-transparent rounded-full text-stone-800 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white transition-all"
+                className="w-full px-5 py-3.5 bg-stone-100/80 dark:bg-gray-800 border border-transparent rounded-full text-stone-800 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white dark:focus:bg-gray-900 transition-all"
               />
               <input
                 type="text"
                 name="lastName"
                 placeholder="Last name here"
-                className="w-full px-5 py-3.5 bg-stone-100/80 border border-transparent rounded-full text-stone-800 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white transition-all"
+                className="w-full px-5 py-3.5 bg-stone-100/80 dark:bg-gray-800 border border-transparent rounded-full text-stone-800 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white dark:focus:bg-gray-900 transition-all"
               />
             </div>
 
@@ -45,13 +45,13 @@ export default function ContactPage() {
                 type="email"
                 name="email"
                 placeholder="Add email"
-                className="w-full px-5 py-3.5 bg-stone-100/80 border border-transparent rounded-full text-stone-800 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white transition-all"
+                className="w-full px-5 py-3.5 bg-stone-100/80 dark:bg-gray-800 border border-transparent rounded-full text-stone-800 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white dark:focus:bg-gray-900 transition-all"
               />
               <input
                 type="text"
                 name="subject"
                 placeholder="How can we help you?"
-                className="w-full px-5 py-3.5 bg-stone-100/80 border border-transparent rounded-full text-stone-800 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white transition-all"
+                className="w-full px-5 py-3.5 bg-stone-100/80 dark:bg-gray-800 border border-transparent rounded-full text-stone-800 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white dark:focus:bg-gray-900 transition-all"
               />
             </div>
 
@@ -60,13 +60,13 @@ export default function ContactPage() {
                 name="message"
                 rows={5}
                 placeholder="Message"
-                className="w-full p-5 bg-stone-100/80 border border-transparent rounded-3xl text-stone-800 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white transition-all resize-none"
+                className="w-full p-5 bg-stone-100/80 dark:bg-gray-800 border border-transparent rounded-3xl text-stone-800 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400 focus:bg-white dark:focus:bg-gray-900 transition-all resize-none"
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full py-4 bg-[#e2f163] hover:bg-[#d8e851] text-stone-900 font-semibold text-base rounded-full shadow-sm transition-all duration-200 mt-2"
+              className="w-full py-4 bg-[#e2f163] hover:bg-[#d8e851] dark:bg-lime-400 dark:hover:bg-lime-500 text-stone-900 font-semibold text-base rounded-full shadow-sm transition-all duration-200 mt-2 cursor-pointer"
             >
               Send Message
             </button>
@@ -80,48 +80,48 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             {/* Phone Card */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-stone-100 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#e2f163] flex items-center justify-center shrink-0">
-                <Phone className="w-5 h-5 text-stone-900" />
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-stone-100 dark:border-gray-800 flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-full bg-[#e2f163] dark:bg-lime-400/20 dark:text-lime-400 flex items-center justify-center shrink-0">
+                <Phone className="w-5 h-5 text-stone-900 dark:text-lime-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-stone-800">Phone Number</p>
-                <p className="text-sm text-stone-600 mt-0.5">+1 (202) 555-0143</p>
+                <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">Phone Number</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400 mt-0.5">+1 (202) 555-0143</p>
               </div>
             </div>
 
             {/* Email Card */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-stone-100 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#e2f163] flex items-center justify-center shrink-0">
-                <Mail className="w-5 h-5 text-stone-900" />
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-stone-100 dark:border-gray-800 flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-full bg-[#e2f163] dark:bg-lime-400/20 dark:text-lime-400 flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5 text-stone-900 dark:text-lime-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-stone-800">Phone Number</p>
-                <p className="text-sm text-stone-600 mt-0.5">info@yourdomain.com</p>
+                <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">Email Address</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400 mt-0.5">info@yourdomain.com</p>
               </div>
             </div>
 
             {/* Address Card */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-stone-100 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#e2f163] flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 text-stone-900" />
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-stone-100 dark:border-gray-800 flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-full bg-[#e2f163] dark:bg-lime-400/20 dark:text-lime-400 flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5 text-stone-900 dark:text-lime-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-stone-800">Address</p>
-                <p className="text-sm text-stone-600 mt-0.5 leading-snug">
+                <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">Address</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400 mt-0.5 leading-snug">
                   25 Main Street, New York, USA
                 </p>
               </div>
             </div>
 
             {/* Working Hours Card */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-stone-100 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#e2f163] flex items-center justify-center shrink-0">
-                <Clock className="w-5 h-5 text-stone-900" />
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-stone-100 dark:border-gray-800 flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-full bg-[#e2f163] dark:bg-lime-400/20 dark:text-lime-400 flex items-center justify-center shrink-0">
+                <Clock className="w-5 h-5 text-stone-900 dark:text-lime-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-stone-800">Working Hours</p>
-                <p className="text-sm text-stone-600 mt-0.5 leading-snug">
+                <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">Working Hours</p>
+                <p className="text-sm text-stone-600 dark:text-stone-400 mt-0.5 leading-snug">
                   Mon–Sat, 8:00 AM – 6:00 PM
                 </p>
               </div>
@@ -130,7 +130,7 @@ export default function ContactPage() {
           </div>
 
           {/* Map Section */}
-          <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-stone-100 h-[280px] w-full relative">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm border border-stone-100 dark:border-gray-800 h-[280px] w-full relative transition-colors duration-300">
             <iframe
               title="Location Map"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.540424072382!2d-0.1220892233816654!3d51.50332400933758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604b900d26973%3A0x4291f3172409ea92!2slastminute.com%20London%20Eye!5e0!3m2!1sen!2s!4v1710000000000!5m2!1sen!2s"
@@ -140,7 +140,7 @@ export default function ContactPage() {
               allowFullScreen={false}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="grayscale contrast-125 opacity-80 hover:opacity-100 transition-opacity duration-300"
+              className="grayscale contrast-125 opacity-80 hover:opacity-100 transition-opacity duration-300 dark:invert dark:hue-rotate-180"
             ></iframe>
           </div>
 

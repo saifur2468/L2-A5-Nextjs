@@ -85,19 +85,19 @@ export default function PopularLocations() {
   };
 
   return (
-    <section className="py-16 bg-slate-50/50 overflow-hidden">
+    <section className="py-16 bg-slate-50/50 dark:bg-gray-950 transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-semibold uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
               <MapPin className="w-3.5 h-3.5" /> Explore Cities
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Popular Locations
             </h2>
-            <p className="mt-2 text-slate-600 text-base max-w-xl">
+            <p className="mt-2 text-slate-600 dark:text-slate-400 text-base max-w-xl">
               Find your dream apartment in Bangladesh’s most sought-after neighborhoods and thriving hubs.
             </p>
           </div>
@@ -106,14 +106,14 @@ export default function PopularLocations() {
           <div className="mt-6 md:mt-0 flex items-center gap-3">
             <button
               onClick={() => handleScroll('left')}
-              className="p-2.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 shadow-sm transition-all duration-300"
+              className="p-2.5 rounded-full bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 dark:hover:bg-indigo-600 dark:hover:border-indigo-600 shadow-sm transition-all duration-300"
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => handleScroll('right')}
-              className="p-2.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 shadow-sm transition-all duration-300"
+              className="p-2.5 rounded-full bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 dark:hover:bg-indigo-600 dark:hover:border-indigo-600 shadow-sm transition-all duration-300"
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -121,7 +121,7 @@ export default function PopularLocations() {
             
             <Link
               href="/properties"
-              className="ml-2 inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors group"
+              className="ml-2 inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors group"
             >
               View All
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -146,7 +146,7 @@ export default function PopularLocations() {
             >
               <Link
                 href={`/properties?search=${encodeURIComponent(loc.slug)}`}
-                className="group relative h-80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 block"
+                className="group relative h-80 rounded-2xl overflow-hidden shadow-sm dark:shadow-gray-900/40 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 block border border-slate-200/60 dark:border-gray-800"
               >
                 {/* Background Image */}
                 <Image
@@ -162,7 +162,7 @@ export default function PopularLocations() {
 
                 {/* City Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-medium border border-white/30">
+                  <span className="px-3 py-1 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md text-white text-xs font-medium border border-white/30">
                     {loc.city}
                   </span>
                 </div>
@@ -178,7 +178,7 @@ export default function PopularLocations() {
                     </p>
                   </div>
 
-                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md flex items-center justify-center text-white border border-white/30 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-all duration-300">
                     <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import Image from "next/image";
 import { motion, useInView, animate } from "framer-motion";
 
@@ -115,7 +115,7 @@ export default function WhyChooseUsSection() {
   };
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-white dark:bg-gray-950 py-16 md:py-24 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Top Content */}
@@ -128,7 +128,7 @@ export default function WhyChooseUsSection() {
                 src="/Screenshot 2026-08-06 180038.png"
                 alt="3D Apartment Layout"
                 fill
-                className="object-contain"
+                className="object-contain rounded-xl"
                 priority
               />
             </div>
@@ -136,28 +136,28 @@ export default function WhyChooseUsSection() {
 
           {/* Right Side */}
           <div>
-            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-2 block">
+            <span className="text-xs font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase mb-2 block">
               WHY OUR AGENCY
             </span>
 
-            <h2 className="text-3xl md:text-5xl font-serif italic font-medium text-gray-900 mb-8 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-serif italic font-medium text-gray-900 dark:text-white mb-8 leading-tight">
               Experience the Best in Real Estate Services
             </h2>
 
             {/* FAQ */}
-            <div className="space-y-4 border-t border-gray-200 pt-4">
+            <div className="space-y-4 border-t border-gray-200 dark:border-gray-800 pt-4">
               {faqData.map((faq) => {
                 const isOpen = openFaq === faq.id;
 
                 return (
                   <div
                     key={faq.id}
-                    className="border-b border-gray-200 pb-4"
+                    className="border-b border-gray-200 dark:border-gray-800 pb-4"
                   >
                     <button
                       type="button"
                       onClick={() => toggleFaq(faq.id)}
-                      className="w-full flex justify-between items-center text-left py-2 font-semibold text-gray-800 hover:text-black transition-colors"
+                      className="w-full flex justify-between items-center text-left py-2 font-semibold text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition-colors"
                       aria-expanded={isOpen}
                     >
                       <span className="text-base md:text-lg">
@@ -182,7 +182,7 @@ export default function WhyChooseUsSection() {
                         transition={{
                           duration: 0.3,
                         }}
-                        className="text-gray-500 text-sm md:text-base leading-relaxed mt-2"
+                        className="text-gray-500 dark:text-gray-400 text-sm md:text-base leading-relaxed mt-2"
                       >
                         {faq.answer}
                       </motion.div>
@@ -195,20 +195,20 @@ export default function WhyChooseUsSection() {
         </div>
 
         {/* Counter Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 text-center border-t border-gray-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 text-center border-t border-gray-100 dark:border-gray-800/80">
           {statsData.map((stat) => (
             <div
               key={stat.label}
               className="flex flex-col items-center"
             >
-              <h3 className="text-5xl md:text-6xl font-serif italic text-gray-900 mb-2">
+              <h3 className="text-5xl md:text-6xl font-serif italic text-gray-900 dark:text-white mb-2">
                 <Counter
                   value={stat.value}
                   suffix={stat.suffix}
                 />
               </h3>
 
-              <p className="text-sm font-medium text-gray-600 tracking-wide">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide">
                 {stat.label}
               </p>
             </div>

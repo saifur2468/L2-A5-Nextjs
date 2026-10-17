@@ -107,16 +107,16 @@ export default function TestimonialSection() {
   const nextRef = useRef(null);
 
   return (
-    <section className="bg-[#EAEAEA] py-20 px-4 md:px-12 relative overflow-hidden font-sans">
+    <section className="bg-[#EAEAEA] dark:bg-gray-950 py-20 px-4 md:px-12 relative overflow-hidden font-sans transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* Top Header & Navigation Buttons */}
         <div className="flex justify-between items-end mb-12">
           <div>
-            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-2 block">
+            <span className="text-xs font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase mb-2 block">
               TESTIMONIALS
             </span>
-            <h2 className="text-3xl md:text-5xl font-serif italic text-gray-900 font-normal">
+            <h2 className="text-3xl md:text-5xl font-serif italic text-gray-900 dark:text-white font-normal">
               What Our Clients <br />
               <span className="font-sans not-italic font-bold">Say About Us</span>
             </h2>
@@ -127,14 +127,14 @@ export default function TestimonialSection() {
             <button
               ref={prevRef}
               aria-label="Previous slide"
-              className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
+              className="w-12 h-12 rounded-full border border-gray-400 dark:border-gray-700 dark:text-white flex items-center justify-center hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white transition-all"
             >
               ←
             </button>
             <button
               ref={nextRef}
               aria-label="Next slide"
-              className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
+              className="w-12 h-12 rounded-full border border-gray-400 dark:border-gray-700 dark:text-white flex items-center justify-center hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white transition-all"
             >
               →
             </button>
@@ -162,31 +162,31 @@ export default function TestimonialSection() {
         >
           {testimonialsData.map((item) => (
             <SwiperSlide key={item.id} className="h-full">
-              <div className="relative bg-[#EAEAEA] pr-6 flex flex-col justify-between h-full min-h-[300px]">
+              <div className="relative bg-[#EAEAEA] dark:bg-gray-900 pr-6 flex flex-col justify-between h-full min-h-[300px] transition-colors duration-300">
                 
-                {/* Background Large Quote Outline Graphic (Optional styling) */}
-                <div className="absolute right-0 top-0 text-[180px] leading-none font-serif text-gray-300 opacity-40 pointer-events-none select-none">
+                {/* Background Large Quote Outline Graphic */}
+                <div className="absolute right-0 top-0 text-[180px] leading-none font-serif text-gray-300 dark:text-gray-800 opacity-40 pointer-events-none select-none">
                   “
                 </div>
 
                 <div>
                   {/* Quote Icon & Title */}
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-2xl font-bold font-serif text-gray-900">“</span>
-                    <h3 className="text-xl font-bold text-gray-900">{item.title}</h3>
+                    <span className="text-2xl font-bold font-serif text-gray-900 dark:text-white">“</span>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{item.title}</h3>
                   </div>
 
                   {/* Review Text */}
-                  <p className="text-gray-700 text-sm md:text-base leading-relaxed mb-8 relative z-10">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed mb-8 relative z-10">
                     {item.comment}
                   </p>
                 </div>
 
                 {/* Divider & User Info */}
                 <div>
-                  <hr className="border-gray-300 mb-6" />
+                  <hr className="border-gray-300 dark:border-gray-800 mb-6" />
                   <div className="flex items-center gap-4">
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-gray-300 dark:border-gray-700">
                       <Image
                         src={item.avatar}
                         alt={item.name}
@@ -195,8 +195,8 @@ export default function TestimonialSection() {
                       />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-sm md:text-base">{item.name}</h4>
-                      <p className="text-[10px] tracking-wider text-gray-500 font-semibold uppercase">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm md:text-base">{item.name}</h4>
+                      <p className="text-[10px] tracking-wider text-gray-500 dark:text-gray-400 font-semibold uppercase">
                         {item.role}
                       </p>
                     </div>

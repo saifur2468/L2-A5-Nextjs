@@ -9,11 +9,9 @@ import {
   Menu,
   X,
   LayoutDashboard,
-  
   ChevronDown,
-  Sun,
-  Moon,
 } from 'lucide-react';
+import { ThemeToggle } from './ui/theme-toggle';
 
 export default function Navbar() {
   const router = useRouter();
@@ -23,31 +21,6 @@ export default function Navbar() {
   const [role, setRole] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Sync Dark Mode state
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setDarkMode(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setDarkMode(true);
-    }
-  };
 
   // Check Auth Status
   const checkAuth = () => {
@@ -98,15 +71,13 @@ export default function Navbar() {
     return pathname.startsWith(href);
   };
 
-  // Same navbar links for everyone (logged in or not)
+  // Nav links
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'All Apartments', href: '/properties' },
     { name: 'About', href: '/aboutsection' },
-    {name:'services',href:'/services'},
+    { name: 'Services', href: '/services' },
     { name: 'Contact', href: '/contact' },
-     
-    
   ];
 
   return (
@@ -141,17 +112,11 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right Section: Dark Mode Toggle & User Menu */}
+          {/* Right Section: Theme Toggle & User Menu */}
           <div className="hidden md:flex items-center gap-3">
 
-            {/* Dark Mode Toggle Button */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-              aria-label="Toggle Theme"
-            >
-              {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-gray-600" />}
-            </button>
+            {/* Dark Mode Theme Toggle Component */}
+            <ThemeToggle />
 
             {token ? (
               /* Profile Dropdown Menu */
@@ -160,9 +125,6 @@ export default function Navbar() {
                   onClick={() => setProfileDropdown(!profileDropdown)}
                   className="flex items-center gap-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 pr-3 rounded-full border border-gray-200 dark:border-gray-700 transition-colors"
                 >
-                  {/* <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
-                    {role ? role[0] : 'U'}
-                  </div> */}
                   <span className="text-xs font-semibold uppercase text-gray-700 dark:text-gray-200 bg-blue-100 dark:bg-blue-900/50 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
                     {role || 'User'}
                   </span>
@@ -184,8 +146,6 @@ export default function Navbar() {
                       <LayoutDashboard className="w-4 h-4 text-gray-400" />
                       Dashboard
                     </Link>
-
-                 
 
                     <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
 
@@ -218,14 +178,9 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Right Controls */}
+          {/* Mobile Controls */}
           <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
-            >
-              {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5" />}
-            </button>
+            <ThemeToggle />
 
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -271,15 +226,13 @@ export default function Navbar() {
                   </div>
 
                   <Link
-                    href="/dashborad"
+                    href="/dashboard"
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
                     <LayoutDashboard className="w-4 h-4 text-gray-400" />
                     Dashboard
                   </Link>
-
-                  
 
                   <button
                     onClick={handleLogout}
