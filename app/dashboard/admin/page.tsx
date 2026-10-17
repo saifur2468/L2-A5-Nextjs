@@ -17,7 +17,7 @@ export default function AdminOverviewPage() {
     activeRentals: 0,
   });
 
-  // চার্টের জন্য রিয়েল ডাটা স্টেট
+ 
   const [requestStatusData, setRequestStatusData] = useState([
     { status: 'Pending', count: 0 },
     { status: 'Approved', count: 0 },
@@ -40,7 +40,7 @@ export default function AdminOverviewPage() {
         const token = localStorage.getItem('token');
         const API_URL = 'https://prisma-project-tau-dun.vercel.app/api';
 
-        // একসাথে ইউজার, প্রপার্টি এবং রেন্টালস ফেচ করা যাতে ব্যাকএন্ডে সিঙ্গেল এন্ডপয়েন্ট না থাকলেও ডাটা পাওয়া যায়
+      
         const [usersRes, propertiesRes, rentalsRes] = await Promise.all([
           fetch(`${API_URL}/admin/users`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -61,7 +61,7 @@ export default function AdminOverviewPage() {
         const properties = propertiesData?.data || [];
         const rentals = rentalsData?.data || [];
 
-        // স্ট্যাটাস অনুযায়ী রেন্টাল কাউন্ট ক্যালকুলেশন
+      
         const pendingCount = rentals.filter((r: any) => r.status === 'PENDING').length;
         const approvedCount = rentals.filter((r: any) => r.status === 'APPROVED').length;
         const rejectedCount = rentals.filter((r: any) => r.status === 'REJECTED').length;
@@ -73,14 +73,14 @@ export default function AdminOverviewPage() {
           activeRentals: approvedCount,
         });
 
-        // বার চার্টের জন্য রিয়েল ডাটা সেটআপ
+      
         setRequestStatusData([
           { status: 'Pending', count: pendingCount },
           { status: 'Approved', count: approvedCount },
           { status: 'Rejected', count: rejectedCount },
         ]);
 
-        // গ্রোথ চার্টের জন্য ডাইনামিক ডাটা (যদি এভেলেবল না থাকে প্রোপোশনেট বা ডামি বেজড অন রিয়েল টোটাল)
+       
         setGrowthData([
           { month: 'Jan', users: Math.round(users.length * 0.2), rentals: Math.round(rentals.length * 0.1) },
           { month: 'Feb', users: Math.round(users.length * 0.4), rentals: Math.round(rentals.length * 0.3) },

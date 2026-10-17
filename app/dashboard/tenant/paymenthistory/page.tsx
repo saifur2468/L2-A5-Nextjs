@@ -84,50 +84,46 @@ export default function PaymentHistoryPage() {
     fetchPaymentHistory();
   }, []);
 
-
-
   if (loading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
       </div>
     );
   }
 
-
-
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-4 md:p-8 transition-colors duration-300">
       <div className="mx-auto max-w-7xl">
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Payment History
           </h1>
 
-          <p className="mt-2 text-gray-500">
+          <p className="mt-2 text-gray-500 dark:text-gray-400">
             View all your completed rental payments.
           </p>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+          <div className="mb-6 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/30 p-4 text-red-700 dark:text-red-400">
             {error}
           </div>
         )}
 
         {/* Empty */}
         {!error && payments.length === 0 && (
-          <div className="rounded-2xl border bg-white p-12 text-center shadow-sm">
-            <CreditCard className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+          <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-12 text-center shadow-sm transition-colors">
+            <CreditCard className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-500" />
 
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
               No Payment History
             </h2>
 
-            <p className="mt-2 text-gray-500">
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
               You haven't completed any payments yet.
             </p>
           </div>
@@ -135,54 +131,54 @@ export default function PaymentHistoryPage() {
 
         {/* Desktop Table */}
         {payments.length > 0 && (
-          <div className="hidden overflow-hidden rounded-2xl border bg-white shadow-sm md:block">
+          <div className="hidden overflow-hidden rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm md:block transition-colors">
 
             <table className="w-full">
 
-              <thead className="bg-gray-100">
+              <thead className="bg-gray-100 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Transaction
                   </th>
 
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Property
                   </th>
 
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Date
                   </th>
 
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Amount
                   </th>
 
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Status
                   </th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {payments.map((payment) => (
                   <tr
                     key={payment.id}
-                    className="border-t hover:bg-gray-50"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800/40 transition"
                   >
 
                     {/* Transaction */}
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                        <div className="rounded-lg bg-blue-100 p-2">
-                          <Receipt className="h-5 w-5 text-blue-600" />
+                        <div className="rounded-lg bg-blue-100 dark:bg-blue-950/50 p-2">
+                          <Receipt className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                         </div>
 
                         <div>
-                          <p className="max-w-[220px] truncate font-medium text-gray-900">
+                          <p className="max-w-[220px] truncate font-medium text-gray-900 dark:text-gray-100">
                             {payment.transactionId}
                           </p>
 
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-gray-400 dark:text-gray-500">
                             {payment.method}
                           </p>
                         </div>
@@ -192,15 +188,15 @@ export default function PaymentHistoryPage() {
                     {/* Property */}
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-2">
-                        <Home className="h-5 w-5 text-gray-400" />
+                        <Home className="h-5 w-5 text-gray-400 dark:text-gray-500" />
 
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-gray-900 dark:text-gray-100">
                             {payment.rentalRequest?.property?.title ||
                               "N/A"}
                           </p>
 
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             {payment.rentalRequest?.property?.location ||
                               ""}
                           </p>
@@ -210,29 +206,29 @@ export default function PaymentHistoryPage() {
 
                     {/* Date */}
                     <td className="px-6 py-5">
-                      <div className="flex items-center gap-2 text-gray-600">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                         <Calendar className="h-4 w-4" />
 
                         {payment.paidAt
                           ? new Date(
-                            payment.paidAt
-                          ).toLocaleDateString()
+                              payment.paidAt
+                            ).toLocaleDateString()
                           : new Date(
-                            payment.createdAt
-                          ).toLocaleDateString()}
+                              payment.createdAt
+                            ).toLocaleDateString()}
                       </div>
                     </td>
 
                     {/* Amount */}
                     <td className="px-6 py-5">
-                      <span className="font-bold text-gray-900">
+                      <span className="font-bold text-gray-900 dark:text-white">
                         {Number(payment.amount).toLocaleString()} BDT
                       </span>
                     </td>
 
                     {/* Status */}
                     <td className="px-6 py-5">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-950/40 px-3 py-1 text-sm font-medium text-green-700 dark:text-green-400">
                         <CheckCircle2 className="h-4 w-4" />
                         Completed
                       </span>
@@ -253,28 +249,28 @@ export default function PaymentHistoryPage() {
             {payments.map((payment) => (
               <div
                 key={payment.id}
-                className="rounded-2xl border bg-white p-5 shadow-sm"
+                className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm transition-colors"
               >
 
                 <div className="mb-4 flex items-start justify-between">
 
                   <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-blue-100 p-2">
-                      <CreditCard className="h-5 w-5 text-blue-600" />
+                    <div className="rounded-lg bg-blue-100 dark:bg-blue-950/50 p-2">
+                      <CreditCard className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
 
                     <div>
-                      <p className="font-semibold">
+                      <p className="font-semibold text-gray-900 dark:text-white">
                         Payment
                       </p>
 
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {payment.method}
                       </p>
                     </div>
                   </div>
 
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-950/40 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400">
                     <CheckCircle2 className="h-3 w-3" />
                     Completed
                   </span>
@@ -284,22 +280,22 @@ export default function PaymentHistoryPage() {
                 <div className="space-y-3">
 
                   <div>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       Property
                     </p>
 
-                    <p className="font-medium">
+                    <p className="font-medium text-gray-900 dark:text-gray-200">
                       {payment.rentalRequest?.property?.title ||
                         "N/A"}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       Transaction ID
                     </p>
 
-                    <p className="break-all text-sm">
+                    <p className="break-all text-sm text-gray-800 dark:text-gray-300">
                       {payment.transactionId}
                     </p>
                   </div>
@@ -307,27 +303,27 @@ export default function PaymentHistoryPage() {
                   <div className="flex justify-between">
 
                     <div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Date
                       </p>
 
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-800 dark:text-gray-300">
                         {payment.paidAt
                           ? new Date(
-                            payment.paidAt
-                          ).toLocaleDateString()
+                              payment.paidAt
+                            ).toLocaleDateString()
                           : new Date(
-                            payment.createdAt
-                          ).toLocaleDateString()}
+                              payment.createdAt
+                            ).toLocaleDateString()}
                       </p>
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Amount
                       </p>
 
-                      <p className="font-bold">
+                      <p className="font-bold text-gray-900 dark:text-white">
                         {Number(payment.amount).toLocaleString()} BDT
                       </p>
                     </div>

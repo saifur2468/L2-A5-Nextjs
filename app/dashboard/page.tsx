@@ -28,14 +28,13 @@ export default function DashboardRootPage() {
       }
     }
 
-    
     router.push('/dashboard/tenant');
   }, [router]);
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex items-center gap-2 font-medium text-gray-500">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
+    <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+      <div className="flex items-center gap-2 font-medium text-gray-500 dark:text-gray-400">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-black dark:border-white border-t-transparent dark:border-t-transparent" />
         Loading Dashboard...
       </div>
     </div>

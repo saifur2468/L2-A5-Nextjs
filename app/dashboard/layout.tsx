@@ -142,20 +142,20 @@ export default function DashboardLayout({
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#F4F6FA]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      <div className="flex h-screen items-center justify-center bg-[#F4F6FA] dark:bg-gray-950 transition-colors">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 dark:border-indigo-400"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-[#F4F6FA] text-slate-700 antialiased font-sans overflow-hidden">
+    <div className="flex h-screen bg-[#F4F6FA] dark:bg-gray-950 text-slate-700 dark:text-gray-300 antialiased font-sans overflow-hidden transition-colors duration-300">
 
       {/* =====================================================
           DESKTOP SIDEBAR
       ====================================================== */}
 
-      <aside className="hidden md:flex w-64 bg-white border-r border-slate-100 flex-col justify-between p-6 shrink-0">
+      <aside className="hidden md:flex w-64 bg-white dark:bg-gray-900 border-r border-slate-100 dark:border-gray-800 flex-col justify-between p-6 shrink-0 transition-colors">
 
         <div>
           {/* Logo */}
@@ -164,8 +164,8 @@ export default function DashboardLayout({
               R
             </div>
 
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              Rent<span className="text-indigo-600">Nest</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Rent<span className="text-indigo-600 dark:text-indigo-400">Nest</span>
             </span>
           </div>
 
@@ -181,16 +181,16 @@ export default function DashboardLayout({
                   href={item.href}
                   className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium transition duration-200 ${
                     isActive
-                      ? 'bg-indigo-50/80 text-indigo-600 font-semibold'
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                      ? 'bg-indigo-50/80 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold'
+                      : 'text-slate-500 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-gray-800 hover:text-slate-800 dark:hover:text-gray-200'
                   }`}
                 >
                   <Icon
                     size={19}
                     className={
                       isActive
-                        ? 'text-indigo-600'
-                        : 'text-slate-400'
+                        ? 'text-indigo-600 dark:text-indigo-400'
+                        : 'text-slate-400 dark:text-gray-500'
                     }
                   />
 
@@ -204,23 +204,23 @@ export default function DashboardLayout({
         {/* Bottom Section */}
         <div className="space-y-4">
 
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-2xl border border-indigo-100/50 flex flex-col items-center text-center">
-            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-sm mb-2">
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 p-4 rounded-2xl border border-indigo-100/50 dark:border-indigo-900/40 flex flex-col items-center text-center">
+            <div className="h-10 w-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm mb-2">
               <Smartphone size={20} />
             </div>
 
-            <p className="text-xs font-bold text-slate-800">
+            <p className="text-xs font-bold text-slate-800 dark:text-gray-200">
               Get mobile app
             </p>
 
-            <p className="text-[11px] text-slate-400 mt-0.5">
+            <p className="text-[11px] text-slate-400 dark:text-gray-400 mt-0.5">
               Manage rentals on the go
             </p>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition cursor-pointer"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-500 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-950/40 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
           >
             <LogOut size={18} />
             Logout
@@ -235,7 +235,7 @@ export default function DashboardLayout({
 
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          className="fixed inset-0 z-40 bg-black/40 dark:bg-black/60 md:hidden backdrop-blur-sm"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -245,7 +245,7 @@ export default function DashboardLayout({
       ====================================================== */}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-[280px] bg-white shadow-xl transform transition-transform duration-300 md:hidden ${
+        className={`fixed top-0 left-0 z-50 h-full w-[280px] bg-white dark:bg-gray-900 shadow-xl transform transition-transform duration-300 md:hidden ${
           isMobileMenuOpen
             ? 'translate-x-0'
             : '-translate-x-full'
@@ -253,21 +253,21 @@ export default function DashboardLayout({
       >
 
         {/* Mobile Logo */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-gray-800">
 
           <div className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
               R
             </div>
 
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              Rent<span className="text-indigo-600">Nest</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Rent<span className="text-indigo-600 dark:text-indigo-400">Nest</span>
             </span>
           </div>
 
           <button
             onClick={() => setIsMobileMenuOpen(false)}
-            className="p-2 rounded-lg hover:bg-slate-100 text-slate-500"
+            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-slate-500 dark:text-gray-400"
           >
             <X size={22} />
           </button>
@@ -288,16 +288,16 @@ export default function DashboardLayout({
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium transition ${
                   isActive
-                    ? 'bg-indigo-50 text-indigo-600 font-semibold'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                    ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold'
+                    : 'text-slate-500 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-gray-800 hover:text-slate-800 dark:hover:text-gray-200'
                 }`}
               >
                 <Icon
                   size={19}
                   className={
                     isActive
-                      ? 'text-indigo-600'
-                      : 'text-slate-400'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-400 dark:text-gray-500'
                   }
                 />
 
@@ -309,25 +309,25 @@ export default function DashboardLayout({
         </nav>
 
         {/* Mobile Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100 bg-white">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100 dark:border-gray-800 bg-white dark:bg-gray-900">
 
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-2xl border border-indigo-100/50 flex flex-col items-center text-center mb-4">
-            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-sm mb-2">
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 p-4 rounded-2xl border border-indigo-100/50 dark:border-indigo-900/40 flex flex-col items-center text-center mb-4">
+            <div className="h-10 w-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm mb-2">
               <Smartphone size={20} />
             </div>
 
-            <p className="text-xs font-bold text-slate-800">
+            <p className="text-xs font-bold text-slate-800 dark:text-gray-200">
               Get mobile app
             </p>
 
-            <p className="text-[11px] text-slate-400 mt-0.5">
+            <p className="text-[11px] text-slate-400 dark:text-gray-400 mt-0.5">
               Manage rentals on the go
             </p>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-950/40 hover:text-red-600 dark:hover:text-red-400 transition"
           >
             <LogOut size={18} />
             Logout
@@ -347,7 +347,7 @@ export default function DashboardLayout({
             HEADER
         ====================================================== */}
 
-        <header className="h-20 bg-[#F4F6FA] px-4 sm:px-6 md:px-8 flex items-center justify-between shrink-0">
+        <header className="h-20 bg-[#F4F6FA] dark:bg-gray-950 px-4 sm:px-6 md:px-8 flex items-center justify-between shrink-0 transition-colors">
 
           {/* LEFT SIDE */}
           <div className="flex items-center gap-3">
@@ -357,7 +357,7 @@ export default function DashboardLayout({
               onClick={() =>
                 setIsMobileMenuOpen(true)
               }
-              className="md:hidden p-2.5 bg-white rounded-xl shadow-sm text-slate-600 hover:text-indigo-600 transition"
+              className="md:hidden p-2.5 bg-white dark:bg-gray-900 rounded-xl shadow-sm text-slate-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
             >
               <Menu size={21} />
             </button>
@@ -367,13 +367,13 @@ export default function DashboardLayout({
 
               <Search
                 size={18}
-                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-500"
               />
 
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full bg-white text-sm py-2.5 pl-10 sm:pl-11 pr-3 sm:pr-4 rounded-2xl border-none shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 placeholder:text-slate-400 text-slate-700"
+                className="w-full bg-white dark:bg-gray-900 text-sm py-2.5 pl-10 sm:pl-11 pr-3 sm:pr-4 rounded-2xl border-none shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 placeholder:text-slate-400 dark:placeholder:text-gray-500 text-slate-700 dark:text-gray-200 transition"
               />
 
             </div>
@@ -384,33 +384,33 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 sm:gap-5">
 
             {/* Notification */}
-            <button className="relative p-2.5 bg-white rounded-xl shadow-sm text-slate-500 hover:text-slate-700 transition">
+            <button className="relative p-2.5 bg-white dark:bg-gray-900 rounded-xl shadow-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-200 transition">
               <Bell size={19} />
 
-              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-indigo-600"></span>
+              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-indigo-600 dark:bg-indigo-400"></span>
             </button>
 
             {/* User */}
             <div className="flex items-center gap-2 sm:gap-3 cursor-pointer">
 
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-indigo-600 text-white font-semibold flex items-center justify-center text-sm shadow-md shadow-indigo-100">
+              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-indigo-600 text-white font-semibold flex items-center justify-center text-sm shadow-md shadow-indigo-100 dark:shadow-none">
                 {userInitial}
               </div>
 
               {/* Hide name on small mobile */}
               <div className="hidden sm:block text-left">
-                <p className="text-sm font-bold text-slate-800 leading-none">
+                <p className="text-sm font-bold text-slate-800 dark:text-gray-100 leading-none">
                   {userName}
                 </p>
 
-                <p className="text-[11px] text-slate-400 mt-1 capitalize">
+                <p className="text-[11px] text-slate-400 dark:text-gray-400 mt-1 capitalize">
                   {user?.role?.toLowerCase() || 'Tenant'}
                 </p>
               </div>
 
               <ChevronDown
                 size={15}
-                className="text-slate-400 hidden sm:block"
+                className="text-slate-400 dark:text-gray-500 hidden sm:block"
               />
 
             </div>

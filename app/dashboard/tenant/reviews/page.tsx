@@ -11,12 +11,10 @@ export default function ReviewsPage() {
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     fetch('https://prisma-project-tau-dun.vercel.app/api/properties')
       .then((res) => res.json())
       .then((data) => {
-
         if (data.success && Array.isArray(data.data)) {
           setProperties(data.data);
         } else if (Array.isArray(data)) {
@@ -72,26 +70,26 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">Property Reviews</h1>
+    <div className="p-6 max-w-7xl mx-auto space-y-6 transition-colors duration-300">
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Property Reviews</h1>
 
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4 max-w-xl">
-        <h2 className="font-bold text-slate-800 text-base">Leave a New Property Review</h2>
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-800 space-y-4 max-w-xl transition-colors">
+        <h2 className="font-bold text-slate-800 dark:text-white text-base">Leave a New Property Review</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
           {/* Property Selection Dropdown */}
           <div>
-            <label className="text-xs font-semibold text-slate-600">Select Property</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-gray-400">Select Property</label>
             <select
               value={propertyId}
               onChange={(e) => setPropertyId(e.target.value)}
               required
-              className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm bg-white focus:outline-none focus:border-indigo-600"
+              className="mt-1 w-full rounded-xl border border-slate-200 dark:border-gray-700 px-3.5 py-2 text-sm bg-white dark:bg-gray-800 text-slate-800 dark:text-gray-100 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400 transition"
             >
-              <option value="">-- Choose a Property --</option>
+              <option value="" className="bg-white dark:bg-gray-800">-- Choose a Property --</option>
               {properties.map((property) => (
-                <option key={property.id || property._id} value={property.id || property._id}>
+                <option key={property.id || property._id} value={property.id || property._id} className="bg-white dark:bg-gray-800">
                   {property.title || property.name} ({property.location || 'Location not specified'})
                 </option>
               ))}
@@ -100,30 +98,30 @@ export default function ReviewsPage() {
 
           {/* Rating Selection */}
           <div>
-            <label className="text-xs font-semibold text-slate-600">Rating</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-gray-400">Rating</label>
             <select
               value={rating}
               onChange={(e) => setRating(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm bg-white focus:outline-none focus:border-indigo-600"
+              className="mt-1 w-full rounded-xl border border-slate-200 dark:border-gray-700 px-3.5 py-2 text-sm bg-white dark:bg-gray-800 text-slate-800 dark:text-gray-100 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400 transition"
             >
-              <option value="5">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
-              <option value="4">⭐⭐⭐⭐ (4 - Good)</option>
-              <option value="3">⭐⭐⭐ (3 - Average)</option>
-              <option value="2">⭐⭐ (2 - Poor)</option>
-              <option value="1">⭐ (1 - Terrible)</option>
+              <option value="5" className="bg-white dark:bg-gray-800">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
+              <option value="4" className="bg-white dark:bg-gray-800">⭐⭐⭐⭐ (4 - Good)</option>
+              <option value="3" className="bg-white dark:bg-gray-800">⭐⭐⭐ (3 - Average)</option>
+              <option value="2" className="bg-white dark:bg-gray-800">⭐⭐ (2 - Poor)</option>
+              <option value="1" className="bg-white dark:bg-gray-800">⭐ (1 - Terrible)</option>
             </select>
           </div>
 
           {/* Comment / Feedback */}
           <div>
-            <label className="text-xs font-semibold text-slate-600">Feedback</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-gray-400">Feedback</label>
             <textarea
               rows={3}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Outstanding place! Highly recommended."
               required
-              className="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:border-indigo-600"
+              className="mt-1 w-full rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2 text-sm text-slate-800 dark:text-gray-100 placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400 transition"
             />
           </div>
 
@@ -131,7 +129,7 @@ export default function ReviewsPage() {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition cursor-pointer disabled:opacity-50"
+            className="rounded-xl bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition cursor-pointer disabled:opacity-50"
           >
             {loading ? 'Submitting...' : 'Submit Review'}
           </button>

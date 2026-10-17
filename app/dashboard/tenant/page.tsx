@@ -105,22 +105,22 @@ export default function TenantOverviewPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-indigo-600" size={32} />
+        <Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" size={32} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto">
+    <div className="space-y-8 p-6 max-w-7xl mx-auto transition-colors duration-300">
       
       {/* Top Title Banner */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Tenant Dashboard Overview</h1>
-          <p className="text-sm text-slate-500 mt-1">Track your property requests, payment transactions, and reviews.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Tenant Dashboard Overview</h1>
+          <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Track your property requests, payment transactions, and reviews.</p>
         </div>
-        <div className="flex items-center gap-2 rounded-xl bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 border border-indigo-100">
-          <span className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+        <div className="flex items-center gap-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/40">
+          <span className="h-2 w-2 rounded-full bg-indigo-500 dark:bg-indigo-400 animate-pulse" />
           Tenant Account Active
         </div>
       </div>
@@ -129,17 +129,17 @@ export default function TenantOverviewPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link 
           href="/tenant/myRequest" 
-          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group flex flex-col justify-between"
+          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-800 hover:shadow-md transition-all group flex flex-col justify-between"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Requests</span>
-            <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <span className="text-xs font-bold text-slate-400 dark:text-gray-400 uppercase tracking-wider">Total Requests</span>
+            <div className="p-3 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-xl group-hover:bg-indigo-600 group-hover:text-white dark:group-hover:bg-indigo-500 transition-colors">
               <Clock size={20} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-extrabold text-slate-800">{requestCount}</h3>
-            <span className="text-xs text-indigo-600 font-medium mt-1 inline-flex items-center gap-1">
+            <h3 className="text-3xl font-extrabold text-slate-800 dark:text-white">{requestCount}</h3>
+            <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mt-1 inline-flex items-center gap-1">
               <TrendingUp size={13} /> Active applications
             </span>
           </div>
@@ -147,17 +147,17 @@ export default function TenantOverviewPage() {
 
         <Link 
           href="/tenant/paymenthistory" 
-          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group flex flex-col justify-between"
+          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-800 hover:shadow-md transition-all group flex flex-col justify-between"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Payments Done</span>
-            <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <span className="text-xs font-bold text-slate-400 dark:text-gray-400 uppercase tracking-wider">Total Payments Done</span>
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl group-hover:bg-emerald-600 group-hover:text-white dark:group-hover:bg-emerald-500 transition-colors">
               <CreditCard size={20} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-extrabold text-slate-800">{paymentCount}</h3>
-            <span className="text-xs text-emerald-600 font-medium mt-1 inline-flex items-center gap-1">
+            <h3 className="text-3xl font-extrabold text-slate-800 dark:text-white">{paymentCount}</h3>
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-flex items-center gap-1">
               Successful transactions
             </span>
           </div>
@@ -165,17 +165,17 @@ export default function TenantOverviewPage() {
 
         <Link 
           href="/tenant/reviews" 
-          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group flex flex-col justify-between"
+          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-800 hover:shadow-md transition-all group flex flex-col justify-between"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Reviews Given</span>
-            <div className="p-3 bg-amber-50 text-amber-600 rounded-xl group-hover:bg-amber-600 group-hover:text-white transition-colors">
+            <span className="text-xs font-bold text-slate-400 dark:text-gray-400 uppercase tracking-wider">Reviews Given</span>
+            <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-xl group-hover:bg-amber-600 group-hover:text-white dark:group-hover:bg-amber-500 transition-colors">
               <Star size={20} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-extrabold text-slate-800">{reviewCount}</h3>
-            <span className="text-xs text-amber-600 font-medium mt-1 inline-flex items-center gap-1">
+            <h3 className="text-3xl font-extrabold text-slate-800 dark:text-white">{reviewCount}</h3>
+            <span className="text-xs text-amber-600 dark:text-amber-400 font-medium mt-1 inline-flex items-center gap-1">
               Property feedback
             </span>
           </div>
@@ -186,13 +186,13 @@ export default function TenantOverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Monthly Activity Trend Area Chart */}
-        <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 lg:col-span-2 space-y-4">
+        <div className="rounded-2xl bg-white dark:bg-gray-900 p-6 shadow-sm border border-slate-100 dark:border-gray-800 lg:col-span-2 space-y-4 transition-colors">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <h3 className="text-base font-bold text-slate-800">Activity Overview</h3>
-              <p className="text-xs text-slate-400">Monthly request submissions & payment trends</p>
+              <h3 className="text-base font-bold text-slate-800 dark:text-white">Activity Overview</h3>
+              <p className="text-xs text-slate-400 dark:text-gray-400">Monthly request submissions & payment trends</p>
             </div>
-            <Activity size={18} className="text-slate-400" />
+            <Activity size={18} className="text-slate-400 dark:text-gray-500" />
           </div>
 
           <div className="h-72 w-full pt-4">
@@ -208,11 +208,18 @@ export default function TenantOverviewPage() {
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
                 <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)', 
+                    borderRadius: '12px', 
+                    border: '1px solid #334155', 
+                    color: '#f8fafc',
+                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)' 
+                  }}
+                  itemStyle={{ color: '#f8fafc' }}
                 />
                 <Area type="monotone" dataKey="requests" name="Requests" stroke="#6366f1" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRequests)" />
                 <Area type="monotone" dataKey="payments" name="Payments" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorPayments)" />
@@ -222,29 +229,36 @@ export default function TenantOverviewPage() {
         </div>
 
         {/* Request Status Breakdown Bar Chart */}
-        <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
+        <div className="rounded-2xl bg-white dark:bg-gray-900 p-6 shadow-sm border border-slate-100 dark:border-gray-800 flex flex-col justify-between transition-colors">
           <div>
-            <h3 className="text-base font-bold text-slate-800">Rental Application States</h3>
-            <p className="text-xs text-slate-400">Current status of submitted requests</p>
+            <h3 className="text-base font-bold text-slate-800 dark:text-white">Rental Application States</h3>
+            <p className="text-xs text-slate-400 dark:text-gray-400">Current status of submitted requests</p>
           </div>
 
           <div className="h-60 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={requestStatusData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
                 <XAxis dataKey="status" stroke="#94a3b8" fontSize={12} tickLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)', 
+                    borderRadius: '12px', 
+                    border: '1px solid #334155', 
+                    color: '#f8fafc',
+                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)' 
+                  }}
+                  itemStyle={{ color: '#f8fafc' }}
                 />
                 <Bar dataKey="count" fill="#6366f1" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+          <div className="pt-4 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between text-xs text-slate-500 dark:text-gray-400 font-medium">
             <span>Total Requests: {requestCount}</span>
-            <Link href="/tenant/myRequest" className="text-indigo-600 font-semibold hover:underline">
+            <Link href="/tenant/myRequest" className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
               View All →
             </Link>
           </div>
