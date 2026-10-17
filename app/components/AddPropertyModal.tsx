@@ -36,7 +36,7 @@ export default function AddPropertyModal({ categories = [], onClose, onSuccess, 
 
   const categoryList = categories.length > 0 ? categories : fallbackCategories;
 
-  // ঐচ্ছিক: লোকাল ফাইল থেকে ক্লাউডিনারিতে ডাইরেক্ট আপলোড করার ফাংশন (যদি প্রয়োজন হয়)
+  
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
