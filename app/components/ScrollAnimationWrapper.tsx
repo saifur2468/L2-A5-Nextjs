@@ -1,8 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
 
-export default function ScrollAnimationWrapper({ children, delay = 0 }) {
+
+interface ScrollAnimationWrapperProps {
+  children: ReactNode;
+  delay?: number;
+}
+
+export default function ScrollAnimationWrapper({ children, delay = 0 }: ScrollAnimationWrapperProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }} 
