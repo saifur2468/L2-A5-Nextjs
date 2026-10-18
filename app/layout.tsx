@@ -12,6 +12,9 @@ import ChatBot from './components/ChatBot';
 export const metadata: Metadata = {
   title: 'RentNest',
   description: 'Rental property marketplace',
+ icons: {
+   icon: '/favicon.png', 
+  },
 };
 
 export default function RootLayout({
